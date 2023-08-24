@@ -25,29 +25,54 @@ import ReactDOM from "react-dom/client";
 //   return React.createElement("h1", {}, "Hello World");
 // }
 
+// jsx rules in react and how to use it are discussed below
+// function HelloWorld() {
+//   // Define a functional component named HelloWorld
+
+//   return (
+//     //the elements in return are JSX and you can return only one element...
+//     //we can do this because we are returning only one element
+
+//     <>
+//       {/* by adding <> we can return more than one element
+//       which acts as a container, so in the end we will have only one element*/}
+//       {/* always make sure that you return only one element
+//       elements inside the return are JSX
+//       and elements should have a closing tag */}
+//       <div class="hello">
+//         <div>
+//           <ul>
+//             <li>
+//               <a href="https://www.google.com"> Hello </a>
+//             </li>
+//           </ul>
+//         </div>
+//       </div>
+//       {/*we can't return more than one element} */}
+//       <h1>Hello World</h1>
+//     </>
+//   );
+//   // Return the JSX element
+// }
+
+//nested elements in react
 function HelloWorld() {
-  // Define a functional component named HelloWorld
-
   return (
-    //the elements in return are JSX and you can return only one element...
-    //we can do this because we are returning only one element
-
-    <>
-      {/* by adding <> we can return more than one element */}
-      <div>
-        <div>
-          <ul>
-            <li>
-              <a href="https://www.google.com"> Hello </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      {/*we can't return more than one element} */}
-      <h1>Hello World</h1>
-    </>
+    <div>
+      {/* reference Itvaya and Rocks */}
+      <Itvaya />
+      <Rocks />
+    </div>
   );
-  // Return the JSX element
+}
+
+//Itvaya and Rocks are functional components which is rendered inside HelloWorld
+function Itvaya() {
+  return <h1>ITVAYA</h1>;
+}
+
+function Rocks(){
+  return <h2>ROCKS</h2>;
 }
 
 const rootElement = ReactDOM.createRoot(document.getElementById("root"));
