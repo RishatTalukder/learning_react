@@ -1,0 +1,58 @@
+
+/* explaing every section with comments */
+
+/* This CSS code sets the margin, padding, and box-sizing properties for all elements on the page */
+
+/* Resetting the default margin and padding values for all elements */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* this section is for the body */
+  /* setting the font, background, and color */
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background: #f1f5f8;
+    color: #222;
+  }
+
+
+  /* this section is for the booklist */
+  /* setting the width, max-width, margin, and padding */
+  
+  .booklist {
+    width: 90vw;
+    max-width: 1170px;
+    margin: 5rem auto;
+    display: grid;
+    gap: 2rem;
+  }
+  
+
+  /* this section is for the book */
+  /* setting the width, max-width, margin, and padding */
+  /* @media screen is to make it responsive */
+  @media screen and (min-width: 768px) {
+    .booklist {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .book {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+  }
+  .book img {
+    width: 100%;
+    object-fit: cover;
+  }
+  .book h5 {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }

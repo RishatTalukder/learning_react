@@ -1,16 +1,17 @@
 //this is the start of a basic frontend react app
 // where we have a list of books as the main component
-// and the books component is nested inside the list 
+// and the books component is nested inside the list
 // the book component also has a nested image and name and author
 
-
+//importing css file which is loaded automaticly
+import "./index.css"
 import React from "react";
 import ReactDOM from "react-dom/client";
 
 // This is the main component
 function List() {
   return (
-    <h3>
+    <h3 className="booklist">
       <Books /> {/* Render the Books component */}
       <Books /> {/* Render the Books component */}
       <Books /> {/* Render the Books component */}
@@ -22,7 +23,7 @@ function List() {
 // This is the nested component
 function Books() {
   return (
-    <div>
+    <div className="book">
       <Image /> {/* Render the Image component */}
       <Name /> {/* Render the Name component */}
       <Author /> {/* Render the Author component */}
@@ -53,4 +54,3 @@ function Author() {
 // Render the List component
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<List />);
-
