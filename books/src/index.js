@@ -4,53 +4,61 @@
 // the book component also has a nested image and name and author
 
 //importing css file which is loaded automaticly
-import "./index.css"
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 
 // This is the main component
-function List() {
+
+const namE = "rishat"
+// fixed the names and tags as given in the readme file
+function BookList() {
   return (
-    <h3 className="booklist">
-      <Books /> {/* Render the Books component */}
-      <Books /> {/* Render the Books component */}
-      <Books /> {/* Render the Books component */}
-      <Books /> {/* Render the Books component */}
-    </h3>
+    <section className="booklist">
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <p>{namE}</p>
+    </section>
   );
 }
 
-// This is the nested component
-function Books() {
+// this is the book component
+const Book = () => {
   return (
-    <div className="book">
-      <Image /> {/* Render the Image component */}
-      <Name /> {/* Render the Name component */}
-      <Author /> {/* Render the Author component */}
-    </div>
-  );
-}
-
-// This is the component for the book image
-const Image = () => {
-  return (
-    <img
-      src="https://images-na.ssl-images-amazon.com/images/I/91fRT+cJNzL._AC_UL900_SR900,600_.jpg"
-      alt="A Little Life"
-    />
+    <article className="book">
+      <Image />
+      <Title />
+      <Author />
+    </article>
   );
 };
 
-// This is the component for the book name
-const Name = () => {
-  return <h4>A Little Life</h4>;
+// image component
+const Image = () => (
+  <img
+    src="https://images-na.ssl-images-amazon.com/images/I/71m+Qtq+HrL._AC_UL900_SR900,600_.jpg"
+    alt="Interesting Facts For Curious Minds"
+  />
+);
+
+// title component
+const Title = () => {
+  return <h2>Interesting Facts For Curious Minds</h2>;
 };
 
-// This is the component for the book author
-function Author() {
-  return <h5>Hanya Yanagihara</h5>;
-}
+const name = "Jordan Moore ";
+// author component
+const Author = () => {
+  const stylling = {
+    color: "#617d98",
+    fontSize: "0.75rem",
+    marginTop: "0.5rem",
+  };
+  return <h4 style={stylling}>{name.toUpperCase()}</h4>;
+};
 
 // Render the List component
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<List />);
+root.render(<BookList />);
