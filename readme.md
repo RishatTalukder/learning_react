@@ -426,6 +426,203 @@ const Component = () => {
 
 # Making the Components for the PlaceHolders
 
+আপনার `books/src/index.js` ফাইলে যান এবং edit করুনঃ
+
+```js
+....
+
+// image component
+const Image = () => {
+  return (
+    <div>
+      <h1>Image</h1>
+    </div>
+  );
+};
+
+// title component
+const Title = () => (<h2>Title</h2>);
+
+// author component
+const Author = () => {
+  return (
+    <div>
+      <h3>Author</h3>
+    </div>
+  );
+};
+
+....
+```
+
+এখানে একটা জিনিষ দেখছেন যে আমি তিনটি `component` কে তৈরী করেছি এবং ৩ টি কম্পোনেন্ট এর জন্য ফাংশন তৈরী করেছি। 
+
+এমন ফাংশনকে বলা হয় `Arrow Functions`।
+
+এবং এই `Arrow Functions` এর ভেতরে আমরা কিছু `JSX` লিখেছি।
+
+তিনটি ফাংশনের মধ্যে `Title` ফাংশনটি আমরা একটু আলাদা করে লিখেছি। এবং এই ফাংশনটি আমরা একটি লাইনে লিখেছি। এটি আমাদের একটি স্পেশাল ফাংশন। এই ফাংশনটি কে বলা হয় `Implicit Return`। মানে এই ফাংশনের ভেতরে আমরা কোন কিছু রিটার্ন করতে চাই সেটা আমরা একটি লাইনে লিখে দিতে পারি।
+
+চলেন এখন আমরা এই তিনটি `component` কে আমাদের `App` কম্পোনেন্ট এ রেন্ডার করি।
+
 ```js
 // importing the react library
+import React from "react";
+import ReactDOM from "react-dom";
+
+// creating a react component to render to the DOM
+const App = () => {
+  return (
+    <div>
+      {/* image section */}
+      <Image />
+      {/* title section */}
+      <Title />
+      {/* author section */}
+      <Author />
+    </div>
+  );
+};
+
+// image component
+const Image = () => {
+  return (
+    <div>
+      <h1>Image</h1>
+    </div>
+  );
+};
+
+....
+```
+
+এখন আপনারা যদি আপনার ব্রাউজার এ যান তাহলে আপনারা দেখতে পাবেন যে আপনারা আপনার ব্রাউজার এ একটি ওয়েবসাইট দেখতে পাচ্ছেন এবং ওয়েবসাইট এ আপনারা দেখতে পাচ্ছেন `Image` `Title` `Author` এই তিনটি শব্দ। 
+
+কিন্তু এটাও অত ভালভাবে আমাদের সাহায্য করে না। তাই আমরা `Book` নামে আরেকটি `component` তৈরি করবো এবং এই `component` এর ভেতরে আমরা আমাদের সবগুলো `component` কে রেন্ডার করবো।
+
+# Nesting components
+
+```js
+....
+const App = () => {
+  return (
+    <div>
+      {/* book section */}
+      <Book />
+    </div>
+  );
+};
+
+
+
+// book component
+const Book = () => {
+  return (
+    <div>
+      <Image />
+      <Title />
+      <Author />
+    </div>
+  );
+}
+
+....
+```
+
+`Component nesting` এর মাধ্যমে আমরা একটি `component` এর ভেতরে আরেকটি `component` কে রেন্ডার করতে পারি, যেমনটা আমরা এখানে করেছি।
+
+`Book` কম্পোনেন্ট এর ভেতর আমরা আমাদের সবগুলো `component` কে রেন্ডার করতে পারছি। এবং এই `Book` কম্পোনেন্ট কে আমরা `App` কম্পোনেন্ট এ রেন্ডার করতে পারছি।
+
+এখন আমরা চাইলে একই বই এর কপি তৈরী করতে পারি।
+
+```js
+....
+const App = () => {
+  return (
+    <div>
+      {/* book section */}
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+    </div>
+  );
+};
+....
+```
+
+এখন আপনারা ব্রাউজার এ যান তাহলে আপনারা দেখতে পাবেন যে একই বই এর কপি আপনারা একসাথে চারটি দেখতে পাচ্ছেন।
+
+![books](<extras/Screenshot from 2023-10-23 15-31-10.png>)
+
+এখন আসেন একটূ কপি পেস্ট মারি। 
+
+```js
+....
+const Image = () => (
+  <img
+    src="https://images-na.ssl-images-amazon.com/images/I/71m+Qtq+HrL._AC_UL900_SR900,600_.jpg"
+    alt="Interesting Facts For Curious Minds"
+  />
+);
+
+// title component
+const Title = () => {
+  return <h2>Interesting Facts For Curious Minds</h2>;
+};
+
+// author component
+const Author = () => <h4>Jordan Moore </h4>;
+....
+```
+
+এখন মনে হয় একটু দেখতে ভাল লাগছে। কিন্তু আসলে দেখতে খুবই বাজে লাগছে। তাই একটু `style` করা উচিত। কিভাবে করে??
+
+# CSS Styling
+সহজ ভাষায় `books/src` ফোল্ডারের ভেতর একটি ফাইল তৈরী করুন `index.css` নামে।
+
+ফাইলে নিচের `stylling` গুলোকে লিখুন।
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #f1f5f8;
+  color: #222;
+}
+```
+
+এই `stylling` এর মাধ্যমে আমরা আমাদের পুরো ওয়েবসাইট এর স্টাইলিং করেছি। এবং এই স্টাইলিং আমরা আমাদের পুরো ওয়েবসাইট এ ইমপ্লিমেন্ট করতে পারি।
+
+এখন আমরা চাইলে আমাদের পুরো ওয়েবসাইট এর স্টাইলিং করতে পারি। কিভাবে??
+
+আমাদের প্রথমে আমাদের `index.js` ফাইলে যাই।
+
+```js
+// importing the react library
+import React from "react";
+import ReactDOM from "react-dom";
+// importing the css file
+import './index.css'
+
+...
+```
+
+এবং এই কোড এর মাধ্যমে আমরা আমাদের `index.css` ফাইলটি আমাদের `index.js` ফাইলে ইমপ্লিমেন্ট করে দিলাম।
+
+এখন আমরা চাইলে আরো কিছু স্টাইলিং করতে পারি।
+
+```css
+
+
+
+
+
+
 
