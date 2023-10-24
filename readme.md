@@ -616,13 +616,126 @@ import './index.css'
 
 এবং এই কোড এর মাধ্যমে আমরা আমাদের `index.css` ফাইলটি আমাদের `index.js` ফাইলে ইমপ্লিমেন্ট করে দিলাম।
 
-এখন আমরা চাইলে আরো কিছু স্টাইলিং করতে পারি।
+এখন আমরা চাইলে আরো কিছু স্টাইলিং করতে পারি। `index.js` ফাইলে যাই।
+
+```js
+....
+import './index.css';
+
+function BookList() {
+  return (
+
+    <section className='booklist'> {/* booklist is the class name */}
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+    </section>
+  );
+}
+
+const Book = () => {
+  return (
+    <article className='book'> {/* book is the class name */}
+      <Image />
+      <Title />
+      <Author />
+    </article>
+  );
+};
+....
+```
+
+এখন `index.css` ফাইলে যাই।
 
 ```css
+....
+/* Styles for the booklist container */
+.booklist {
+    width: 90vw; /* Set the width to 90% of the viewport width */
+    max-width: 1170px; /* Set the maximum width to 1170px */
+    margin: 5rem auto; /* Add a margin of 5rem on top and bottom, and auto on left and right */
+    display: grid; /* Use CSS grid for layout */
+    gap: 2rem; /* Add a gap of 2rem between grid items */
+}
 
+/* Styles for individual books */
+.book {
+    background: #fff; /* Set the background color to white */
+    border-radius: 1rem; /* Add a border radius of 1rem */
+    padding: 2rem; /* Add 2rem of padding */
+    text-align: center; /* Center the text */
+}
 
+/* Styles for book cover images */
+.book img {
+    width: 100%; /* Set the width to 100% */
+    object-fit: cover; /* Scale the image to cover the entire container */
+}
 
+/* Styles for book titles */
+.book h2 {
+    margin-top: 1rem; /* Add a margin of 1rem on top */
+    font-size: 1rem; /* Set the font size to 1rem */
+}
 
+/*
+ * This media query targets screens with a minimum width of 768 pixels.
+ * It sets the grid-template-columns property of the .booklist class to repeat 3 columns with equal width.
+ * This creates a responsive layout for the booklist, with 3 columns on larger screens.
+ */
+@media screen and (min-width: 768px) {
+    .booklist {
+        grid-template-columns: repeat(3, 1fr);
+    }}
 
+```
 
+আমার আর বাংলায় লেখাতে ইচ্ছা করতেছে না। SO, i'll be writting in english now.
+
+If look look at the stylling and if you have done this all accordingly you should se something like this in the browser.
+![books](<extras/Screenshot from 2023-10-24 15-57-49.png>)
+
+If will be a responsive static page with 4 same books and some styling. Try making the browser screen smaller and you should see something like this.
+
+![books](<extras/Screenshot from 2023-10-24 16-03-10.png>)
+
+Now go to `index.js` and have a look at the image component.
+
+```js
+....
+// image component
+const Image = () => (
+  <img
+    src="https://images-na.ssl-images-amazon.com/images/I/71m+Qtq+HrL._AC_UL900_SR900,600_.jpg"
+    alt="Interesting Facts For Curious Minds"
+  />
+);
+....
+```
+
+here the `src` attribute of the `img` tag is a `url` of an image. We can use this `url` to get the image from the internet. But we can also use a local image. 
+
+# Local Images
+
+SOoooooo, We need to make a folder in our `src` folder and name it `img`. And we need to put our image in that folder.
+
+So download the image from the internet and put it in the `img` folder.
+
+then, go to `index.js` and edit the image component as follows.
+
+```js
+....
+const Image = () => (
+  <img
+    src="./images/book-1.jpeg" // here we are using a local image
+    alt="Interesting Facts For Curious Minds"
+  />
+); 
+....
+```
+
+> Note: If you are using a local image then you need to use `./` before the image path.
+
+Now if you go to the browser you should see the image.
 

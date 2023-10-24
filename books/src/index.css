@@ -17,27 +17,42 @@ body {
     color: #222;}
 
 
+/* Styles for the booklist container */
 .booklist {
-    width: 90vw;
-    max-width: 1170px;
-    margin: 5rem auto;
-    display: grid;
-    gap: 2rem;
+    width: 90vw; /* Set the width to 90% of the viewport width */
+    max-width: 1170px; /* Set the maximum width to 1170px */
+    margin: 5rem auto; /* Add a margin of 5rem on top and bottom, and auto on left and right */
+    display: grid; /* Use CSS grid for layout */
+    gap: 2rem; /* Add a gap of 2rem between grid items */
 }
 
+/* Styles for individual books */
 .book {
-    background: #fff;
-    border-radius: 1rem;
-    padding: 2rem;
-    text-align: center;
+    background: #fff; /* Set the background color to white */
+    border-radius: 1rem; /* Add a border radius of 1rem */
+    padding: 2rem; /* Add 2rem of padding */
+    text-align: center; /* Center the text */
 }
 
+/* Styles for book cover images */
 .book img {
-    width: 100%;
-    object-fit: cover;
-  }
-  
+    width: 100%; /* Set the width to 100% */
+    object-fit: cover; /* Scale the image to cover the entire container */
+}
+
+/* Styles for book titles */
 .book h2 {
-    margin-top: 1rem;
-    font-size: 1rem;
-  }
+    margin-top: 1rem; /* Add a margin of 1rem on top */
+    font-size: 1rem; /* Set the font size to 1rem */
+}
+
+/*
+ * This media query targets screens with a minimum width of 768 pixels.
+ * It sets the grid-template-columns property of the .booklist class to repeat 3 columns with equal width.
+ * This creates a responsive layout for the booklist, with 3 columns on larger screens.
+ */
+@media screen and (min-width: 768px) {
+    .booklist {
+        grid-template-columns: repeat(3, 1fr);
+    }}
+

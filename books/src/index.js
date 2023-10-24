@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 // importing the css file
-import './index.css'
+import "./index.css";
 
 // creating a react component to render to the DOM
 const App = () => {
@@ -30,10 +30,7 @@ const Book = () => {
 
 // image component
 const Image = () => (
-  <img
-    src="https://images-na.ssl-images-amazon.com/images/I/71m+Qtq+HrL._AC_UL900_SR900,600_.jpg"
-    alt="Interesting Facts For Curious Minds"
-  />
+  <img src='./images/book_1.jpg' alt="Interesting Facts For Curious Minds" />
 );
 
 // title component
