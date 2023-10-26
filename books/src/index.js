@@ -1,46 +1,76 @@
 // importing the react library
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 // importing the css file
 import "./index.css";
+
+const books = [
+  {
+    author: "Jordan Moore",
+    title: "Interesting Facts For Curious Minds",
+    img: "./images/book_1.jpg",
+  },
+  {
+    author: "James Clear",
+    title: "Atomic Habits",
+    img: "https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL._AC_UL900_SR900,600_.jpg",
+  },
+];
 
 // creating a react component to render to the DOM
 const App = () => {
   return (
-    <div className="booklist">
-      {/* book section */}
-      <Book />
-      <Book />
-      <Book />
-      <Book />
-    </div>
+    <section className="booklist">
+      {/* rendering the booklist directly using the `map` method */}
+      {books.map((book) => {
+        const { author, title, img } = book;
+        return <Book author={author} title={title} img={img} />;
+      })}
+    </section>
   );
 };
 
 // book component
-const Book = () => {
+const Book = (props) => {
+  // added props parameter and gets the values from the props object
+
   return (
     <div className="book">
-      <Image />
-      <Title />
-      <Author />
+      <Image img={props.img} title={props.title} />{" "}
+      {/* getting the img and title value from the props object and then passing the title and img to the image component*/}
+      <Title title={props.title} />{" "}
+      {/* getting the title value from the props object and then passing the title to the title component*/}
+      <Author author={props.author} />{" "}
+      {/* getting the author value from the props object and then passing the author to the author component*/}
     </div>
   );
 };
 
 // image component
-const Image = () => (
-  <img src='./images/book_1.jpg' alt="Interesting Facts For Curious Minds" />
+const Image = (
+  props // added props parameter
+) => (
+  <img src={props.img} alt={props.title} /> // getting the img value from the props
 );
 
 // title component
-const Title = () => {
-  return <h2>Interesting Facts For Curious Minds</h2>;
+const Title = (props) => {
+  // added props parameter
+  return <h2>{props.title}</h2>; // getting the title value from the props
 };
 
 // author component
-const Author = () => <h4>Jordan Moore </h4>;
+const Author = (props) => {
+  // added props parameter
+  const inlineHeadingStyles = {
+    color: "#617d98",
+    fontSize: "0.75rem",
+    marginTop: "0.5rem",
+  };
+  return <h4 style={inlineHeadingStyles}>{props.author}</h4>; // getting the author value from the props object
+};
 
 // rendering the component to the DOM
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);
 // <App /> is called self closing tag

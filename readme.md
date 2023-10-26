@@ -191,7 +191,7 @@ npm start
 ```js
 // importing the react library
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 // creating a react component to render to the DOM
 const App = () => {
@@ -203,7 +203,8 @@ const App = () => {
 };
 
 // rendering the component to the DOM
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);
 ```
 
 আপনি কোডটি লিখে দিলেন তাহলে আপনার ব্রাউজার এ যে ওয়েবসাইট ওপেন হয়ে গেছে সেই ওয়েবসাইট এ আপনি `Hello World` দেখতে পাবেন। এবং আপনি যদি কোন কিছু পরিবর্তন করেন তাহলে আপনার ব্রাউজার এ ওয়েবসাইট এ অটোমেটিকালি রিলোড হয়ে যাবে। এবং আপনি যে পরিবর্তন করেছেন সেই পরিবর্তন আপনি দেখতে পাবেন।
@@ -211,7 +212,6 @@ ReactDOM.render(<App />, document.getElementById("root"));
 আপাতত কোডে কি হচ্ছে তা জানার তেমন কোন প্রয়োজন নেই। কিন্তু আপনাকে কিছু `RULES` মানতে হবে। যেমনঃ
 
 - আপনি যে ফাইল ওপেন করছেন সেই ফাইলের নাম হলো `index.js`। এই ফাইলের নাম আপনি পরিবর্তন করতে পারবেন না।
-- `ReactDOM.render()` এই ফাংশন এর ভেতরে আপনি কোন কিছু পরিবর্তন করতে পারবেন না।
 - `const App = () => {}` এই ফাংশনকে বলা হয় `React Component`।
 
 এই `React Component` এর ভেতরে আপনি কোন কিছু পরিবর্তন করতে পারবেন। `React components` এর ভেতরে আপনি যেকোন `javascript` কোড লিখতে পারবেন। এবং আপনি যেকোন `React Component` কে আপনি যেকোন নাম দিতে পারবেন। কিন্তু আপনাকে এই `React Component` এর নাম পরিবর্তন করতে হবে না। আপনি যদি এই `React Component` এর নাম পরিবর্তন করেন তাহলে আপনি অনেক `error` দেখতে পাবেন।
@@ -268,6 +268,7 @@ cd books
 ```bash
 npm start
 ```
+
 আমরা আগের মতই `src` ফোল্ডারের সব ফাইল ডিলিট করতে হবে। এবং একটি নতুন ফাইল তৈরি করতে হবে সেই ফাইলের নাম হবে `index.js`।
 
 এবার আমরা কিছু কোড লিখবো। আমরা একটি `React Component` তৈরি করবো। এবং সেই `React Component` এর ভেতরে আমরা কিছু `HTML` লিখবো।
@@ -275,11 +276,11 @@ npm start
 ```js
 // importing the react library
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 // creating a react component to render to the DOM
 const App = () => {
-    // JSX
+  // JSX
   return (
     <div>
       <h1>Books</h1>
@@ -288,7 +289,9 @@ const App = () => {
 };
 
 // rendering the component to the DOM
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);
+
 // <App /> is called self closing tag
 ```
 
@@ -299,6 +302,7 @@ ReactDOM.render(<App />, document.getElementById("root"));
 আমি এই প্রজেক্ট এ নিচের ওয়েবসাইট এর মতো একটি ওয়েবসাইট তৈরি করার চেস্টা করব আর সাথে সাথে `React js` পুরো `fundmantals` শেখানোর চেস্টা করব।
 
 ![books](<extras/Screenshot from 2023-10-23 12-24-15.png>)
+
 - https://www.amazon.com/Best-Sellers-Books/zgbs/books
 
 # Extentions
@@ -319,12 +323,12 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 আসেন এখন কিছু কোডিং করা যাক।
 
-#  Making the palceholders
+# Making the palceholders
 
 ```js
 // importing the react library
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 // creating a react component to render to the DOM
 const App = () => {
@@ -341,21 +345,28 @@ const App = () => {
 };
 
 // rendering the component to the DOM
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);
+
 // <App /> is called self closing tag
 ```
 
-ভাঙচুর করার পালা। 
+ভাঙচুর করার পালা।
 
-`ReactDom.render(<App />, document.getElementById("root"))` দিয়ে কি হচ্ছে সেটা একটূ জেনে নেই।
+```
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
+```
+
+দিয়ে কি হচ্ছে সেটা একটূ জেনে নেই।
 
 আপনি যদি আপনার `books` ফোল্ডারে খেয়াল করেন তাহলে দেখবেন সেখানে `public` নামে আরেটি ফোল্ডার আছে, সেই ফোল্ডারের ভেতর `index.html` নামে একটি ফাইল আছে। ফাইলটিতে ক্লিক করুন এবং ভালভাবে লক্ষ করলে দেখবেন
 
 ```html
 <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -365,15 +376,15 @@ ReactDOM.render(<App />, document.getElementById("root"));
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
 ```
 
-`<div id = "root"></div>` এটি আমাদের সবচেয়ে গুরুত্বপুর্ণ ট্যাগ। 
+`<div id = "root"></div>` এটি আমাদের সবচেয়ে গুরুত্বপুর্ণ ট্যাগ।
 
-`ReactDom.render()` এর মাধ্যমে আমরা এই `<div id = "root"></div>` এর ভেতরে আমরা আমাদের `React Component` গুলো রেন্ডার করতে পারি।
-তো বলা যায় আমরা যা `COmponents` বানাবো সবগুলোই আসলে এই `<div id = "root"></div>` এর ভেতরে আছে। 
+`root.render()` এর মাধ্যমে আমরা এই `<div id = "root"></div>` এর ভেতরে আমরা আমাদের `React Component` গুলো রেন্ডার করতে পারি।
+তো বলা যায় আমরা যা `COmponents` বানাবো সবগুলোই আসলে এই `<div id = "root"></div>` এর ভেতরে আছে।
 
-আর `render(<App />, document.getElementById("root"))` এই কোড এর মাধ্যমে আমরা সেটাই করছি। এই কোড এর মাধ্যমে আমরা বলছি যে আমাদের `React Component` গুলো রেন্ডার হবে `<div id = "root"></div>` এর ভেতরে থাকবে।
+আর `const root = createRoot(document.getElementById('root'));` এই কোড এর মাধ্যমে আমরা সেটাই করছি। এই কোড এর মাধ্যমে আমরা বলছি যে আমাদের `React Component` গুলো রেন্ডার হবে `<div id = "root"></div>` এর ভেতরে থাকবে।
 
 এখান থেকে আমরা কিছু `Rules` মেনে চলবো।
 
@@ -382,14 +393,15 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 ```js
 const Component = () => {
-    return (
-      // div is the jsx element
-        <div>
-            <h1>Hello World</h1>
-        </div>
-    )
-}
+  return (
+    // div is the jsx element
+    <div>
+      <h1>Hello World</h1>
+    </div>
+  );
+};
 ```
+
 - এখানে `div` কে আমরা বলব `parent` এবং `h1` কে বলব `child`। এবং `parent` এর ভেতরে থাকা সবগুলো `child` একসাথে রেন্ডার হবে।
 
 ```js
@@ -455,7 +467,7 @@ const Author = () => {
 ....
 ```
 
-এখানে একটা জিনিষ দেখছেন যে আমি তিনটি `component` কে তৈরী করেছি এবং ৩ টি কম্পোনেন্ট এর জন্য ফাংশন তৈরী করেছি। 
+এখানে একটা জিনিষ দেখছেন যে আমি তিনটি `component` কে তৈরী করেছি এবং ৩ টি কম্পোনেন্ট এর জন্য ফাংশন তৈরী করেছি।
 
 এমন ফাংশনকে বলা হয় `Arrow Functions`।
 
@@ -468,7 +480,7 @@ const Author = () => {
 ```js
 // importing the react library
 import React from "react";
-import ReactDOM from "react-dom";
+import {createRoot} from 'react-dom/client';
 
 // creating a react component to render to the DOM
 const App = () => {
@@ -496,7 +508,7 @@ const Image = () => {
 ....
 ```
 
-এখন আপনারা যদি আপনার ব্রাউজার এ যান তাহলে আপনারা দেখতে পাবেন যে আপনারা আপনার ব্রাউজার এ একটি ওয়েবসাইট দেখতে পাচ্ছেন এবং ওয়েবসাইট এ আপনারা দেখতে পাচ্ছেন `Image` `Title` `Author` এই তিনটি শব্দ। 
+এখন আপনারা যদি আপনার ব্রাউজার এ যান তাহলে আপনারা দেখতে পাবেন যে আপনারা আপনার ব্রাউজার এ একটি ওয়েবসাইট দেখতে পাচ্ছেন এবং ওয়েবসাইট এ আপনারা দেখতে পাচ্ছেন `Image` `Title` `Author` এই তিনটি শব্দ।
 
 কিন্তু এটাও অত ভালভাবে আমাদের সাহায্য করে না। তাই আমরা `Book` নামে আরেকটি `component` তৈরি করবো এবং এই `component` এর ভেতরে আমরা আমাদের সবগুলো `component` কে রেন্ডার করবো।
 
@@ -555,7 +567,7 @@ const App = () => {
 
 ![books](<extras/Screenshot from 2023-10-23 15-31-10.png>)
 
-এখন আসেন একটূ কপি পেস্ট মারি। 
+এখন আসেন একটূ কপি পেস্ট মারি।
 
 ```js
 ....
@@ -579,6 +591,7 @@ const Author = () => <h4>Jordan Moore </h4>;
 এখন মনে হয় একটু দেখতে ভাল লাগছে। কিন্তু আসলে দেখতে খুবই বাজে লাগছে। তাই একটু `style` করা উচিত। কিভাবে করে??
 
 # CSS Styling
+
 সহজ ভাষায় `books/src` ফোল্ডারের ভেতর একটি ফাইল তৈরী করুন `index.css` নামে।
 
 ফাইলে নিচের `stylling` গুলোকে লিখুন।
@@ -591,8 +604,8 @@ const Author = () => <h4>Jordan Moore </h4>;
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background: #f1f5f8;
   color: #222;
 }
@@ -607,7 +620,7 @@ body {
 ```js
 // importing the react library
 import React from "react";
-import ReactDOM from "react-dom";
+import {createRoot} from 'react-dom/client';
 // importing the css file
 import './index.css'
 
@@ -622,7 +635,7 @@ import './index.css'
 ....
 import './index.css';
 
-function BookList() {
+function App() {
   return (
 
     <section className='booklist'> {/* booklist is the class name */}
@@ -652,31 +665,31 @@ const Book = () => {
 ....
 /* Styles for the booklist container */
 .booklist {
-    width: 90vw; /* Set the width to 90% of the viewport width */
-    max-width: 1170px; /* Set the maximum width to 1170px */
-    margin: 5rem auto; /* Add a margin of 5rem on top and bottom, and auto on left and right */
-    display: grid; /* Use CSS grid for layout */
-    gap: 2rem; /* Add a gap of 2rem between grid items */
+  width: 90vw; /* Set the width to 90% of the viewport width */
+  max-width: 1170px; /* Set the maximum width to 1170px */
+  margin: 5rem auto; /* Add a margin of 5rem on top and bottom, and auto on left and right */
+  display: grid; /* Use CSS grid for layout */
+  gap: 2rem; /* Add a gap of 2rem between grid items */
 }
 
 /* Styles for individual books */
 .book {
-    background: #fff; /* Set the background color to white */
-    border-radius: 1rem; /* Add a border radius of 1rem */
-    padding: 2rem; /* Add 2rem of padding */
-    text-align: center; /* Center the text */
+  background: #fff; /* Set the background color to white */
+  border-radius: 1rem; /* Add a border radius of 1rem */
+  padding: 2rem; /* Add 2rem of padding */
+  text-align: center; /* Center the text */
 }
 
 /* Styles for book cover images */
 .book img {
-    width: 100%; /* Set the width to 100% */
-    object-fit: cover; /* Scale the image to cover the entire container */
+  width: 100%; /* Set the width to 100% */
+  object-fit: cover; /* Scale the image to cover the entire container */
 }
 
 /* Styles for book titles */
 .book h2 {
-    margin-top: 1rem; /* Add a margin of 1rem on top */
-    font-size: 1rem; /* Set the font size to 1rem */
+  margin-top: 1rem; /* Add a margin of 1rem on top */
+  font-size: 1rem; /* Set the font size to 1rem */
 }
 
 /*
@@ -685,10 +698,10 @@ const Book = () => {
  * This creates a responsive layout for the booklist, with 3 columns on larger screens.
  */
 @media screen and (min-width: 768px) {
-    .booklist {
-        grid-template-columns: repeat(3, 1fr);
-    }}
-
+  .booklist {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 ```
 
 আমার আর বাংলায় লেখাতে ইচ্ছা করতেছে না। SO, i'll be writting in english now.
@@ -714,13 +727,13 @@ const Image = () => (
 ....
 ```
 
-here the `src` attribute of the `img` tag is a `url` of an image. We can use this `url` to get the image from the internet. But we can also use a local image. 
+here the `src` attribute of the `img` tag is a `url` of an image. We can use this `url` to get the image from the internet. But we can also use a local image.
 
 # Local Images
 
-SOoooooo, We need to make a folder in our `src` folder and name it `img`. And we need to put our image in that folder.
+SOoooooo, We need to make a folder in our `books/public` folder and name it `img`. And we need to put our image in that folder.
 
-So download the image from the internet and put it in the `img` folder.
+So download the image from the internet and put it in the `image` folder.
 
 then, go to `index.js` and edit the image component as follows.
 
@@ -728,10 +741,10 @@ then, go to `index.js` and edit the image component as follows.
 ....
 const Image = () => (
   <img
-    src="./images/book-1.jpeg" // here we are using a local image
+    src="./images/book_1.jpeg" // here we are using a local image
     alt="Interesting Facts For Curious Minds"
   />
-); 
+);
 ....
 ```
 
@@ -739,3 +752,703 @@ const Image = () => (
 
 Now if you go to the browser you should see the image.
 
+> Note: why we seeing the image even though its not in the same folder?? Its because the `image` folder is the folder where the main `html` file is.. SO, when react is rendered it is really searching in the `public` folder not in `src` folder. And thats also why we made the folder inside the `public` Folder.
+
+to help you with the folders heres the folder stucture of the project up untill now.
+
+```
+books
+├── public
+│   └── image
+│       └── book_1.jpeg
+|   ....
+└── src
+    └── index.js
+    └── index.css
+
+....
+```
+
+So, you should see the image.
+
+# Some CSS Rules
+
+AS you remembered the return `HTML` inside a `Component` is called `JSX`. SO, when we use any `JS or CSS` inside the `JSX` we need to use curly braces. SO, if you used `CSS` stylling before you know that there is a stylling method called `Inline Styling`.
+
+To use `inline stylling` inside the `JSX` we need to use curly braces and make it a `Js object` that has the `style` property in a `key/value` format.
+
+**SOOOOOOO**
+
+```js
+const Component = () => (
+  return (
+    <div style="color: red"> {/* this is wrong */}
+      <h1>Hello World</h1>
+    </div>
+  )
+)
+
+const Component = () => (
+  return (
+    <div style={{ color: red }}> {/* this is right */}
+      <h1>Hello World</h1>
+    </div>
+  )
+)
+```
+
+We can also use `Inline Stylling` inside the `JSX` as follows.
+
+```js
+const Component = () => (
+  const InlineStylling = {
+    color: red
+    padding: '1rem'
+  }
+
+  return (
+    <div style={InlineStylling}> {/* passing the Inline Stylling as a JS object */}
+      <h1>Hello World</h1>
+    </div>
+  )
+)
+```
+
+Here we are passing the `InlineStylling` as a JS object we make inside the Component.
+
+SO, lets add some `inline stylling` in our web page.
+Go to the `index.js` and add some `inline stylling`
+
+```js
+const Author = () => {
+  const inlineHeadingStyles = {
+    color: "#617d98",
+    fontSize: "0.75rem",
+    marginTop: "0.5rem",
+  };
+  return <h4 style={inlineHeadingStyles}>Jordan Moore </h4>;
+};
+```
+
+SOooooooo, now we have `inline stylling` in our web page.
+
+we, should now try to add `javascript code` in the `JSX`
+
+But first some more **RULES**.
+
+**RULES**
+
+- `{}` means we are going to `Javascript` LAND.
+
+SOOOOOO,
+
+```js
+const Component = () => {
+  const someValue = "ITVAYA is the best";
+  return (
+    <div>
+      <h1>{6 + 6}</h1>
+      <h2>{somevalue}</h2>
+      <h3>{someValue.toLowerCase()}</h3>
+    </div>
+  );
+};
+```
+
+- anything inside the `{}` is javascript code but they cannot be `statements`.
+
+- The value inside the `{}` is called `expression`. Meaning that it is an `expression` that returns a value. it can be any type of value but must be a value.
+
+so you cannot do the following.
+
+```js
+// wrong
+const Component = () => {
+  return (
+    <div>
+      <h1>{const x = 6 + 6}</h1>
+    </div>
+  )
+}
+```
+
+- You cannot do that because its a assignment operation and not returning anything
+
+SO lets make the `title`, `author` and the `image` of the books a `JS object` and then add them to the `JSX`
+
+```js
+....
+// javascript object storing the values
+const author = "Jordan Moore";
+const title = "Interesting Facts For Curious Minds";
+const img = "./images/book_1.jpg";
+
+// creating a react component to render to the DOM
+const App = () => {
+  return (
+    <div className="booklist">
+      {/* book section */}
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+    </div>
+  );
+};
+
+// book component
+const Book = () => {
+  return (
+    <div className="book">
+      <Image />
+      <Title />
+      <Author />
+    </div>
+  );
+};
+
+// image component
+const Image = () => (
+  <img src={img} alt={title} /> // passing the img and title as a JS object
+);
+
+// title component
+const Title = () => {
+  return <h2>{title}</h2>; // passing the title as a JS object
+};
+
+// author component
+const Author = () => {
+  const inlineHeadingStyles = {
+    color: "#617d98",
+    fontSize: "0.75rem",
+    marginTop: "0.5rem",
+  };
+  return <h4 style={inlineHeadingStyles}>{author}</h4>; // passing the author as a JS object
+};
+....
+```
+
+# Props in React
+
+What are `props`??
+
+`props` are the way we pass data from one `component` to another `component`.
+
+Simply put `props` are the arguments of a `function` that is passed from one `function` to another `function`.
+
+for example:
+
+```js
+const Component = (a, b) => {
+  return a + b;
+};
+
+Component(1, 2); // here 1 and 2 are the props
+```
+
+In React we pass `props` from one `component` to another `component` as follows.
+
+```js
+const Component = (props) => {
+  return (
+    <div>
+      <h1>{props.name}</h1> {/* here name is the prop given to the component */}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <div>
+      <Component name="ITVAYA" /> {/* here name is the prop */}
+    </div>
+  );
+};
+```
+
+SO, `as you can see props are passed as a key/value pair`. The `key` is the name of the `prop` and the `value` is the value of the `prop`.
+
+There is a key thing to remember. A prop can hold many values and it won't show an error if there is no value in the prop.
+
+Lets do something to the `Book` component to make it more clearer.
+
+```js
+....
+const App = () => {
+  return (
+    <div className="booklist">
+      {/* book section */}
+      <Book job = "developer"/> {/* the job prop is passed hare to the book component */}
+      <Book title = "React"/> {/* the title prop is passed hare to the book component */}
+      <Book number = "1"/> {/* the number prop is passed hare to the book component */}
+      <Book />
+    </div>
+  );
+};
+
+// book component
+const Book = (props) => {
+  console.log(props) // here we are logging the props to the console
+  return (
+    <div className="book">
+      <Image />
+      <Title />
+      <Author />
+      <p>{props.job}</p> {/* here job is the prop */}
+      <p>{props.title}</p> {/* here title is the prop */}
+      <p>{props.number}</p> {/* here number is the prop */}
+    </div>
+  );
+};
+....
+```
+
+SO now you can see that the props are passed as a key/value pair.
+
+Now lets create psudo dynamic book component.
+
+```js
+....
+// first book object containing the values
+const firstBook = {
+  author: 'Jordan Moore',
+  title: 'Interesting Facts For Curious Minds',
+  img: './images/book_1.jpg',
+};
+
+// second book object containing the values
+const secondBook = {
+  author: 'James Clear',
+  title: 'Atomic Habits',
+  img: 'https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL._AC_UL900_SR900,600_.jpg',
+};
+
+// creating a react component to render to the DOM
+const App = () => {
+  return (
+    <section className='booklist'>
+      <Book
+        author={firstBook.author}
+        title={firstBook.title}
+        img={firstBook.img}
+      />
+      <Book
+        author={secondBook.author}
+        title={secondBook.title}
+        img={secondBook.img}
+      />
+    </section>
+  );
+};
+
+// book component
+const Book = (props) => { // added props parameter and gets the values from the props object
+
+  return (
+    <div className="book">
+      <Image img = {props.img} title = {props.title}/>  {/* getting the img and title value from the props object and then passing the title and img to the image component*/}
+      <Title title = {props.title} />  {/* getting the title value from the props object and then passing the title to the title component*/}
+      <Author author = {props.author} />  {/* getting the author value from the props object and then passing the author to the author component*/}
+    </div>
+  );
+};
+
+// image component
+const Image = (props) => (  // added props parameter
+  <img src={props.img} alt={props.title} /> // getting the img value from the props
+);
+
+// title component
+const Title = (props) => {  // added props parameter
+  return <h2>{props.title}</h2>; // getting the title value from the props
+};
+
+// author component
+const Author = (props) => {  // added props parameter
+  const inlineHeadingStyles = {
+    color: "#617d98",
+    fontSize: "0.75rem",
+    marginTop: "0.5rem",
+  };
+  return <h4 style={inlineHeadingStyles}>{props.author}</h4>; // getting the author value from the props object
+};
+....
+```
+
+I know the example above is massive but the concept is reletively simple. We are just passing the values from one component to another component as props.
+
+we created Two `JS objects` and then passed the values from the `JS objects` to the `Book` component as props.
+
+Then we passed the values from the `Book` component to the `Image`, `Title` and `Author` component as props.
+
+then we used the values in the `Image`, `Title` and `Author` component as we needed.
+
+thats it... Easy right??? NO, its not easy. Its a bit confusing at first but you will get used to it.
+
+React will confuse you often but as we practice we get more and more used to it.
+
+There are other ways to access the `props` in the `component` but this is the most common way to do it.
+
+We can also....
+
+# Destructure the props
+
+```js
+const someObject = {
+  name: "john",
+  job: "developer",
+  location: "florida",
+};
+
+const Component = (props) => {
+  const { name, job } = props; // here we are destructuring the props object
+  return (
+    <div>
+      <h1>{name}</h1> {/* here name is the prop given to the component */}
+      <h2>{job}</h2> {/* here age is the prop given to the component */}
+    </div>
+  );
+};
+
+Component(someObject); // here we are passing the someObject as a prop
+```
+
+`Destructure` is the way of unpacking a `JS object` into several variables.
+
+In our example case we are unpacking the `props` object into `name` and `job` variables and then using them in the `JSX`
+
+- now we don't need to to `props.name` or `props.job` we can just do `name` and `job
+
+- this method of using props is called `destructuring` and it ruduce time and code.
+
+We can also directly destructure the props in the `parameter` of the `component` as follows.
+
+```js
+const someObject = {
+  name: "john",
+  job: "developer",
+  location: "florida",
+};
+
+const Component = ({ name, job }) => {
+  // here we are destructuring the props object
+  return (
+    <div>
+      <h1>{name}</h1> {/* here name is the prop given to the component */}
+      <h2>{job}</h2> {/* here age is the prop given to the component */}
+    </div>
+  );
+};
+
+Component(someObject); // here we are passing the someObject as a prop
+```
+
+this method is much faster and cleaner.
+
+# Children Props
+
+`Children props` are the props that are passed between the opening and closing tag of a `component`.
+
+for example:
+
+```js
+const Component = () => {
+  return (
+    <div>
+      <h1>Children Props</h1>
+      <h2>Children Props</h2>
+      <h3>Children Props</h3>
+    </div>
+  );
+};
+```
+
+Here the `h1`, `h2` and `h3` are the `children props` of the `div` component.
+
+We can also pass `children props` to our `component` as follows.
+
+```js
+const Component = (props) => {
+  return (
+    <div>
+      <h1>{props.children}</h1> {/* here children is the children prop */}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <div>
+      <Component>Children Props</Component>{" "}
+      {/* here Children Props is the children prop */}
+    </div>
+  );
+};
+```
+
+Here we are passing the `Children Props` as a `children prop` to the `Component` component.
+
+We can also pass `JSX` as a `children prop` to the `component` as follows.
+
+```js
+const Component = (props) => {
+  return (
+    <div>
+      <h1>{props.children}</h1> {/* here children is the children prop */}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <div>
+      <Component>
+        <h1>Children Props</h1> {/* here h1 is the children prop */}
+        <h2>Children Props</h2> {/* here h2 is the children prop */}
+        <h3>Children Props</h3> {/* here h3 is the children prop */}
+      </Component>
+    </div>
+  );
+};
+```
+
+Here we are passing the `JSX` as a `children prop` to the `Component` component.
+
+we can use destructuring to get the `children prop` as follows.
+
+```js
+const Component = ({ children }) => {
+  // here we are destructuring the props object
+  return (
+    <div>
+      <h1>{children}</h1> {/* here children is the children prop */}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <div>
+      <Component>
+        <h1>Children Props</h1> {/* here h1 is the children prop */}
+        <h2>Children Props</h2> {/* here h2 is the children prop */}
+        <h3>Children Props</h3> {/* here h3 is the children prop */}
+      </Component>
+    </div>
+  );
+};
+```
+
+if there are multiple props and also a `children prop` then the `children prop` should be the last prop.
+
+```js
+const Component = ({ name, job, children }) => {
+  // here we are destructuring the props object
+  return (
+    <div>
+      <h1>{name}</h1> {/* here name is the prop */}
+      <h2>{job}</h2> {/* here job is the prop */}
+      <h3>{children}</h3> {/* here children is the children prop */}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <div>
+      <Component name="ITVAYA" job="developer">
+        {/* here Children Props is the children prop */}
+        <h1>Children Props</h1> {/* here h1 is the children prop */}
+        <h2>Children Props</h2> {/* here h2 is the children prop */}
+        <h3>Children Props</h3> {/* here h3 is the children prop */}
+      </Component>
+    </div>
+  );
+};
+```
+
+now that we are done with the `props` lets move on to the `lists`
+
+# Lists
+
+`Lists` are the way we render a `component` multiple times.
+
+But there is a problem.
+
+We cannot render objects in `JSX` directly.
+
+You can try it yourself.
+
+```js
+
+....
+// first book object containing the values
+const books = [
+  {
+    author: 'Jordan Moore',
+    title: 'Interesting Facts For Curious Minds',
+    img: './images/book-1.jpg',
+  },
+  {
+    author: 'James Clear',
+    title: 'Atomic Habits',
+    img: 'https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL._AC_UL900_SR900,600_.jpg',
+  },
+];
+
+const Component = () => {
+  return (
+    <div>
+      <h1>{books}</h1> {/* here books is the prop given to the component */}
+    </div>
+  );
+};
+```
+
+this will show a error.
+
+Because in `JSX` we cannot render `objects` directly. Even though er are passing a list, the list contains two objects and react cannot render them directly.
+
+SO, we need another way to render the `objects` in `JSX`.
+
+# Map
+
+`Map` is a `JS` method that is used to render `objects` in `JSX`.
+
+`Map` is a `JS` method that takes a `function` as a parameter and then returns a `new array` with the `function` applied to each element of the `array`.
+
+To simply put, it loops over every element of the `array` and then applies the `function` to each element and then returns a `new array` with the `function` applied to each element.
+
+Lets see an example.
+
+```js
+const numbers = [1, 2, 3, 4, 5];
+
+const newNumbers = numbers.map((number) => {
+  return number * 2;
+});
+
+console.log(newNumbers);
+```
+
+Here we have a `numbers` array and then we are using the `map` method to loop over the `numbers` array and then multiply each element by 2 and then return a `new array` with the `function` applied to each element.
+
+So, the `newNumbers` array will be `[2, 4, 6, 8, 10]`
+
+Now, of we use our brains a bit we can see that we can use the `map` method to render the `objects` in `JSX`.
+
+Lets see an example.
+
+```js
+// first book object containing the values
+const books = [
+  {
+    author: "Jordan Moore",
+    title: "Interesting Facts For Curious Minds",
+    img: "./images/book-1.jpg",
+  },
+  {
+    author: "James Clear",
+    title: "Atomic Habits",
+    img: "https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL._AC_UL900_SR900,600_.jpg",
+  },
+];
+
+{
+  /* here we are using the map method to loop over the books array and then return a new array with the function applied to each element */
+}
+const newBookList = books.map((book) => {
+  const { author, title, img } = book; // here we are destructuring the book object
+  return (
+    <Book author={author} title={title} img={img} /> // here we are returning a new array with the function applied to each element
+  );
+});
+
+const Component = () => {
+  return (
+    <div>
+      <h1>{newBookList}</h1>{" "}
+      {/* here newBookList is the prop given to the component */}
+    </div>
+  );
+};
+```
+
+Here we are using the `map` method to loop over the `books` array and then return a `new array` with the `function` applied to each element.
+
+Then we are destructuring the `book` object and then returning a `new array` with the `function` applied to each element.
+
+Then we are passing the `newBookList` as a `prop` to the `Component` component.
+
+There another way of doing this instead of creating a `new array` and then passing it as a `prop` to the `Component` component. We can directly use the `map` method inside the `Component` component.
+
+Lets see an example.
+
+```js
+// first book object containing the values
+const books = [
+  ....
+];
+
+const Component = () => {
+  return (
+    <div>
+      <h1>
+        {
+          /* here we are using the map method to loop over the books array and then return a new array with the function applied to each element */
+        }
+        {books.map((book) => {
+          const { author, title, img } = book; // here we are destructuring the book object
+          return (
+            <Book author={author} title={title} img={img} /> // here we are returning a new array with the function applied to each element
+          );
+        })}
+      </h1>
+    </div>
+  );
+};
+```
+
+I know this looks messy but i prefer to use this method to render `object lists` in `JSX`.
+
+SO lets edit our app to use the `map` method to render the `books` array.
+
+```js
+....
+// books list containing the objects
+const books = [
+  {
+    author: "Jordan Moore",
+    title: "Interesting Facts For Curious Minds",
+    img: "./images/book_1.jpg",
+  },
+  {
+    author: "James Clear",
+    title: "Atomic Habits",
+    img: "https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL._AC_UL900_SR900,600_.jpg",
+  },
+];
+
+// creating a react component to render to the DOM
+const App = () => {
+  return (
+    <section className="booklist">
+      {/* rendering the booklist directly using the `map` method */}
+      {books.map((book) => {
+        const { author, title, img } = book;
+        return <Book author={author} title={title} img={img} />;
+      })}
+    </section>
+  );
+};
+....
+```
+
+So now we are rendering the `books` list directly without the need of typing the props manually.
+
+Now lets move on to the `key` prop.
+
+# Key Prop
+
+`Key prop` is a `prop` that is used to identify the `component` in the `DOM`.
