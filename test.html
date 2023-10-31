@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="console.log('hello world')">Click Me</button>
+
+    <script>
+      const btn = document.querySelector("button");
+      btn.addEventListener("click", () => {
+        alert("hello world"); // here we are adding a event listener to the button and then alarting hello world to the console
+      });
+    </script>
+  </body>
+</html>

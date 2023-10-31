@@ -1452,3 +1452,632 @@ Now lets move on to the `key` prop.
 # Key Prop
 
 `Key prop` is a `prop` that is used to identify the `component` in the `DOM`.
+
+If you have a look at the consol in the ` browser` you will see a warning.
+
+That is because when you render a `list` of `components` in `JSX` you need to add a `key prop` to each `component`.
+
+so to demonstrate,
+
+```js
+const Component = () => {
+  //  list of items
+  const names = [
+    {
+      id: 1,
+      name: "john",
+    },
+    {
+      id: 2,
+      name: "peter",
+    },
+    {
+      id: 3,
+      name: "susan",
+    },
+    {
+      id: 4,
+      name: "anna",
+    },
+  ];
+  return (
+    <div>
+      {names.map((name) => {
+        return <PropComponent name={name.name} id={name.id} key={name.id} />;
+      })}
+    </div>
+  );
+};
+
+const PropComponent = (props) => {
+  return (
+    <div>
+      <h1>{props.name}</h1>
+      <h2>{props.id}</h2> {/* here we are using the key prop */}
+    </div>
+  );
+};
+```
+
+- The `key prop` should be unique.
+- The `key prop` should be a `string` or a `number`.
+- its not efficient if the list is ever changing or dynamic.
+
+Sooooo, lets fix the issue in our app,
+
+```js
+const App = () => {
+  return (
+    <section className="booklist">
+      {/* rendering the booklist directly using the `map` method */}
+      {books.map((book) => {
+        const { author, title, img } = book;
+        return <Book author={author} title={title} key={book.id} img={img} />; // here we are using the key prop
+      })}
+    </section>
+  );
+};
+```
+
+Now we are using the `key prop` in our `Book` component.
+
+# Passing the whole Object as a prop
+
+We can also pass the whole `object` as a `prop` to the `component`.
+
+Lets see an example.
+
+```js
+const Component = () => {
+  //  list of items
+  const names = [
+    {
+      id: 1,
+      name: "john",
+    },
+    {
+      id: 2,
+      name: "peter",
+    },
+    {
+      id: 3,
+      name: "susan",
+    },
+    {
+      id: 4,
+      name: "anna",
+    },
+  ];
+  return (
+    <div>
+      {names.map((name) => {
+        return <PropComponent name={name} key={name.id} />;
+      })}
+    </div>
+  );
+};
+
+const PropComponent = (props) => {
+  return (
+    <div>
+      <h1>{props.name.name}</h1> {/* here we are using the key prop */}
+      <h2>{props.name.id}</h2> {/* here we are using the key prop */}
+    </div>
+  );
+};
+```
+
+this method can be problematic sometimes. Because `props` itself is an `Object` and if we pass the whole `object` as a `prop` then we will have to use `props.prop.prop` to access the `prop` value. Which doese not look good.
+
+So we can do is destructure the `prop` object in the `parameter` of the `component` as follows.
+
+```js
+const Component = () => {
+  //  list of items
+  const names = [
+    ....
+  ];
+  return (
+    <div>
+      {names.map((name)=>{
+        return <PropComponent name={name} key={name.id} />
+      })}
+    </div>
+  );
+};
+
+const PropComponent = ({name}) => { // here we are destructuring the prop object
+  return (
+    <div>
+      <h1>{name.name}</h1> {/* here we are using the key prop */}
+      <h2>{name.id}</h2> {/* here we are using the key prop */}
+    </div>
+  );
+};
+```
+
+Now we are destructuring the `prop` object in the `parameter` of the `component` and then using the `prop` as we need. This is much cleaner and faster.
+
+But I prepfer using the `spread operator` to pass the whole `object` as a `prop` to the `component`.
+
+> Note: The `spread operator` is a `JS` operator that is used to spread the values of an `array` or an `object`. it look like this `...`
+
+Lets see an example.
+
+```js
+const Component = () => {
+  //  list of items
+  const names = [
+    ....
+  ];
+  return (
+    <div>
+      {names.map((name)=>{
+        return <PropComponent {...name} key={name.id} /> // here we are using the spread operator to pass the whole object as a prop
+      })}
+    </div>
+  );
+};
+
+const PropComponent = (prop) => { // here we are destructuring the prop object
+  return (
+    <div>
+      <h1>{prop.name}</h1> {/* here we are using the key prop */}
+      <h2>{prop.id}</h2> {/* here we are using the key prop */}
+    </div>
+  );
+};
+```
+
+So, the `spread operator` is used to spread the values of an `array` or an `object`. When i did `{...name}` it spread the values of the `name` object and then passed it as a `prop` to the `component`.
+
+So, i didn't need to destruct the `prop` object in the `parameter` of the `component`. Because its passed as a destructured `prop` object.
+
+# Events
+
+`Events` are the way we interact with the `DOM`.
+
+> Note: `DOM` stands for `Document Object Model`. It is a tree like structure that represents the `HTML` document. It is the way `JS` interacts with the `HTML` document.
+
+In vanilla javascript we use `events` to interact with the `DOM`.
+
+if we make a button in html and then add a `click` event to it then we can do something when the button is clicked.
+
+Lets see an example.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="console.log('hello world')">Click Me</button>
+
+    <script>
+      const button = document.querySelector("button");
+      button.addEventListener("click", () => {
+        alert("hello world"); // here we are adding a event listener to the button and then alarting hello world to the console
+      });
+    </script>
+  </body>
+</html>
+```
+
+Here we are adding a `click` event to the button and then alerting `hello world` to the console.
+
+For `REACT js` the process is a little different.
+
+```js
+const Component = () => {
+  const clickHandler = () => {
+    alert("hello world"); // here we are adding a event listener to the button and then alarting hello world to the console
+  };
+  return (
+    <div>
+      <button onClick={clickHandler}>Click Me</button>{" "}
+      {/* here we are adding a event listener to the button and then alarting hello world to the console */}
+    </div>
+  );
+};
+```
+
+We, can simply add a `event listener` to the `button` and then do something when the `button` is clicked.
+
+Lets see another example that is rendered in the `app` component.
+
+```js
+....
+
+const App = () => {
+  return (
+    <section className="booklist">
+      <EventExamples /> {/* calling the EventExamples component */}
+      {/* rendering the booklist directly using the `map` method */}
+      {books.map((book) => {
+        return <Book {...book} key={book.id} />;
+      })}
+    </section>
+  );
+};
+
+const EventExamples = () => {
+  const handleFormInput = () => {
+    console.log("handle form input"); // funxtion to handle a form input
+  };
+  const handleButtonClick = () => {
+    alert("handle button click"); // function to handle a button click
+  };
+  return (
+    <section>
+      <form>
+        <h2>Typical Form</h2>
+        {/* adding a form */}
+        <input
+          type="text"
+          name="example"
+          onChange={handleFormInput}
+          style={{ margin: "1rem 0" }}
+        />
+      </form>
+      <button onClick={handleButtonClick}>click me</button>
+    </section>
+  );
+};
+....
+```
+
+Here we are adding a `form` and then adding a `event listener` to the `form` and then doing something when the `form` is submitted.
+
+# Form handling
+
+There are many ways and methods to handle a `form` in `react js`. Easiest would be:
+
+- `onClick` event on the `submit` button
+- `onChange` event on the `input` field
+- `onSubmit` event on the `form` tag
+
+lest do some modification in our `EventExamples` component.
+
+```js
+....
+const EventExamples = () => {
+  const handleFormInput = (e) => { // here we are passing the event object as a parameter
+    console.log(e.target.value); // here we are logging the value of the input field
+    console.log("handle form input"); // funxtion to handle a form input
+  };
+
+  const handleButtonClick = () => {
+    .....
+  );
+  return (
+    ....
+  );
+};
+....
+```
+
+> By adding the `e` parameter we are passing the `event object` to the `handleFormInput` function. and we can access the value of the input field by doing `e.target.value`. we can also do `e.target.name` to get the name of the input field and `e.target.type` to get the type of the input field.
+
+This way we can get the value of a input fields.
+
+now lets a button to submit the form.
+
+```js
+
+const EventExamples = () => {
+  const handleFormInput = (e) => {
+    ....
+  };
+
+  const handleButtonClick = () => {
+    ....
+  );
+  return (
+    <section>
+      {/* add onSubmit Event Handler */}
+      <form>
+        <h2>Typical Form</h2>
+        <input
+          type='text'
+          name='example'
+          onChange={handleFormInput}
+          style={{ margin: '1rem 0' }}
+        />
+        {/* add button with type='submit' */}
+        <button type='submit'>submit form</button> {/* here we are adding a button with type submit */}
+      </form>
+      <button onClick={handleButtonClick}>click me</button>
+    </section>
+  );
+};
+```
+
+So, here we just added a `button` with `type="submit`. This will submit the form so try and see what happens.
+
+You should see the details of the `input field` in the `URL` of the `browser`. that s the default behaviour of the `form` tag which is very annoying and can reveal sensitive information.
+
+SO we can fix that so,
+
+```js
+
+const EventExamples = () => {
+  const handleFormInput = (e) => {
+    ....
+  };
+
+  const handleButtonClick = () => {
+    ....
+  );
+
+  // handling the form submission
+  const handleFormSubmission = () => {
+    console.log('form submitted');
+  };
+
+
+  return (
+    <section>
+      {/* add onSubmit Event Handler */}
+      <form onSubmit={handleFormSubmission}> {/* here we are adding the onSubmit event handler */}
+        <h2>Typical Form</h2>
+        <input
+          type='text'
+          name='example'
+          onChange={handleFormInput}
+          style={{ margin: '1rem 0' }}
+        />
+        {/* add button with type='submit' */}
+        <button type='submit'>submit form</button>
+      </form>
+      <button onClick={handleButtonClick}>click me</button>
+    </section>
+  );
+};
+
+```
+
+Here we are adding the `onSubmit` event handler to the `form` tag and then doing something when the `form` is submitted, meaning when the `submit` button is clicked, the `form` will be submitted and then the `handleFormSubmission` function will be called.
+
+But we will see nothing in the consol because of the default behaviour of the `form` tag.
+
+there is a way to bypass that , we just need to add another line inside the `handleFormSubmission` function.
+
+```js
+...
+  const handleFormSubmission = (e) => { // adding the event listener
+    e.preventDefault(); // adding the preventDefault method to stop the default behaviour of the form
+    console.log('form submitted');
+  };
+...
+
+```
+
+and now we will not see the default behaviour of the `form` tag and see the output in the consol.
+
+**OK** Now that we saw how we can handle a `form` in `react js` there some methos and some basic thought that we can rest out.
+
+## thought 1
+
+We can use `anonymous functions` to handle `events` in `react js` without the need of creating a `function` and then calling it.
+
+```js
+const EventExamples = () => {
+  return (
+    <section>
+      <button onClick={() => console.log("hello there")}>click me</button>
+    </section>
+  );
+};
+```
+
+## thought 2
+
+We can do one-liners in `react js` for faster and cleaner code.
+
+```js
+const EventExamples = () => {
+  return (
+    <section>
+      <form>
+        <h2>Typical Form</h2>
+        <input
+          type="text"
+          name="example"
+          onChange={(e) => console.log(e.target.value)}
+          style={{ margin: "1rem 0" }}
+        />
+      </form>
+      <button onClick={() => console.log("you clicked me")}>click me</button>
+    </section>
+  );
+};
+```
+
+## thought 3
+
+Lets clear the `EventExamples` component cpmpletely because it is not related to the `app` component.
+
+Now we can test if the `components` are independent or not.
+
+```js
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book) => {
+        return <Book {...book} key={book.id} />;
+      })}
+    </section>
+  );
+}
+
+const Book = (props) => {
+  const { img, title, author } = props;
+  const displayTitle = () => {
+    console.log(title);
+  };
+
+  return (
+    <article className="book">
+      <img src={img} alt={title} />
+      <h2>{title}</h2>
+      <button onClick={displayTitle}>display title</button>
+      <h4>{author} </h4>
+    </article>
+  );
+};
+```
+
+you should try clicking the button and look in the consol if you have different `titles` showing or not. this means that the `components` are independent of each other.
+
+**delet** the button.
+
+# Prop Drilling
+
+This is the anoying part of `react js`. `Prop Drilling` is the process of passing `props` from one `component` to another `component` to another `component` and so on.
+
+So, lets say we have a `grandparent` component in our case it's the `app` and then we have a `parent` component and then we have a `child` component and so on.
+
+So, if we want to add a prop to the `child` component from the `grand parent` component we have to go through thw `parent` component too.
+
+Lets see an example.
+
+```js
+....
+
+const App = () => {
+  const someText = "Some Text"; // the text
+
+  // a function to show the text
+  const aFunctionToShowTheText = () => {
+    console.log(someText);
+  };
+
+  return (
+    <section className="booklist">
+      {/* rendering the booklist directly using the `map` method */}
+      {books.map((book) => {
+        return (
+          <Book
+            {...book}
+            key={book.id}
+            aFunctionToShowTheText={aFunctionToShowTheText}
+          />
+        ); // here we are passing the function as a prop
+      })}
+    </section>
+  );
+};
+
+// book component
+const Book = (props) => {
+  // added props parameter and gets the values from the props object
+
+  return (
+    <div className="book">
+      <Image img={props.img} title={props.title} />
+      <Title title={props.title} />
+      <button onClick={props.aFunctionToShowTheText}>Show Text</button>{/* getting the aFunctionToShowTheText value from the props object and then passing it to the button component*/}
+      <Author author={props.author} />{" "}
+    </div>
+  );
+};
+....
+```
+
+as you can see we are passing the `aFunctionToShowTheText` function as a `prop` to the `Book` component and then passing it to the `button` component. 
+
+we directly cannot pass the `aFunctionToShowTheText` function to the `button` component from the `app` component. We have to pass it to the `Book` component first and then pass it to the `button` component.
+
+This is called `prop drilling` and it is very annoying.
+
+But  it gets more annoying
+
+lets see some examples..
+
+## example 1
+
+so, there can be a unexpected bug while passing a functionas a prop that has a parameter.
+
+So, to see the bug,
+
+- create a `function` in the app component with a parameter.
+- pass the function as a prop to the `Book` component.
+- in the button add the function as a `event listener` and then pass a parameter to the function.
+
+```js
+const BookList = () => {
+  const getBook = (id) => {
+    const book = books.find((book) => book.id === id);
+    console.log(book);
+  };
+
+  return (
+    <section className='booklist'>
+      {books.map((book) => {
+        return <Book {...book} key={book.id} getBook={getBook} />;
+      })}
+    </section>
+  );
+};
+
+const Book = (props) => {
+  const { img, title, author, getBook, id } = props;
+  // console.log(props);
+
+  return (
+    <article className='book'>
+      <img src={img} alt={title} />
+      <h2>{title}</h2>
+      {/* this is not going to work */}
+      <button onClick={getBook(id)}>display title</button>
+      <h4>{author}</h4>
+    </article>
+  );
+};
+```
+
+Here we are passing the `getBook` function as a `prop` to the `Book` component and then passing it to the `button` component and then calling the function with a parameter. But it should work when we click the button but it does not. It starts without even clicking the button.
+
+it happened because we are calling the function directly in the `button` component. So, the function is called when the `button` component is rendered. SO it doesn't matter if you press the button or not the function will be called.
+
+So, the solution would be to 
+
+- create a `wrapper` for the `getBook` function and then pass it to the `button` component.
+
+```js
+const Book = (props) => {
+  // added props parameter and gets the values from the props object
+  const wrapper = () => props.getBook(props.id); // creating a wrapper for the getBook function
+
+  return (
+    <div className="book">
+      <Image img={props.img} title={props.title} />
+      <Title title={props.title} />
+      {/* this is going to work */}
+      <button onClick={wrapper}>Show Text</button>
+      
+      <Author author={props.author} />{" "}
+    </div>
+  );
+};
+```
+- or we can use the `arrow function` to call the function.
+
+```js
+const Book = (props) => {
+  // added props parameter and gets the values from the props object
+
+  return (
+    <div className="book">
+      <Image img={props.img} title={props.title} />
+      <Title title={props.title} />
+      {/* this is going to work */}
+      <button onClick={() => props.getBook(props.id)}>Show Text</button>
+      
+      <Author author={props.author} />{" "}
+    </div>
+  );
+};
+```
+
