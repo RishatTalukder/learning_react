@@ -1,118 +1,116 @@
-তো React Js খুবই জনপ্রিয় একটি Javascript library.
+So React Js is a very popular Javascript library.
 
-আসেন শিখি ।।।
+Let's learn ।।।
 
-যাদের ‍‍‍‍‍`Javascript` এর জ্ঞান আছে তাদের জন্য এটি খুবই সহজ হবে।
+For those who have knowledge of `Javascript`, it will be very easy for them.
 
-আপনারা যারা `Javascript` এর জ্ঞান নেই তারা প্রথমে `Javascript` এর বেসিক শিখে নিন তাহলে `React Js` শেখা আপনাদের খুবই সহজ হবে।
+For those who don't have knowledge of `Javascript`, first learn the basics of `Javascript`, then learning `React Js` will be very easy for you.
 
-আমি ধরে নিচ্ছি আপনাদের বেসিকটা জানা আছে।
+I assume you have some knowledge of the basics.
 
-আমি এখানে আপনাদের কিছু লিংক দিলাম যেখান থেকে আপনারা বেসিক শিখতে পারবেন।
+Here I have provided you with some
 
-- [জাভাস্ক্রিপ্ট বেসিক](https://www.youtube.com/watch?v=PkZNo7MFNFg&list=PLHiZ4m8vCp9MJDyVrtSFBY0zjIwGw_8sG)
+- [links](https://www.youtube.com/watch?v=PkZNo7MFNFg&list=PLHiZ4m8vCp9MJDyVrtSFBY0zjIwGw_8sG)
 
-আসেন শুরু করি ।।।
+Let's get started ।।।
 
-# কেন `React Js` শিখবেন ?
+# Why Learn `React Js`?
 
-`React Js` এর মাধ্যমে আপনি খুবই সহজে একটি ওয়েব অ্যাপ্লিকেশন বানাতে পারবেন।
+With `React Js`, you can easily build a web application.
 
-`React Js` বর্তমানে খুবই জনপ্রিয় একটি ওয়েব ডেভেলপমেন্ট ফ্রেমওয়ার্ক। এটি সর্বপ্রথম ২০১১ সালে ফেসবুক এর একজন ইঞ্জিনিয়ার তার নাম জোর্ডান ওয়ালক এর দ্বারা তৈরি হয়। এর পর থেকে এটি খুবই জনপ্রিয় হয়ে উঠেছে।
+`React Js` is currently a very popular web development framework. It was created by a Facebook engineer named Jordan Walke in 2011. Since then, it has become very popular.
 
-আপনি যদি ওয়েব ডেভেলপমেন্ট এর জন্য কোন ফ্রেমওয়ার্ক ব্যবহার করতে চান তাহলে আপনি এই `React Js` ব্যবহার করতে পারেন।
+If you want to use a framework for web development, you can use `React Js`.
 
-আপনি যদি মোবাইল অ্যাপ্লিকেশন ডেভেলপমেন্ট এর জন্য কোন ফ্রেমওয়ার্ক ব্যবহার করতে চান তাহলে আপনি `React Native` ব্যবহার করতে পারেন।
+If you want to use a framework for mobile application development, you can use `React Native`.
 
 ‍‍‍‍‍‍‍‍‍
 
 # Installation
 
-আপনার কম্পিউটারে যদি `Node Js` ইন্সটল না থাকে তাহলে প্রথমে আপনাকে `Node Js` ইন্সটল করতে হবে।
+If you don't have `Node Js` installed on your computer, you first need to install `Node Js`.
 
-আপনি যদি `Node Js` ইন্সটল করতে চান তাহলে আমার এই লিংক থেকে ইন্সটল করতে পারেন।
+If you want to install `Node Js`, you can do so from this [link](https://nodejs.org/en/).
 
-- [Node Js](https://nodejs.org/en/)
+After that, you need to check if `Node Js` has been installed on your computer.
 
-এরপর আপনাকে আপনার কম্পিউটারে `Node Js` ইন্সটল হয়ে গেছে কিনা চেক করতে হবে।
-
-আপনি যদি টার্মিনাল ব্যবহার করেন তাহলে আপনাকে নিচের কমান্ড টি দিতে হবে।
+If you use the terminal, you need to run the following command:
 
 ```bash
 node -v
 ```
 
-আপনি যদি ওয়িন্ডোজ ব্যবহার করেন তাহলে আপনাকে নিচের কমান্ড টি দিতে হবে।
+if you use `windows` then you need to run the following command:
 
 ```bash
 node --version
 ```
 
-> কমান্ডটি রান করার পর আপনি যে ভার্সন দেখতে পাচ্ছেন তা হলো আপনার কম্পিউটারে কি ভার্সনে `Node Js` ইন্সটল হয়েছে।
+> after running the command you will see the version of `Node Js` installed on your computer.
 
-আমি `Node Js` এর ভার্সন `v21.0.0` ব্যবহার করছি।
+I am using `Node Js` version `v21.0.0`.
 
-এবার আমরা `React Js` ইন্সটল করবো।
+Now, let's install `React Js`.
 
-তার আগে দেখতে হবে আপনার কম্পিউটারে `NPM` ইন্সটল করা আছে কিনা।
+Before that, you need to check if `NPM` is installed on your computer.
 
-> ‍`node js` ইন্সটল করার পর আপনার কম্পিউটারে `NPM` ইন্সটল হয়ে যাবে।
+> After installing `node js`, `NPM` will be installed on your computer.
 
-`npm` এর ভার্সন দেখতে আপনাকে নিচের কমান্ড টি দিতে হবে।
+To check the version of `npm`, you need to run the following command:
 
 ```bash
 npm -v
 ```
 
-আপনি যদি ওয়িন্ডোজ ব্যবহার করেন তাহলে আপনাকে নিচের কমান্ড টি দিতে হবে।
+if you use `windows` then you need to run the following command:
 
 ```bash
 npm --version
 ```
 
-> কমান্ডটি রান করার পর আপনি যে ভার্সন দেখতে পাচ্ছেন তা হলো আপনার কম্পিউটারে কি ভার্সনে `NPM` ইন্সটল হয়েছে।
+> After running the command, the version you see is the version of `NPM` installed on your computer.
 
-আমি `NPM` এর ভার্সন `10.2.0` ব্যবহার করছি।
+I am using `NPM` version `10.2.0`.
 
-এবার আমরা `React Js` ইন্সটল করবো।
+Now, let's install `React Js`.
 
-প্রথমে আপনাকে একটি ফোল্ডার তৈরি করতে হবে। এবং সেই ফোল্ডারে যেতে হবে। সেই ফোল্ডারে যাওয়ার পর আপনাকে `command promt` বা `terminal` ওপেন করতে হবে। কিভাবে ওপেন করবেন তা আমি বলছি।
+First, you need to create a folder. Then, navigate to that folder. Once inside the folder, you need to open the `command prompt` or `terminal`. I will explain how to do that.
 
-আপনি যদি `windows` ব্যবহার করেন তাহলে আপনাকে `windows` এর সার্চ বার এ গিয়ে `cmd` লিখে এন্টার চাপতে হবে। তারপর আপনার কম্পিউটারে `command promt` ওপেন হয়ে যাবে।
+If you are using `Windows`, you need to go to the search bar and type `cmd`, then press enter. This will open the `command prompt` on your computer.
 
-আপনি যদি `mac` ব্যবহার করেন তাহলে আপনাকে `spotlight` এ গিয়ে `terminal` লিখে এন্টার চাপতে হবে। তারপর আপনার কম্পিউটারে `terminal` ওপেন হয়ে যাবে।
+If you are using a `Mac`, you need to go to `spotlight`, type `terminal`, then press enter. This will open the `terminal` on your computer.
 
-আপনি যদি `linux` ব্যবহার করেন তাহলে আপনাকে `terminal` ওপেন করতে হবে ফোল্ডার এর মধ্যে গিয়ে `right click` করে `open in terminal` সিলেক্ট করতে হবে।
+If you are using `Linux`, you need to open the `terminal` within the folder by right-clicking and selecting `open in terminal`.
 
-এখন আপনাকে নিচের কমান্ড টি দিতে হবে।
+Now, you need to run the following command:
 
 ```bash
 npx create-react-app my-app
 ```
 
-কমান্ডটি রান করার পর আপনার ফোল্ডারে `my-app` নামে একটি ফোল্ডার তৈরি হয়ে যাবে। এবং সেই ফোল্ডারে `React Js` এর সবগুলো ফাইল ইন্সটল হয়ে যাবে।
+After running the command, a folder named `my-app` will be created in your directory. All the files for `React Js` will be installed in that folder.
 
-এবার আপনাকে নিচের কমান্ড টি দিতে হবে।
+Now, you need to run the following command:
 
 ```bash
 cd my-app
 ```
 
-কমান্ডটি রান করার পর আপনি যে ফোল্ডারে গিয়েছেন সেই ফোল্ডারে চলে যাবেন।
+After running the command, you will navigate to the folder where you have gone.
 
-এবার আপনাকে নিচের কমান্ড টি দিতে হবে।
+Now, you need to run the following command:
 
 ```bash
 npm start
 ```
 
-একটু অপেক্ষা করতে হবে। কমান্ডটি রান করার পর আপনার ব্রাউজার এ একটি ওয়েবসাইট ওপেন হয়ে যাবে। এবং সেই ওয়েবসাইট এ আপনি `React Js` এর ডিফল্ট পেজ দেখতে পাবেন।
+You will need to wait for a moment. After running the command, a website will open in your browser, where you will see the default page of `React Js`.
 
-## Congratulation 🎉🎉🎉
+## Congratulations 🎉🎉🎉
 
-### আপনি সফল ভাবে `React Js` ইন্সটল করে ফেলেছেন।
+### You have successfully installed `React Js`.
 
-#### আসেন এখন একটু ফোল্ডার এর ভেতরে যাই।
+#### Now, let's go inside the folder for a bit.
 
 ‍`
 my-app
@@ -134,17 +132,17 @@ my-app
     └── setupTests.js
 ‍`
 
-> আপনার ফোল্ডার এ এই রকম দেখতে হবে অথবা হাল্কা কিছু পরিবর্তন হতে পারে।
+> You will see your folder like this, or there might be some slight changes.
 
-ভয় পাবার কিছু নেই। আপনি যদি কোন ভুল করেন তাহলে আপনি আবার নতুন করে করতে পারেন।
+There's nothing to be afraid of. If you make a mistake, you can start over.
 
-আমি আপনাদের অত ব্যখ্যা করব না , আপাতত আপনাদের জন্য প্রথম কাজ হবে `src` ফোল্ডার এর ভেতরে যে সব ফাইল আছে সেগুলো ডিলেট করে দেয়া। এবং একটি নতুন ফাইল তৈরি করতে হবে সেই ফাইলের নাম হবে `index.js`।
+I won't go into too much explanation for now. Your first task is to go inside the `src` folder. You can delete all the files that are inside it and create a new file named `index.js`.
 
-এবার কিছু কোডিং করার সময়,
+Now, when it comes to coding,
 
 # Text Editor and Making The First Component
 
-আপনি যদি কোন টেক্সট এডিটর ব্যবহার করেন তাহলে আপনি সেটা ব্যবহার করতে পারেন। আমি আপনাদের কিছু টেক্সট এডিটর এর নাম দিচ্ছি যেগুলো ব্যবহার করতে পারেন।
+If you have a text editor you prefer to use, you can go ahead with that. I'll provide you with the names of some text editors that you can use.
 
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Sublime Text](https://www.sublimetext.com/)
@@ -152,41 +150,43 @@ my-app
 - [Brackets](http://brackets.io/)
 - [Notepad++](https://notepad-plus-plus.org/)
 
-আমি আপনাদের জন্য এখানে একটি লিংক দিলাম যেখান থেকে আপনারা কোন টেক্সট এডিটর ডাউনলোড করতে পারবেন। আপনি যেটি ব্যবহার করতে চান তাই ব্যবহার করতে পারেন। কিন্তু আমি suggest করবো `Visual Studio Code` ব্যবহার করতে। কারন এটি খুবই সহজ এবং এটি খুবই জনপ্রিয় একটি টেক্সট এডিটর। এবং এটি খুবই পাওয়ারফুল একটি টেক্সট এডিটর।
+I have provided a link here from where you can download a text editor of your choice. You can use whichever you prefer. However, I would suggest using `Visual Studio Code`. It's very user-friendly, highly popular, and a powerful text editor.
 
 - [Download Visual Studio Code](https://code.visualstudio.com/download)
 
-‍`VS Code` ডাউনলোড করার পর আপনাকে এটি ইন্সটল করতে হবে। এবং এটি ইন্সটল হওয়ার পর আপনি এটি ব্যবহার করতে পারবেন।
+After downloading `VS Code`, you need to install it. Once it's installed, you can start using it.
 
-‍`VS Code` ঠিকভাবে ইন্সটল করার জন্য আপনারা এই ভিডিও টি দেখতে পারেন।
+To properly install `VS Code`, you can watch this [video tutorial](video_link_here).
 
 - [How to Install Visual Studio Code on Windows 10](https://www.youtube.com/watch?v=fJEbVCrEMSE)
 - [How to Install Visual Studio Code on Linux(Ubuntu)](https://www.youtube.com/watch?v=ChwsFldra-o)
 
-`Vs code` ইন্সটল হয়ে গেলে আপনারা আপনাদের `my-app` ফোল্ডারটি ওপেন করতে পারেন এবং সেই ফোল্ডার এ যেতে পারেন। ফোল্ডারটি `vs code` এ ওপেন করতে আপনাকে ফো‌ল্ডারের ভেতর ‍`Right-click` করে `Open with Code` সিলেক্ট করতে হবে। তারপর আপনার ফোল্ডারটি `vs code` এ ওপেন হয়ে যাবে।
+After installing `VS Code`, you can open your `my-app` folder and navigate inside it. To open the folder in `VS Code`, you can right-click on the folder and select `Open with Code`. This will open your folder in `VS Code`.
 
-এবার আপনারা আপনাদের `vs code` এ যে ফোল্ডার ওপেন করেছেন সেই ফোল্ডারে যেতে হবে। এবং সেই ফোল্ডারে যাওয়ার পর আপনাকে `src` ফোল্ডারে যেতে হবে। এবং সেই ফোল্ডারে যাওয়ার পর আপনাকে `index.js` ফাইলটি ওপেন করতে হবে। এখন আপনি কোডিং করতে পারবেন।
+Once you have opened your folder in `VS Code`, you can navigate inside it. Inside the folder, you should go to the `src` folder and open the `index.js` file. Now, you can start coding.
 
-তার আগে `vs code` এর কিছু বেসিক কমান্ড জানতে হবে। আমি আপনাদের কিছু কমান্ড দিচ্ছি যেগুলো ব্যবহার করতে পারেন।
+Before that, you should be familiar with some basic commands in `VS Code`. I'm providing you with some commands that you can use:
 
-- `Ctrl + Shift + P` এই কমান্ড দিলে আপনি কোন কাজ করতে পারবেন।
-- `Ctrl + P` এই কমান্ড দিলে আপনি কোন ফাইল খুজে পাবেন।
-- `Ctrl + Shift + N` এই কমান্ড দিলে আপনি নতুন ফাইল তৈরি করতে পারবেন।
-- `Ctrl + Shift + W` এই কমান্ড দিলে আপনি যে ফাইল ওপেন করেছেন সেই ফাইল বন্ধ হয়ে যাবে।
-- `Ctrl + S` এই কমান্ড দিলে আপনি যে ফাইল ওপেন করেছেন সেই ফাইল সেভ হয়ে যাবে।
-- `Ctrl + Shift + S` এই কমান্ড দিলে আপনি যে ফাইল ওপেন করেছেন সেই ফাইল সেভ হয়ে যাবে নতুন নামে।
-- `Ctrl + /` এই কমান্ড দিলে আপনি কোড এর কোন লাইন কমেন্ট করতে পারবেন।
-- `Ctrl + ~` এই কমান্ড দিলে আপনি টার্মিনাল ওপেন করতে পারবেন।
+- `Ctrl + Shift + P`: This command allows you to perform various tasks.
+- `Ctrl + P`: This command allows you to search for files.
+- `Ctrl + Shift + N`: This command allows you to create a new file.
+- `Ctrl + Shift + W`: This command allows you to close the currently open file.
+- `Ctrl + S`: This command allows you to save the currently open file.
+- `Ctrl + Shift + S`: This command allows you to save the currently open file with a new name.
+- `Ctrl + /`: This command allows you to comment or uncomment a line of code.
+- `Ctrl + ~`: This command allows you to open the integrated terminal in `VS Code`.
 
-এখন আমরা শেষের কমান্ড টি দিতে পারি। `Ctrl + ~` কমান্ডটি `Vs code` এর `integrated terminal` টি স্টার্ট করবে। তাই বারবার আপনাকে আর টার্মিনাল ওপেন করতে হবে না। আপনি যখন চান তখন টার্মিনাল ওপেন করতে পারবেন। আর অটোমেটিকালি আপনি যে ফোল্ডারে আছেন সেই ফোল্ডারে টার্মিনাল ওপেন হয়ে যাবে।
+Now, let's move on to the last command. `Ctrl + ~` will start the integrated terminal in `VS Code`. So, you won't need to manually open the terminal every time. You can open it whenever you want. Additionally, the terminal will automatically open in the folder where you are currently located.
 
-এখন যেহেতু আপনি `my-app` ফোল্ডারে আছেন সেই ফোল্ডারে টার্মিনাল ওপেন হয়ে যাবে এবং আপনি এখন টারমিনাল এ এই কমান্ডটি দিতে পারেন।
+Since you are in the `my-app` folder, the terminal will open in that folder, and you can now enter the following command in the terminal.
 
 ```bash
 npm start
 ```
 
-এই কমান্ডটি রান করার পর আপনার ব্রাউজার এ একটি ওয়েবসাইট ওপেন হয়ে যাবে। কিন্তু আপনি অনেক `error` দেখতে পাবেন। এর কারণ হল, আপনি আমার নির্দেশ মতো `my-app/src` ফোল্ডারের সব ফাইল ডিলিট করে দিয়েছেন এবং আপনি এখন কোন কোড লিখেন নি। তাই আপনি যে ফাইল ওপেন করছেন সেই ফাইল এ কোন কোড নেই, তাই আপনি অনেক `error` দেখতে পাবেন। এখন আপনাকে কিছু কোড লিখতে হবে। আমি আপনাদের কিছু কোড দিচ্ছি যেগুলো আপনি কপি করে নিতে পারেন এবং আপনার `my-app/src/index.js` এর ভেতরে পেস্ট করে দিতে পারেন।
+এAfter running this command, a website will open in your browser. However, you will see many errors because you have deleted all the files in the `my-app/src` folder as per my instructions, and you haven't written any code yet. So, the file you have open doesn't contain any code, which is why you're seeing a lot of errors. Now, you need to write some code.
+
+I'm providing you with some code snippets that you can copy and paste into your `my-app/src/index.js` file.
 
 ```js
 // importing the react library
@@ -207,18 +207,18 @@ const root = createRoot(document.getElementById("root"));
 root.render(<App />);
 ```
 
-আপনি কোডটি লিখে দিলেন তাহলে আপনার ব্রাউজার এ যে ওয়েবসাইট ওপেন হয়ে গেছে সেই ওয়েবসাইট এ আপনি `Hello World` দেখতে পাবেন। এবং আপনি যদি কোন কিছু পরিবর্তন করেন তাহলে আপনার ব্রাউজার এ ওয়েবসাইট এ অটোমেটিকালি রিলোড হয়ে যাবে। এবং আপনি যে পরিবর্তন করেছেন সেই পরিবর্তন আপনি দেখতে পাবেন।
+Once you write this code and save it, you will see "Hello World" in your browser on the website that opened. If you make any changes, the website in your browser will automatically reload, and you will see the changes you made.
 
-আপাতত কোডে কি হচ্ছে তা জানার তেমন কোন প্রয়োজন নেই। কিন্তু আপনাকে কিছু `RULES` মানতে হবে। যেমনঃ
+For now, you don't need to understand what the code does. However, you need to follow some rules:
 
-- আপনি যে ফাইল ওপেন করছেন সেই ফাইলের নাম হলো `index.js`। এই ফাইলের নাম আপনি পরিবর্তন করতে পারবেন না।
-- `const App = () => {}` এই ফাংশনকে বলা হয় `React Component`।
+- The file you have open is named `index.js`. You cannot change the name of this file.
+- The function `const App = () => {}` is called a `React Component`.
 
-এই `React Component` এর ভেতরে আপনি কোন কিছু পরিবর্তন করতে পারবেন। `React components` এর ভেতরে আপনি যেকোন `javascript` কোড লিখতে পারবেন। এবং আপনি যেকোন `React Component` কে আপনি যেকোন নাম দিতে পারবেন। কিন্তু আপনাকে এই `React Component` এর নাম পরিবর্তন করতে হবে না। আপনি যদি এই `React Component` এর নাম পরিবর্তন করেন তাহলে আপনি অনেক `error` দেখতে পাবেন।
+Inside this `React Component`, you can write any JavaScript code. You can also give any name to a `React Component`, but you cannot change the name of this `React Component`. If you do, you will see a lot of errors.
 
-`React JS` এর মাধ্যমে আসলে আমরা ঠিক এভাবে কিছু `React component` তৈরি করব।
+In `React JS`, we create `React components` like this.
 
-শেষ করার আগে আরেকটি `important` কথা বলে নেয়া দরকার। `React Component` এর নাম সবসময় বড় হাতের অক্ষর দিয়ে শুরু করতে হবে। এবং একটি `React Component` এর নাম সবসময় `PascalCase` হতে হবে। যেমনঃ
+Before finishing, I want to mention one more important thing. The name of a `React Component` should always start with a capital letter, and it should be in `PascalCase`. For example:
 
 ```js
 // correct way to write a react component name
@@ -240,24 +240,25 @@ const app = () => {
 };
 ```
 
-বেসিক শেষ, এখন কিছু `Advanced` কথা বলে নেয়া যাক।
+# Advanced
 
-# First Project
+## First Project
 
-আমরা এখানে একটি প্রজেক্ট করবো। আমরা যেহেতু একটি প্রজেক্ট করবো তাই আমাদের একটি ফোল্ডার তৈরি করতে হবে
+Now let's talk about some advanced topics.
 
-আমার ফোল্ডার এর নাম আমি দিলাম `my-project` আপনি যে নাম দিতে চান দিতে পারেন এবং এই ফোল্ডারে যেতে হবে।
-এখন ফোল্ডারটি `Vs code` দিয়ে ওপেন করতে হবে। এবং এই ফোল্ডারে যেতে হবে। এবং এই ফোল্ডারে যাওয়ার পর আপনাকে `command promt` বা `terminal` ওপেন করতে হবে।
+We will create a project here. Since we are going to create a project, we need to create a folder.
 
-SOoooooo, টারমিনাল এ লিখুন
+I've named my folder `my-project`, but you can give it any name you want. You need to go inside this folder.
+
+Now, open this folder with `Vs Code`. Once you're inside this folder, you'll need to open the command prompt or terminal.
+
+So, in the terminal, type:
 
 ```bash
 npx create-react-app books
 ```
 
-এটি আগের মতই একটি `React app` তৈরী করবে।
-
-আবারও টারমিনাল এ গিয়ে লিখুন
+This will create another folder named `books` inside your `my-project` folder. All the files for `React Js` will be installed in that folder.
 
 ```bash
 cd books
@@ -269,9 +270,7 @@ cd books
 npm start
 ```
 
-আমরা আগের মতই `src` ফোল্ডারের সব ফাইল ডিলিট করতে হবে। এবং একটি নতুন ফাইল তৈরি করতে হবে সেই ফাইলের নাম হবে `index.js`।
-
-এবার আমরা কিছু কোড লিখবো। আমরা একটি `React Component` তৈরি করবো। এবং সেই `React Component` এর ভেতরে আমরা কিছু `HTML` লিখবো।
+so we will follow the same steps again and delet all the files inside the `src` folder and create a new file named `index.js`.
 
 ```js
 // importing the react library
@@ -295,11 +294,11 @@ root.render(<App />);
 // <App /> is called self closing tag
 ```
 
-এটি আপনারা থিক মত করে থাকলে আপনাদের ডিফল্ট ব্রাউজার আপনাআপনি খুলে যাবে আর আপনারা সেই ওয়েবসাইট এ `Books` লেখা দেখতে পাবেন।
+If you stay as you are, your default browser will open automatically, and you will see the word `Books` on that website.
 
-এখন `Main PART` এ আসা যাক।
+Now let's move on to the `Main PART`.
 
-আমি এই প্রজেক্ট এ নিচের ওয়েবসাইট এর মতো একটি ওয়েবসাইট তৈরি করার চেস্টা করব আর সাথে সাথে `React js` পুরো `fundmantals` শেখানোর চেস্টা করব।
+I will try to create a website similar to the one below in this project and at the same time, I will make an effort to learn the complete `fundamentals` of `React js`.
 
 ![books](<extras/Screenshot from 2023-10-23 12-24-15.png>)
 
@@ -307,21 +306,17 @@ root.render(<App />);
 
 # Extentions
 
-আমরা এই প্রজেক্ট এ কিছু `extentions` ব্যবহার করবো। যেগুলো আমাদের কাজে সহায়তা করবে।
-
 - [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
 
-এই `extention` টি আপনার ব্রাউজার এ ইন্সটল করে দিলে আপনি আপনার ব্রাউজার এ যেকোন ওয়েবসাইট এ যাবেন সেই ওয়েবসাইট এর `React Component` গুলো দেখতে পাবেন।
+this extention will help you to debug your react application.
 
 - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-এই `extention` টি আপনার `vs code` এ ইন্সটল করে দিলে আপনি আপনার কোড এর ফরমেটিং করতে পারবেন। এবং এই `extention` টি আপনার কোড এর ভিতরে যেকোন কিছু পরিবর্তন করলে অটোমেটিকালি আপনার কোড ফরমেটিং হয়ে যাবে।
+this will help you to format your code.
 
 - [ES7 React/Redux/GraphQL/React-Native snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
 
 - [Auto rename tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)
-
-আসেন এখন কিছু কোডিং করা যাক।
 
 # Making the palceholders
 
@@ -351,16 +346,16 @@ root.render(<App />);
 // <App /> is called self closing tag
 ```
 
-ভাঙচুর করার পালা।
+lets break it down
 
-```
-const root = createRoot(document.getElementById('root'));
+```js
+const root = createRoot(document.getElementById("root"));
 root.render(<App />);
 ```
 
-দিয়ে কি হচ্ছে সেটা একটূ জেনে নেই।
+Try to understand what this means.
 
-আপনি যদি আপনার `books` ফোল্ডারে খেয়াল করেন তাহলে দেখবেন সেখানে `public` নামে আরেটি ফোল্ডার আছে, সেই ফোল্ডারের ভেতর `index.html` নামে একটি ফাইল আছে। ফাইলটিতে ক্লিক করুন এবং ভালভাবে লক্ষ করলে দেখবেন
+If you carefully look inside your `books` folder, you will find a folder named `public`. Inside that folder, there is a file named `index.html`. Click on the file and observe it closely.
 
 ```html
 <body>
@@ -379,17 +374,17 @@ root.render(<App />);
 </body>
 ```
 
-`<div id = "root"></div>` এটি আমাদের সবচেয়ে গুরুত্বপুর্ণ ট্যাগ।
+`<div id = "root"></div>` is our most important tag.
 
-`root.render()` এর মাধ্যমে আমরা এই `<div id = "root"></div>` এর ভেতরে আমরা আমাদের `React Component` গুলো রেন্ডার করতে পারি।
-তো বলা যায় আমরা যা `COmponents` বানাবো সবগুলোই আসলে এই `<div id = "root"></div>` এর ভেতরে আছে।
+Through `root.render()`, we can render our `React Components` inside this `<div id = "root"></div>`.
+So, we can say that all the `Components` we create are essentially inside this `<div id = "root"></div>`.
 
-আর `const root = createRoot(document.getElementById('root'));` এই কোড এর মাধ্যমে আমরা সেটাই করছি। এই কোড এর মাধ্যমে আমরা বলছি যে আমাদের `React Component` গুলো রেন্ডার হবে `<div id = "root"></div>` এর ভেতরে থাকবে।
+And `const root = createRoot(document.getElementById('root'));` is what we are doing. Through this code, we are specifying that our `React Components` will render within the `<div id = "root"></div>`.
 
-এখান থেকে আমরা কিছু `Rules` মেনে চলবো।
+From here, we will follow some rules.
 
-- প্রতিটি `React Component` এর নাম হবে `PascalCase` এবং প্রতিটি `React Component` এর নাম হবে বড় হাতের অক্ষর দিয়ে শুরু করতে হবে।
-- প্রতিটি `React Component` কে অবশ্যই একটি এবং শুধু একটি `JSX` রিটার্ন করতে হবে। (`JSX` হচ্ছে `HTML tags`)
+- The name of each `React Component` will be in `PascalCase`, and the name of each `React Component` will start with a capital letter.
+- Each `React Component` must return exactly one `JSX`. (`JSX` is like `HTML tags`)
 
 ```js
 const Component = () => {
@@ -402,7 +397,7 @@ const Component = () => {
 };
 ```
 
-- এখানে `div` কে আমরা বলব `parent` এবং `h1` কে বলব `child`। এবং `parent` এর ভেতরে থাকা সবগুলো `child` একসাথে রেন্ডার হবে।
+- Here we will refer to `div` as the `parent` and `h1` as the `child`. And all the `child` elements inside the `parent` will be rendered together.
 
 ```js
 
@@ -434,11 +429,9 @@ const Component = () => {
 }
 ```
 
-চলেন আসল কাজে ফিরে যাই।
-
 # Making the Components for the PlaceHolders
 
-আপনার `books/src/index.js` ফাইলে যান এবং edit করুনঃ
+in your `books/src/index.js` file
 
 ```js
 ....
@@ -467,15 +460,14 @@ const Author = () => {
 ....
 ```
 
-এখানে একটা জিনিষ দেখছেন যে আমি তিনটি `component` কে তৈরী করেছি এবং ৩ টি কম্পোনেন্ট এর জন্য ফাংশন তৈরী করেছি।
+- Here, you can see that I have created three components and created functions for the three components.
+  Such functions are called `Arrow Functions`.
 
-এমন ফাংশনকে বলা হয় `Arrow Functions`।
+  Inside these `Arrow Functions`, we have written some `JSX`.
 
-এবং এই `Arrow Functions` এর ভেতরে আমরা কিছু `JSX` লিখেছি।
+  Among the three functions, the `Title` function is written a bit differently. And we have written this function in a single line. This is our special function. This type of function is called an `Implicit Return`. It means that inside this function, we can write what we want to return in a single line.
 
-তিনটি ফাংশনের মধ্যে `Title` ফাংশনটি আমরা একটু আলাদা করে লিখেছি। এবং এই ফাংশনটি আমরা একটি লাইনে লিখেছি। এটি আমাদের একটি স্পেশাল ফাংশন। এই ফাংশনটি কে বলা হয় `Implicit Return`। মানে এই ফাংশনের ভেতরে আমরা কোন কিছু রিটার্ন করতে চাই সেটা আমরা একটি লাইনে লিখে দিতে পারি।
-
-চলেন এখন আমরা এই তিনটি `component` কে আমাদের `App` কম্পোনেন্ট এ রেন্ডার করি।
+Now, let's render these three components inside our `App` component.
 
 ```js
 // importing the react library
@@ -507,10 +499,10 @@ const Image = () => {
 
 ....
 ```
+Now, if you go to your browser, you will see that you can view a website and on the website, you can see three words: `Image`, `Title`, and `Author`.
 
-এখন আপনারা যদি আপনার ব্রাউজার এ যান তাহলে আপনারা দেখতে পাবেন যে আপনারা আপনার ব্রাউজার এ একটি ওয়েবসাইট দেখতে পাচ্ছেন এবং ওয়েবসাইট এ আপনারা দেখতে পাচ্ছেন `Image` `Title` `Author` এই তিনটি শব্দ।
+However, this is not helping us much. So, we will create another component named `Book`, and inside this component, we will render all of our components.
 
-কিন্তু এটাও অত ভালভাবে আমাদের সাহায্য করে না। তাই আমরা `Book` নামে আরেকটি `component` তৈরি করবো এবং এই `component` এর ভেতরে আমরা আমাদের সবগুলো `component` কে রেন্ডার করবো।
 
 # Nesting components
 
@@ -540,12 +532,12 @@ const Book = () => {
 
 ....
 ```
+Through `Component nesting`, we can render one component inside another, as we have done here.
 
-`Component nesting` এর মাধ্যমে আমরা একটি `component` এর ভেতরে আরেকটি `component` কে রেন্ডার করতে পারি, যেমনটা আমরা এখানে করেছি।
+Inside the `Book` component, we can render all of our components. And we can render this `Book` component inside the `App` component.
 
-`Book` কম্পোনেন্ট এর ভেতর আমরা আমাদের সবগুলো `component` কে রেন্ডার করতে পারছি। এবং এই `Book` কম্পোনেন্ট কে আমরা `App` কম্পোনেন্ট এ রেন্ডার করতে পারছি।
+Now, if we want, we can create copies of the same book.
 
-এখন আমরা চাইলে একই বই এর কপি তৈরী করতে পারি।
 
 ```js
 ....
@@ -563,11 +555,9 @@ const App = () => {
 ....
 ```
 
-এখন আপনারা ব্রাউজার এ যান তাহলে আপনারা দেখতে পাবেন যে একই বই এর কপি আপনারা একসাথে চারটি দেখতে পাচ্ছেন।
-
 ![books](<extras/Screenshot from 2023-10-23 15-31-10.png>)
 
-এখন আসেন একটূ কপি পেস্ট মারি।
+lets copy and paste
 
 ```js
 ....
@@ -587,14 +577,10 @@ const Title = () => {
 const Author = () => <h4>Jordan Moore </h4>;
 ....
 ```
-
-এখন মনে হয় একটু দেখতে ভাল লাগছে। কিন্তু আসলে দেখতে খুবই বাজে লাগছে। তাই একটু `style` করা উচিত। কিভাবে করে??
-
 # CSS Styling
 
-সহজ ভাষায় `books/src` ফোল্ডারের ভেতর একটি ফাইল তৈরী করুন `index.css` নামে।
+In `books/src` folder make a file names `index.css` and in that
 
-ফাইলে নিচের `stylling` গুলোকে লিখুন।
 
 ```css
 * {
@@ -611,11 +597,7 @@ body {
 }
 ```
 
-এই `stylling` এর মাধ্যমে আমরা আমাদের পুরো ওয়েবসাইট এর স্টাইলিং করেছি। এবং এই স্টাইলিং আমরা আমাদের পুরো ওয়েবসাইট এ ইমপ্লিমেন্ট করতে পারি।
-
-এখন আমরা চাইলে আমাদের পুরো ওয়েবসাইট এর স্টাইলিং করতে পারি। কিভাবে??
-
-আমাদের প্রথমে আমাদের `index.js` ফাইলে যাই।
+Now we need to import this `index.css` file in our `index.js` file.
 
 ```js
 // importing the react library
@@ -627,9 +609,7 @@ import './index.css'
 ...
 ```
 
-এবং এই কোড এর মাধ্যমে আমরা আমাদের `index.css` ফাইলটি আমাদের `index.js` ফাইলে ইমপ্লিমেন্ট করে দিলাম।
-
-এখন আমরা চাইলে আরো কিছু স্টাইলিং করতে পারি। `index.js` ফাইলে যাই।
+now we can apply those styllings
 
 ```js
 ....
@@ -659,7 +639,8 @@ const Book = () => {
 ....
 ```
 
-এখন `index.css` ফাইলে যাই।
+lets go to the `index.css` file and add some more stylling
+
 
 ```css
 ....
@@ -704,7 +685,6 @@ const Book = () => {
 }
 ```
 
-আমার আর বাংলায় লেখাতে ইচ্ছা করতেছে না। SO, i'll be writting in english now.
 
 If look look at the stylling and if you have done this all accordingly you should se something like this in the browser.
 ![books](<extras/Screenshot from 2023-10-24 15-57-49.png>)
@@ -1985,13 +1965,13 @@ const Book = (props) => {
 ....
 ```
 
-as you can see we are passing the `aFunctionToShowTheText` function as a `prop` to the `Book` component and then passing it to the `button` component. 
+as you can see we are passing the `aFunctionToShowTheText` function as a `prop` to the `Book` component and then passing it to the `button` component.
 
 we directly cannot pass the `aFunctionToShowTheText` function to the `button` component from the `app` component. We have to pass it to the `Book` component first and then pass it to the `button` component.
 
 This is called `prop drilling` and it is very annoying.
 
-But  it gets more annoying
+But it gets more annoying
 
 lets see some examples..
 
@@ -2013,7 +1993,7 @@ const BookList = () => {
   };
 
   return (
-    <section className='booklist'>
+    <section className="booklist">
       {books.map((book) => {
         return <Book {...book} key={book.id} getBook={getBook} />;
       })}
@@ -2026,7 +2006,7 @@ const Book = (props) => {
   // console.log(props);
 
   return (
-    <article className='book'>
+    <article className="book">
       <img src={img} alt={title} />
       <h2>{title}</h2>
       {/* this is not going to work */}
@@ -2041,7 +2021,7 @@ Here we are passing the `getBook` function as a `prop` to the `Book` component a
 
 it happened because we are calling the function directly in the `button` component. So, the function is called when the `button` component is rendered. SO it doesn't matter if you press the button or not the function will be called.
 
-So, the solution would be to 
+So, the solution would be to
 
 - create a `wrapper` for the `getBook` function and then pass it to the `button` component.
 
@@ -2056,12 +2036,12 @@ const Book = (props) => {
       <Title title={props.title} />
       {/* this is going to work */}
       <button onClick={wrapper}>Show Text</button>
-      
       <Author author={props.author} />{" "}
     </div>
   );
 };
 ```
+
 - or we can use the `arrow function` to call the function.
 
 ```js
@@ -2074,10 +2054,444 @@ const Book = (props) => {
       <Title title={props.title} />
       {/* this is going to work */}
       <button onClick={() => props.getBook(props.id)}>Show Text</button>
-      
       <Author author={props.author} />{" "}
     </div>
   );
 };
 ```
 
+## Import & Export
+
+First we need to remove the extra coding we did..
+
+- remove the getBook function from the app component.
+
+```js
+const App = () => {
+  return (
+    <section className="booklist">
+      {/* rendering the booklist directly using the `map` method */}
+      {books.map((book) => {
+        return <Book {...book} key={book.id} />; // here we are passing the function as a prop
+      })}
+    </section>
+  );
+};
+
+// book component
+const Book = (props) => {
+  // added props parameter and gets the values from the props object
+
+  return (
+    <div className="book">
+      <Image img={props.img} title={props.title} />{" "}
+      {/* getting the img and title value from the props object and then passing the title and img to the image component*/}
+      <Title title={props.title} /> {/* getting the title value from the props object and then passing the title to the title component*/}
+      <Author author={props.author} />{" "}
+      {/* getting the author value from the props object and then passing the author to the author component*/}
+    </div>
+  );
+};
+```
+
+- now setup 2 files named `books.js` and `Book.js` in the `src` folder.
+
+- cut the `books` array from `index.js` and paste it in the `books.js` file respectively.
+
+`src` folder will look something like this.
+
+```
+src
+├── Book.js
+├── books.js
+├── index.css
+├── index.js
+```
+
+now there will be some errors shown.. Not to worry lets import
+
+in `app.js`
+
+```js
+....
+
+import "./index.css";
+import books from "./books.js"; // importing the books array from the books.js file
+
+....
+```
+
+- this will also show another error we need to fix the `books.js` file.
+
+```js
+// add the export keyword before the array to be able to export it in the app.js file
+export const books = [
+  {
+    id: 1,
+    author: "Jordan Moore",
+    title: "Interesting Facts For Curious Minds",
+    img: "./images/book_1.jpg",
+  },
+  {
+    id: 2,
+    author: "James Clear",
+    title: "Atomic Habits",
+    img: "https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL._AC_UL900_SR900,600_.jpg",
+  },
+];
+```
+
+- now we need to import the `Book` component in the `app.js` file.
+
+```js
+....
+
+import "./index.css";
+import books from "./books.js"; // importing the books array from the books.js file
+
+....
+```
+
+- still not working??
+
+use the destrusturing method to import the `Book` component.
+
+```js
+....
+
+import "./index.css";
+import { books } from "./books.js"; // importing the books array from the books.js file
+
+....
+```
+
+> Note: using the destructured way of importing is like telling the compiler that we are only importing the `books` array from the `books.js` file.
+
+this should fix the errors now lets fix the `Book` component.
+
+We can also do `export default` to export the `books` array.
+
+```js
+const books = [
+  {
+    id: 1,
+    author: "Jordan Moore",
+    title: "Interesting Facts For Curious Minds",
+    img: "./images/book_1.jpg",
+  },
+  {
+    id: 2,
+    author: "James Clear",
+    title: "Atomic Habits",
+    img: "https://images-na.ssl-images-amazon.com/images/I/81wgcld4wxL._AC_UL900_SR900,600_.jpg",
+  },
+];
+
+export default books; // exporting the books array
+```
+
+now we dont need to use destructured importing in the `app.js` file.
+
+```js
+....
+
+import "./index.css";
+import books from "./books.js"; // importing the books array from the books.js file
+
+....
+```
+
+> the `export default` can be used only once.
+
+now lets fix the `Book` component.
+
+- cut the `Book` component from the `app.js` file and paste it in the `Book.js` file.
+
+- i will make some other changes and my Book.js file will look like this.
+
+```js
+// book component with the export keyword
+export const Book = (props) => {
+  const { img, title, author } = props;
+  console.log(props);
+  // added props parameter and gets the values from the props object
+  return (
+    <div className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4>{author}</h4>
+    </div>
+  );
+};
+```
+
+I made those changes so that i can easily give you demostration of how the data is flowing in the `react js` app and if we are getting the data or not in the browser `console`.
+
+- now we need to import the `Book` component in the `app.js` file.
+
+```js
+....
+
+import "./index.css";
+import { books } from "./books.js"; // importing the books array from the books.js file
+import { Book } from "./Book.js"; // importing the Book component from the Book.js file
+
+....
+```
+
+In case of components we should use the `export default` and in case of other import we should use the destructure method.
+
+```js
+// book component
+const Book = (props) => {
+  const { img, title, author } = props;
+  console.log(props);
+  // added props parameter and gets the values from the props object
+  return (
+    <div className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4>{author}</h4>
+    </div>
+  );
+};
+
+export default Book;
+```
+
+import
+
+```js
+....
+
+import "./index.css";
+import { books } from "./books.js"; // importing the books array from the books.js file
+import Book from "./Book.js"; // importing the Book component from the Book.js file
+
+....
+```
+
+now that we learned to import and export.. lets fix the stylling then we will move n to the next topic.
+
+goto`Book.js` file:
+
+```js
+// book component
+const Book = (props) => {
+  const authorSTyllings = {
+    color: "#617d98",
+    fontSize: "0.75rem",
+    marginTop: "0.5rem",
+  };
+
+  const { img, title, author } = props;
+  console.log(props);
+  // added props parameter and gets the values from the props object
+  return (
+    <div className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4 style={authorSTyllings}>{author}</h4>
+    </div>
+  );
+};
+
+export default Book;
+```
+
+this should fix the stylling, now lets store local images in the `src` folrder.
+
+# **_SRC_** folder local images
+
+- make a new folder named `images` in the `src` folder.
+
+if you goto the github repo you can see the images folser and ther will be three images.
+
+download those or you can download your own images.
+
+- now lets import them in the `books.js` file.
+
+```js
+import img1 from "./images/img_1.jpg"; // importing the image
+import img2 from "./images/img_2.jpg"; // importing the image
+import img3 from "./images/img_3.jpg"; // importing the image
+
+export const books = [
+  {
+    id: 1,
+    author: "Jordan Moore",
+    title: "Interesting Facts For Curious Minds",
+    img: img1, //replaced the image with the local image
+  },
+  {
+    id: 2,
+    author: "James Clear",
+    title: "Atomic Habits",
+    img: img2, //replaced the image with the local image
+  },
+  {
+    id: 3,
+    author: " Matthew Perry",
+    title: "Friends, Lovers, and the Big Terrible Thing",
+    img: img3, //replaced the image with the local image
+  },
+];
+```
+
+> Note: the `import img1` is renaming the image to `img1` so that we can use it in the `books` array.
+
+Now you should see three Books with the local images.
+
+and the is no need to go to the public folder to set the images there.
+
+I like to use this mathod because it is much cleaner and faster and react will automatically do all the heavy lifting and help us by processing these pictures...
+
+the next part is just some challegs and fun stuff to do to practice what we learned.
+
+# **_CHALLENGES_**
+
+## Challenge 1
+
+Go look at the amazon best seller site [here](https://www.amazon.com/Best-Sellers-Books/zgbs/books)
+
+You will see every book has a rating and a number of reviews.
+
+We will try to add that to our app.
+
+1. pass the index `map` function to the `app` component in `index.js` file.
+
+```js
+const App = () => {
+  return (
+    <section className="booklist">
+      {books.map((book, index) => {
+        // here we are passing the index map function which will give us the index of every object in the books array
+        return <Book {...book} key={book.id} number={index} />; // pass the index as a prop to the book component
+      })}
+    </section>
+  );
+};
+```
+
+2. now we can acces the `index` number as a prop in the `Book` component.
+
+```js
+// book component
+const Book = (props) => {
+  const authorSTyllings = {
+    color: "#617d98",
+    fontSize: "0.75rem",
+    marginTop: "0.5rem",
+  };
+
+  const { img, title, author } = props;
+  console.log(props);
+  // added props parameter and gets the values from the props object
+  return (
+    <div className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4 style={authorSTyllings}>{author}</h4>
+      <span className="number">{`# ${props.number + 1}`}</span> {/* here we are accessing the index number and then adding 1 to it because the index starts from 0 */}
+    </div>
+  );
+};
+
+export default Book;
+```
+
+3. do some stylling in the `index.css` file.
+
+```css
+.book {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  /* set relative */
+  position: relative;
+}
+
+.number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border-top-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  background: #c35600;
+  color: #fff;
+}
+```
+
+this should make the numbering visible.
+
+## Adding a **Title** to the app
+
+- In `Index.js` file
+
+```js
+const App = () => {
+  return (
+    <>
+      {" "}
+      {/* add a set of empty tags */}
+      <h1>Amazon Best Sellers List</h1>
+      <section className="booklist">
+        {/* rendering the booklist directly using the `map` method */}
+        {books.map((book, index) => {
+          return <Book {...book} key={book.id} number={index} />; // here we are passing the function as a prop
+        })}
+      </section>
+    </>
+  );
+};
+```
+
+> Note: Without the empty tags we will get an error because we can only return one element in the return statement.
+
+- In `index.css` file
+
+```css
+h1 {
+  text-align: center;
+  margin-top: 4rem;
+  text-transform: capitalize;
+}
+```
+
+# Build
+
+Building a production ready app is very easy in react js.
+
+- just go in terminal and type `npm run build` and then hit enter.
+
+```bash
+books % npm run build
+```
+
+this will make a build folder which will have a production ready app. if you go inside the build folder you will see a `index.html` file and a `static` folder.
+
+```
+build
+|- images
+|- index.html
+|- static
+```
+
+- the index.html file is the main file that will be rendered in the browser.
+
+- the static folder will have all the static files like css, js, images, etc.
+
+# Deploy
+
+- Vs code has port forwaarding which will need
+  - Your github logged in
+  - then it will porvide a dummy url to see the app in the browser.
+
+### Well if you did all this than **CONGATULATIONS** you have completed the basics of react js.
+
+# **_END_**
+
+ভাই যান গা। ২৫০০ লাইন লেখছি আর লেখতে পারতাছিনা।
