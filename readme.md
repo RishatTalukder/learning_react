@@ -112,7 +112,7 @@ You will need to wait for a moment. After running the command, a website will op
 
 #### Now, let's go inside the folder for a bit.
 
-‍`
+```
 my-app
 ├── README.md
 ├── node_modules
@@ -130,7 +130,7 @@ my-app
     ├── index.js
     ├── logo.svg
     └── setupTests.js
-‍`
+```
 
 > You will see your folder like this, or there might be some slight changes.
 
