@@ -2,7 +2,7 @@ I made a full documentation React_fundamentals. Then I realized that i should ma
 
 You can also watch videos on these topics on my youtube channel: [https://www.youtube.com/@itvaya]
 
-Forst things first, I hopw you know the basics of React. If not, please go through the `React_fundamentals/readme.md` file in this repo. Or watch my videos on youtube:
+First things first, I hope you know the basics of React. If not, please go through the `React_fundamentals/readme.md` file in this repo. Or watch my videos on youtube:
 [https://youtu.be/NAnoji9-KjA?si=br5eMQq2d1a2OI2H]
 
 

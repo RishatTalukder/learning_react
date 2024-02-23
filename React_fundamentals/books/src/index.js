@@ -10,7 +10,7 @@ import Book from "./Book.js";
 const App = () => {
   return (
     <>
-    <h1>Amazon Best Sellers List</h1>
+      <h1>Amazon Best Sellers List</h1>
       <section className="booklist">
         {/* rendering the booklist directly using the `map` method */}
         {books.map((book, index) => {
