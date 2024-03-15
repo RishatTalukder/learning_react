@@ -6,7 +6,7 @@ const ShortCircuitOverview = () => {
   // truthy
   const [name, setName] = useState('susan');
 
-  const codeExample = text || 'hello world';
+  const codeExample = text && 'hello world';
 
   // can't use if statements
   return (

@@ -8,7 +8,7 @@ const ToggleChallenge = () => {
       <button className='btn' onClick={() => setShowAlert(!showAlert)}>
         toggle alert
       </button>
-      {showAlert && <Alert />}
+      {showAlert && <Alert />} 
     </div>
   );
 };

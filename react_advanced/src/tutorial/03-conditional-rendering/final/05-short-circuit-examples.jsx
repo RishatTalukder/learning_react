@@ -25,7 +25,9 @@ const ShortCircuitExamples = () => {
       {user && <SomeComponent name={user.name} />}
       <h2 style={{ margin: '1rem 0' }}>Ternary Operator</h2>
       {/* inside element */}
-      <button className='btn'>{isEditing ? 'edit' : 'add'}</button>
+      <button className='btn'
+      onClick={() => setIsEditing(!isEditing)}
+      >{isEditing ? 'edit' : 'add'}</button>
       {/* toggle elements/components */}
       {user ? (
         <div>
