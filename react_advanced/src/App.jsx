@@ -1,14 +1,10 @@
-import UserChallenge from "./tutorial/06-forms/starter/02-user-challenge";
+import NavBar from "./tutorial/09-context-api/final/prop-drilling/Navbar";
 function App() {
   return (
     <div>
-      <ToggleTheme />
-      <div
-        className="container d-flex justify-content-center align-items-center flex-column"
-        style={{ height: "80vh" }}
-      >
-        <UserChallenge />
-      </div>
+      
+        <NavBar />
+        <ToggleTheme />
     </div>
   );
 }
@@ -27,9 +23,12 @@ const ToggleTheme = () => {
   };
   return (
     <div>
-      <button className="btn 
+      <button
+        className="btn 
         btn-success mt-3 mb-3
-      " onClick={handleClick}>
+      "
+        onClick={handleClick}
+      >
         toggle theme
       </button>
     </div>
