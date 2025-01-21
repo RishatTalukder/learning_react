@@ -8,6 +8,8 @@ I also have a youtube channel but I'm Make `Python` tutorials in `Bangla`. Soon 
 
 So, this is my 6th attempt at learning `React` so that I can teach it to others.
 
+Repository: [GitHub](https://github.com/RishatTalukder/learning_react)
+
 Structure of this repository is like this:
 
 ```bash
