@@ -230,3 +230,243 @@ root.render(<App />); // replacing the ProductList component with the App compon
 You will see three `ProductList` components on the screen. Whith out writing the `ProductList` component three times.
 
 So, now you see how `react` makes a developer's life easier by allowing to nest components inside other components. This is the power of `React`.
+
+# Some debugging tips
+
+Before moving on with this project there is some issues that you may face while working with `React`. The `first issue` I think is the `auto refresh` of the app. 
+
+As we downgraded from `React 19` to `React 18`, the `auto refresh` feature of the app may not work. So, to fix this issue, you can run the following command in your terminal.
+
+```bash
+
+npm install react-scripts@latest
+
+```
+
+If this doesn't work, you can go to the `package.json` file in your app and change the `scripts` to the following.
+
+```json
+
+"scripts": {
+    "start": "react-scripts start --watch",
+    ........
+  },
+
+```
+
+This will start the app in `watch` mode and the app will `auto refresh` when you make changes in your code.
+
+##### An easy task for you to do
+
+Now, that you have successfully created your first component and used it in your app, I have a task for you.
+
+- Create a new component for the `App` component we made to reactify the `Product List` text. Than import the `ProductList` component in the `App` component and finally import the `App` component in the `index.js` file and render it.
+
+
+# React Fragments
+
+If you have done the task above, you may have noticed that the `Product List` text is wrapped inside a `div`. This is because `React` doesn't allow to return multiple elements from a `Functional Component`. for example:
+
+```js
+
+const App = () => {
+    return (
+        <h1>Product List</h1>
+    );
+};
+
+```
+
+This is `OK`. But if you do this:
+
+```js
+
+const App = () => {
+    return (
+        <h1>Product List</h1>
+        <h2>Product List</h2>
+    );
+};
+
+```
+
+This will cause an error. Because `React` doesn't allow to return multiple elements from a `Functional Component`. So, to fix this issue, you can wrap the elements inside a `div` or a `React Fragment`.
+
+```js
+
+const App = () => {
+    return (
+        <React.Fragment>
+            <h1>Product List</h1>
+            <h2>Product List</h2>
+        </React.Fragment>
+    );
+};
+
+```
+
+This will fix the issue. But there is a shorthand for `React.Fragment`. You can use `<>` and `</>` instead of `<React.Fragment>` and `</React.Fragment>`.
+
+```js
+
+const App = () => {
+    return (
+        <>
+            <h1>Product List</h1>
+            <h2>Product List</h2>
+        </>
+    );
+};
+
+```
+
+> Remember to always return a single element from a `Functional Component`. You can't return multiple elements from a `Functional Component`. You can wrap the elements inside a `div` or a `React Fragment` to fix this issue.
+
+
+Before we move on to the next section you should install `React Developer Tools` extension in your browser. This extension will help you to debug your react app. Maybe not now nut when our project gets bigger and bigger, this extension will help you to debug your app.
+
+## What are we making?
+
+The first project will be like a small product list of some products. I was thinking of coping the `Startech` website front page. Let's see how it looks.
+
+![alt text](image.png)
+
+Well, you can see that there are some products on the screen, the title of the product, the product image, It's price, and some other things. It's looks fairly simple. So, Let's try make something like this.
+
+## Making the Components
+
+So, let's start by creating the components we need for this project. From the image above, we can see that we need the following things:
+
+- A `Product` component that will render a single product.
+- A `Product Name` component that will render the title of the product.
+- A `Product image` component that will render the image of the product.
+- A `Product price` component that will render the price of the product.
+
+- We also have 10 products in the image above. So, we need to create a `ProductList` component that will render all the products.
+- We will also try to make this project responsive for good user experience.
+
+## Product Component
+
+So, let's start by creating a `Folder` named `components` in the `src` folder. In this folder, we will create all the components we need for this project.
+
+So, create a new file named `Product.js` in the `components` folder and write the same code we wrote for the `ProductList` component.
+
+```js
+
+import React from 'react';
+
+const Product = () => {
+    return (
+        <div>
+            <h1>Product</h1>
+        </div>
+    );
+};
+
+export default Product; // Don't forget to export the component.
+
+```
+
+> you can also use the `ES7 React/Redux/GraphQL/React-Native snippets` extension to create a `Functional Component` template by writing `rafce` and pressing `tab`.
+
+Now, Let's make a rough product component. 
+
+```js
+
+import React from "react";
+
+const Product = () => {
+  return (
+    <div>
+      <h1>Image</h1>
+      <h2>Product Name</h2>
+      <p>Price</p>
+    </div>
+  );
+};
+
+export default Product;
+
+
+```
+
+This is a rough `Product` component. We will make it better later. We have a Single product with an `Image`, `Product Name`, and `Price`. Now, we follow the steps of importing the `Product` component in the `ProductList` component and the `ProductList` component in the `App` component.
+
+So, go to the `ProductList` component and import the `Product` component.
+
+```js
+
+import React from "react";
+import Product from "./components/Product";
+
+const ProductList = () => {
+  return (
+    <div>
+      <h1>Product List</h1>
+      <Product />
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+Now, I think you know what to do next. Import the `ProductList` component in the `App` component and render it in the `index.js` file.
+
+```js
+
+// App.js
+
+import React from "react";
+
+import ProductList from "./components/ProductList";
+
+const App = () => {
+  return (
+    <div>
+      <ProductList />
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+Now, all you jave to do is start the server by running `npm start` in your terminal and you should see the `Product List` text on the screen. This is the `Product List` component we created.
+
+Now, with the power of `nesting components`, you can create a multiple products in an instant. Just like this:
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+
+const ProductList = () => {
+  return (
+    <div>
+      <h1>Product List</h1>
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+      <Product />
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+> I will be commenting the File names at the top of the file. This is a good practice to keep track of the files you are working on.
+
+This should render 10 products on the screen. 

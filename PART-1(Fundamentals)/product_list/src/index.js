@@ -1,17 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ProductList from "./ProductList";
-
-const App = () => {
-  return (
-    <div>
-      <ProductList />
-      <ProductList />
-      <ProductList />
-      <ProductList />
-    </div>
-  );
-};
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
