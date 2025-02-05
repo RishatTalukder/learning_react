@@ -470,3 +470,8 @@ export default ProductList;
 > I will be commenting the File names at the top of the file. This is a good practice to keep track of the files you are working on.
 
 This should render 10 products on the screen. 
+
+But it's not going to be that easy. We need to make the `Product` component better and also dynamic. 
+
+## Props
+
