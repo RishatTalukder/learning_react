@@ -475,3 +475,354 @@ But it's not going to be that easy. We need to make the `Product` component bett
 
 ## Props
 
+`Pros` are one of the if not the most important thing in `React`. `Props` are used to pass data from one component to another. 
+
+Let's send some Data to the `Product` component from the `ProductList` component. 
+
+Now before we do that I want youy all to think about what a `Component` is. A `Component` is a `Function` that returns `JSX`. 
+
+
+### A `Component` is a `FUNCTION`
+
+Like every Function in every know `Programming Language`, a `Function` can take `Arguments`. So, a `Component` can also take `Arguments`. These `Arguments` are called `Props` in `React`.
+
+That's it! we will just pass some `Props` to the `Product` component from the `ProductList` component as `Arguments`.
+
+Let's learn the react way of passing `Props` to a `Component`.
+
+### Passing Props
+
+To pass `Props` to a `Component`, you can pass them as `Attributes` to the `Component` just like you pass `Attributes` to an `HTML` element.
+
+So, let's pass some `Props` to the `Product` component from the `ProductList` component.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+
+const ProductList = () => {
+  return (
+    <div>
+      <h1>
+        Product List
+      </h1>
+      <Product name="Product 1" price="100" />
+      <Product name="Product 2" price="200" />
+      <Product name="Product 3" price="300" />
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+Here we are passing two `Props` to the `Product` component. The `name` and the `price` of the product. Now, let's receive these `Props` in the `Product` component.
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = (props) => { // Receiving the Props
+  return (
+    <div>
+      <h1>Image</h1>
+      <h2>{props.name}</h2> {/* Using the Props */}
+      <p>Price: ${props.price}</p> {/* Using the Props */}
+    </div>
+  );
+};
+
+export default Product;
+```
+
+Now, whats happening here? 
+
+- We are passing two `Props` to the `Product` component from the `ProductList` component as `Attributes`. 
+- We are receiving these `Props` in the `Product` component as `Arguments` in the `Function`.
+- We are using the `Props` in the `Product` component by using `props.name` and `props.price`.
+  - As you can see in the Above code, we are using the `Props.name` and `Props.price` inside `{}`. This is because we are using `JSX` and we can't write `JavaScript` code inside `JSX`. So, we use `{}` to write `JavaScript` code inside `JSX`. This `{}` is referred to as `Expression` in `vanilla JavaScript`. We will talk more about `Expressions` in the next part.
+
+Now, if you start your app by running `npm start` in your terminal, you should see the `Product 1`, `Product 2`, and `Product 3` on the screen with their prices.
+
+This is the power of `Props` in `React`. You can pass data from one component to another and make your app dynamic.
+
+Now, we need to learn some more `JS` theory before we move on to the next section. So, let's learn about `destructuring` in `JS`.
+
+#### Destructuring
+
+`Destructuring` is a `JavaScript` expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
+
+If you remember, we are passing `Props` to the `Product` component from the `ProductList` component. We are passing two `Props` to the `Product` component. The `name` and the `price` of the products. Now if we just `console.log` the `Props` in the `Product` component and see what we get.
+
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = (props) => { // Receiving the Props
+  console.log(props); // Logging the Props
+  return (
+    <div>
+      <h1>Image</h1>
+      <h2>{props.name}</h2> {/* Using the Props */}
+      <p>Price: ${props.price}</p> {/* Using the Props */}
+    </div>
+  );
+};
+
+export default Product;
+```
+
+Now, go to the browser and open the `inspect element` by right clicking on the screen and selecting `inspect`. Then go to the `console` tab and you should see the `Props` object logged in the console.
+
+![alt text](image-1.png)
+
+All 3 of the `Product` components are logged in the console. Adn they are shown as `Objects`. These `Objects` have two `Properties`. The `name` and the `price` of the product. That's why we can use the `.` operator to access the `name` and the `price` of the product.
+
+> `props.name` and `props.price`.
+
+But there is a issue with getting the `Props` like this. If you have a lot of `Props` to get, you will have to `write` a lot of `props.<prop-name>` to get the `Props`. This is where `Destructuring` comes in.
+
+We can `destructure` the `Props` and turn it's `Properties` into `Variables`. Then we can use these `Variables` to get the `Props`.
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = (props) => { // Receiving the Props
+  const { name, price } = props; // Destructuring the Props
+  return (
+    <div>
+      <h1>Image</h1>
+      <h2>{name}</h2> {/* Using the Props */}
+      <p>Price: ${price}</p> {/* Using the Props */}
+    </div>
+  );
+};
+
+export default Product;
+```
+
+Here we are destructuring the `Props` object and turning it's `Properties` into `Variables`. And than we are using those variables to get the `Props`.
+
+There are other ways to `destructure` the `Props` object. You can `destructure` the `Props` object directly in the `Arguments` of the `Function` like this:
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = ({ name, price }) => { // Destructuring the Props
+  return (
+    <div>
+      <h1>Image</h1>
+      <h2>{name}</h2> {/* Using the Props */}
+      <p>Price: ${price}</p> {/* Using the Props */}
+    </div>
+  );
+};
+
+export default Product;
+```
+
+> I personally like this way of `destructuring` the `Props` object. It's clean and easy to read.
+
+Now, if you start your app by running `npm start` in your terminal, every should be working fine.
+
+
+#### Expressions
+
+As you can see in the above code we are using `{}` to `destructure` the `Props` object and to use the `Props` in the `Product` component. This `{}` is referred to as `Expression` in `vanilla JavaScript`.
+
+`Expressions` are used to compute values. To put this more simply, `Expressions` are used to write `JavaScript` code inside `JSX`.
+
+As a Component returns `JSX`, you can't write `JavaScript` code inside the jsx. So, you use `{}` to write `JavaScript` code inside `JSX`. But you can not write `every JavaScript` code inside `{}` like statements, loops, etc. You can only write
+`code that returns a value`.
+
+Here's anopther way to remember the difference between `destructuring` and `expressions`.
+
+> Outside the `jsx` you `destructure` with `{}` and inside the `jsx` you use `{}` to write `code that returns a value` or `expressions`.
+
+
+## Some What Dynamic Product List
+
+Now, that we have learned about `Props`, `Destructuring`, and `Expressions`, let's make the `Product List` component a little bit dynamic.
+
+Now, If er look at the ProductList component, we are rendering the `Product` component 3 times with the same `Props`. This is not how a `Product List` works. 
+
+A `real life` product list can have `n` number of products each with different `name`, `price`, `image`, etc. So, we need to make the `Product List` component a little bit dynamic.
+
+Now, let's try to make this `Product List` component a little bit dynamic. 
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+
+const product1 = {
+  name: "Product 1",
+  price: 100, 
+}; // Product 1
+
+const product2 = {
+  name: "Product 2",
+  price: 200,
+}; // Product 2
+
+const product3 = {
+  name: "Product 3",
+  price: 300,
+}; // Product 3
+
+const ProductList = () => {
+  return (
+    <div>
+      <h1>Product List</h1>
+      {/* Product 1 */}
+      <Product name={product1.name} price={product1.price} />
+      {/* Product 2 */}
+      <Product name={product2.name} price={product2.price} />
+      {/* Product 3 */}
+      <Product name={product3.name} price={product3.price} />
+    </div>
+  );
+}
+
+export default ProductList;
+
+```
+
+#### Using the Spread Operator
+
+Spread operator is a new feature in `ES6` that allows an `iterable` to expand in places where `0+ arguments` are expected. It's like `rest parameters` but for `Arrays` and `Objects`.
+
+Mainly what it does is that it takes an `Array` or an `Object` and `spreads` it into individual elements.
+
+This example will make it more clear. Goto the inspect option in any page of your browser and type the following code in the console. Do the following steps:
+
+```js
+
+const arr = [1, 2, 3, 4, 5];
+console.log(arr); // [1, 2, 3, 4, 5]
+console.log(...arr); // 1 2 3 4 5
+
+```
+
+You should see some thing like this in the console.
+![alt text](image-2.png)
+
+So, if we log a iterable like an `Array` or an `Object` it only prints the `Array` or the `Object`. But if we `spread` the `Array` or the `Object` it prints the individual elements of the `Array` or the `Object`.
+
+> The `...` or `spread operator` is mainly used to `copy` an `Array` or an `Object` into another `Array` or `Object`. But in react we can use it to `spread` the `Props` of an `Object` into individual elements.
+
+As we know the attributes we are passing as props are the same as the properties of the object and these are eventually going to be stored in the `props` object of the `Product` component. So, we can make different objects for different products and pass them as props to the `Product` component.
+
+But a better way would be to spread the `product` objects while passing them as props to the `Product` component.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+
+const product1 = {
+  name: "Product 1",
+  price: 100,
+}; // Product 1
+
+const product2 = {
+  name: "Product 2",
+  price: 200,
+}; // Product 2
+
+const product3 = {
+  name: "Product 3",
+  price: 300,
+}; // Product 3
+
+const ProductList = () => {
+  return (
+    <div>
+      {/* Product 1 */}
+      <Product {...product1} /> {/* Spreading the product object */}
+      {/* Product 2 */}
+      <Product {...product2} /> {/* Spreading the product object */}
+      {/* Product 3 */}
+      <Product {...product3} /> {/* Spreading the product object */}
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+> In a `React` component, while passing `Props` to another component, if the `Props` object has the same `Properties` as the `Attributes` you are passing, you can `spread` the `Props` object while passing it as `Attributes`.
+
+> The `...` or `spread operator` is spreading the `product` object into individual elements. So, the `Product` component will receive the `name` and the `price` of the product as `Props`.
+
+This will work as a charm. Let's break down What just happened.
+
+- We made `three product objects` with the `name` and the `price` of the product.
+- We passed these `product objects` as `Props` to the `Product` component.
+- We `spread` the `product objects` while passing them as `Props` to the `Product` component.
+- As the `product objects` have the same `Properties` `name` and `price` as the `Attributes` we are passing, we can `spread` the `product objects` while passing them as `Props` to the `Product` component. 
+- In this way don't need to write `name={product1.name} price={product1.price}` for every product. 
+
+
+> Moral of the story: If the object we are passing has the same properties as the attributes were passing as props, we can spread the object while passing it as props.
+
+Now, we can change the name and the price of the products in the `product objects` (product1, product2, product3) and the `Product` component will render the products with the new `name` and `price`.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+
+const product1 = {
+  name: "AMD Ryzen 5 5600X",
+  price: "11,500",
+}; // Product 1
+
+const product2 = {
+  name: "NVIDIA RTX 3060",
+  price: "45,000",
+}; // Product 2
+
+const product3 = {
+  name: "Corsair Vengeance RGB Pro 16GB",
+  price: "6,500",
+}; // Product 3
+
+const ProductList = () => {
+  return (
+    <div>
+      <Product {...product1} />
+      <Product {...product2} />
+      <Product {...product3} />
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+Now everything should be working fine. If you start your app by running `npm start` in your terminal, you should see the `Product List` with the new products on the screen.
+
