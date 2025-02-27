@@ -888,3 +888,86 @@ Simpy, the `map method` is a for loop for `Arrays` that can apply a function to 
 
 So, as we cannot use any `statements` or `loops` inside `JSX`, we can use the `map` method to `iterate` over the `products` `Array` and `return` a new `Array` with the `Product` components.
 
+Try out this code below in a newfile outside the porject folder.
+
+```js
+
+const arr = [1, 2, 3, 4, 5];
+
+const callback = (element) => {
+  return element * 2;
+};
+
+const newArr = arr.map(callback);
+
+console.log(newArr);
+
+```
+
+> When iterating over an `Array` using the `map` method, the `callback function` takes 3 `arguments`. The `element` or the `value` of the index, the `index` of the element, and the `Array` itself.
+
+Then you can run the file in the terminal as you have `node` installed in your system. open the terminal and run the following command.
+
+```bash
+
+node <filename>.js
+
+```
+
+we can write the callback function inside the `map` method as an `anonymous function`.
+
+```js
+
+const arr = [1, 2, 3, 4, 5];
+
+const newArr = arr.map((element) => {
+  return element * 2;
+});
+
+console.log(newArr);
+
+```
+
+You should see the `newArr` logged in the console. This is the `new Array` with the `elements` of the `arr` `Array` multiplied by `2`.
+
+We, can use this `map` method to `iterate` over the `products` `Array` and `return` a new `Array` with the `Product` components.
+
+So, let's make a new array of products and use the `map` method to `iterate` over the `products` `Array` and `return` a new `Array` with the `Product` components.
+
+```js
+
+// ProductList.js
+import React from "react";
+import Product from "./components/Product";
+
+const products = [
+  {
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+  },
+  {
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+  },
+  {
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+  },
+]; // Array of Objects
+
+const newProducts = products.map((product) => {
+  return <Product {...product} />;
+}); // Using the map method to iterate over the products Array
+
+const ProductList = () => {
+  return (
+    <div>
+      {newProducts} {/* Returning the new Array */}
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
