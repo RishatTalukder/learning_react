@@ -705,7 +705,7 @@ export default ProductList;
 
 ```
 
-#### Using the Spread Operator
+### Using the Spread Operator
 
 Spread operator is a new feature in `ES6` that allows an `iterable` to expand in places where `0+ arguments` are expected. It's like `rest parameters` but for `Arrays` and `Objects`.
 
@@ -825,4 +825,66 @@ export default ProductList;
 ```
 
 Now everything should be working fine. If you start your app by running `npm start` in your terminal, you should see the `Product List` with the new products on the screen.
+
+### Making the Product Component More dynamic using Array of Objects
+
+The `Product List` component is now a little bit dynamic and we can change a product detail by changing the `product object(product1, product2, product3)` in the `ProductList` component. But we can make it more dynamic by using an `Array of Objects`.
+
+Because when we are using a `web app`, most of the time data is coming from a `database` or an `API`. And the data is in the form of an `Array of Objects`. 
+
+A huge issue in the previous approach is that we have to create a new `product object` for every product. This is not how a `real life` `Product List` works. A `real life` `Product List` has `n` number of products and we can't create a new `product object` for every product.
+
+
+So, what we need is a way to store the `product objects` in an `Array` and pass them as `Props` to the `Product` component. This is where an `Array of Objects` comes in.
+
+So, let's make the `Product List` component more dynamic by using an `Array of Objects`.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+
+const products = [
+  {
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+  },
+  {
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+  },
+  {
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+  },
+]; // Array of Objects
+
+const ProductList = () => {
+  return (
+    <div>
+      <Product {...products[0]} />
+      <Product {...products[1]} />
+      <Product {...products[2]} />
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+
+Now, we have an `Array of Objects` named `products` with the same `Properties` as the `Attributes` we were passing as `Props` earlier. But issue is still not resolved. We are still passing the `product objects` 1 by 1 to the `Product` component. And we cannor realisticly make `<Product {...products[0...n]} />` for every product. So, we need some process to do this repeatedly.
+
+### Using the `map` method
+
+The `map` method is used to `iterate` over an `Array` and `return` a new `Array`. The `map` method takes a `callback function` as an `argument` and `calls` the `callback function` for every `element` in the `Array`.
+
+> Callback functions are `Functions` that are passed as `Arguments` to another `Function`
+
+Simpy, the `map method` is a for loop for `Arrays` that can apply a function to every element of the `Array` and return a new `Array` with the results.
+
+So, as we cannot use any `statements` or `loops` inside `JSX`, we can use the `map` method to `iterate` over the `products` `Array` and `return` a new `Array` with the `Product` components.
 
