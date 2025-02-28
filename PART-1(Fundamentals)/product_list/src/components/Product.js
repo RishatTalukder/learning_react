@@ -1,12 +1,16 @@
 import React from "react";
 
-const Product = (props) => {
-  console.log(props);
+const Product = ({ name, price, image, description, showDescription }) => {
+  
+
   return (
     <div>
-      <h1>Image</h1>
-      <h2>{props.name}</h2>
-      <p>Price: ${props.price}</p>
+      <img src={image} alt={name} />
+      <h2>{name}</h2>
+      <p>Price: ${price}</p>
+      <button
+      onClick={() => showDescription(description)}
+      >show description</button>
     </div>
   );
 };

@@ -971,3 +971,611 @@ export default ProductList;
 
 ```
 
+> Now Here have a new array of products named `newProducts` that is created by using the `map` method to iterate over the `products` `Array` and `return` a new `Array` with the `Product` components.
+
+Now, we add this new array as a `JSX` expression in the `ProductList` component. This will render the `Product` components for every product in the `products` `Array`.
+
+Now, if you start your app by running `npm start` in your terminal, you should see the `Product List` with the new products on the screen.
+
+There you go, We have a dynamic array of products that can be changed by changing the `products` `Array`. But there is a small detail left. That is the `key` prop.
+
+### The `key` prop
+
+The `key` prop is a special `prop` that you need to include when creating `lists` of `elements`. The `key` prop is used by `React` to identify which items have changed, are added, or are removed. The `key` prop should be a `unique` `String` or a `Number`.
+
+No big issues will arrise if you don't include the `key` prop. But it's a good practice to include the `key` prop when creating `lists` of `elements`.
+
+So, let's add the `key` prop to the `Product` components.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+
+const products = [
+  {
+    id: 1,
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+  },
+  {
+    id: 2,
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+  },
+  {
+    id: 3,
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+  },
+]; // Array of Objects
+
+const newProducts = products.map((product) => {
+  return <Product key={product.id} {...product} />;
+}); // Using the map method to iterate over the products Array
+
+const ProductList = () => {
+  return (
+    <div>
+      {newProducts} {/* Returning the new Array */}
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+We add the `key` prop to the outermost `element` of the callback function in the `map` method. In this case, the outermost `element` is the `Product` component itself. So, we add the `key` prop to the `Product` component.
+
+And we are done. We have finally made the `Product List` component a little bit dynamic by using an `Array of Objects` and the `map` method.
+
+### An easy task for you to do
+
+Now, that you have successfully made the `Product List` component a little bit dynamic, I have a task for you.
+
+- The Product List component kind of messy with the `newProducts` array and calling the `Product` component. So, try to make the `Product List` component more clean by using the `map` method inside the `JSX` expression.
+
+- Make a new folder named `data` in the `src` folder and create a new file named `products.js`. In this file, create an `Array of Objects` named `products` with the `id`, `name`, and `price` of the products. Then import this `Array of Objects` in the `ProductList` component and use it to render the `Product` components.
+
+- Add some more Products to the `products` `Array` and see if the `Product List` component renders the new products on the screen.
+
+Try it yourself before seeing the solutions below.
+
+### Solution
+
+So, let's start by making a new folder named `data` in the `src` folder. In this folder, create a new file named `products.js`. In this file, write the following code.
+
+```js
+
+// src/data/products.js
+
+const products = [
+  {
+    id: 1,
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+  },
+  {
+    id: 2,
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+  },
+  {
+    id: 3,
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+  },
+  {
+    id: 4,
+    name: "Samsung 970 EVO Plus 1TB",
+    price: "12,000",
+  },
+  {
+    id: 5,
+    name: "Gigabyte B550 AORUS PRO",
+    price: "15,000",
+  },
+  {
+    id: 6,
+    name: "Cooler Master MasterBox MB511",
+    price: "5,000",
+  },
+  {
+    id: 7,
+    name: "Corsair RM750x",
+    price: "10,000",
+  },
+]; // Array of Objects
+
+export default products; // don't forget to export the products Array.
+
+```
+
+> Remember to export the `products` `Array` so that you can import it in the `ProductList` component.
+
+Now, go to the `ProductList` component and import the `products` `Array` from the `products.js` file and also use the `map` method to iterate over the `products` `Array` and `return` a new `Array` with the `Product` components.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+import products from "./data/products"; // Importing the products Array
+
+const ProductList = () => {
+  return (
+    <div>
+      {products.map((product) => (
+        <Product key={product.id} {...product} />
+      ))}
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+Now we have cleaned up the `Product List` component by using the `map` method inside the `JSX` expression along with a new `Array of Objects` named `products` in the `data` folder.
+
+
+We finally have a dynamic `Product List` component that can be changed by changing the `products` `Array` in the `products.js` file. It's looks clean and well organized. 
+
+Time to start `destroying` it... Just kidding. 
+
+If you followed me for this long, You should have noticed that I left a specific attribute in the `Product` component untouched. That is the `Image` attribute. We will be adding the `Image` attribute to the `Product` component in the next part.
+
+## Working with Images in React
+
+Working with images can be very tricky in `React`. But it's not that hard. You just need to know how to do it.
+
+There are three ways we can add images to a `React` app.
+
+- Using a link to the image.
+- Storing the image in the `public` folder.
+- Importing the image in the `Component` from the `src` folder.
+
+### Using a link to the image
+
+The easiest way to add an image to a `React` app is by using a link to the image. You can copy a link to any image for this example. I will be using the following link to an image.
+
+```html
+
+https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj
+
+```
+
+> Please do not use it... It's a link to my youtube profile picture. You can select any picture of youre choosing.
+
+Now, let's add this image to the `Product` component.
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = ({ name, price }) => {
+  return (
+    <div>
+      <img src='https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj' alt='Product Image' /> {/* Using the img tag to add the image */}
+      <h2>{name}</h2>
+      <p>Price: ${price}</p>
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+You should see the image rendered on the screen multiple times. But for each product, the same image is rendered. 
+
+In this way we have to copy links of pictures for evey product add that to the `product` object. This is not going to be a optimal solution.
+
+But before going the optimal solution, let's add the new `Image` attribute to the `products` `Array` in the `products.js` file.
+
+```js
+
+// products.js
+
+const products = [
+  {
+    id: 1,
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+    image: "https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj",
+  },
+  {
+    id: 2,
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+    image: "https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj",
+  },
+  {
+    id: 3,
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+    image: "https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj",
+  },
+  {
+    id: 4,
+    name: "Samsung 970 EVO Plus 1TB",
+    price: "12,000",
+    image: "https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj",
+  },
+  {
+    id: 5,
+    name: "Gigabyte B550 AORUS PRO",
+    price: "15,000",
+    image: "https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj",
+  },
+  {
+    id: 6,
+    name: "Cooler Master MasterBox MB511",
+    price: "5,000",
+    image: "https://yt3.ggpht.com/hqJ9sbzMZ2my
+vUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj",
+  },
+  {
+    id: 7,
+    name: "Corsair RM750x",
+    price: "10,000",
+    image: "https://yt3.ggpht.com/hqJ9sbzMZ2myvUbb0HE5PJ71PP9YsW8xoKsXrKFTJ0oHvE4Ryl6bDeIKMj77lX05MfBHGudZOIQ=s176-c-k-c0x00ffffff-no-rj",
+  },
+]; // Array of Objects
+
+export default products;
+
+```
+
+> I just copied the same link for every product. You can add different links for every product.
+
+And now we make it dynamic by gitting the image property from the product object.
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = ({ name, price, image }) => {
+  return (
+    <div>
+      <img src={image} alt='Product Image' /> {/* Using the img tag to add the image */}
+      <h2>{name}</h2>
+      <p>Price: ${price}</p>
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+Now we have a dynamic settup for the image. Let's move to the next method.
+
+### Storing the image in the `public` folder
+
+The second way to add an image to a `React` app is by storing the image in the `public` folder. 
+
+In the beginning of this Project, I told you that the `public` folder is the `root` of the `React` app. There is a single `index.html` file in the `public` folder that is the `root` of the `React` app. And that works as the main html where we can add the `link` to the `stylesheet` and the `script` tags to the `React` app, etc.
+
+So, if you store an image in the `public` folder, you can access it by using the `public` folder as the `root`. 
+
+Step 1: Make a folder named `images` in the `public` folder.
+Step 2: Download 1 or 2 images and add them to the `images` folder.
+Step 3: Add the `image path` to the `image` property of the `products` `Array` in the `products.js` file.
+
+```js
+
+// products.js
+
+const products = [
+  {
+    id: 1,
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+    image: "/images/img1.jpg",
+  },
+  {
+    id: 2,
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+    image: "/images/img2.jpg",
+  },
+  {
+    id: 3,
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+    image: "/images/img3.jpg",
+  },
+  ..... // rest of the products
+]; // Array of Objects
+
+export default products;
+
+```
+
+Here is a trick question for you. Why are we using '/images/img1.jpg' even thought the image is in a completely different folder outisde the src folder?
+
+> /images/img1.jpg is a relative path. As all the html and js files are compiled into a single file in the public folder, all the paths are relative to the public folder. So, even if we are in the src folder, we can access the images folder by using the /images/img1.jpg path.
+
+The image should have loaded in the browser. 
+
+This is a very good way to add images to a `React` app. But not efficient. Just think about it. We are storing the images in the `public` folder. And the `public` folder is the `root` of the `React` app. So, the images are loaded every time the app is loaded. This can slow down the app.
+
+### Importing the image in the `Component` from the `src` folder
+
+The third way to add an image to a `React` app is by importing the image in the `Component / JS object` from the `src` folder.
+
+This is the most efficient way to add images to a `React` app. Because the images are only loaded when the `Component` is loaded. This can speed up the app.
+
+Step 1: Cut the images from the `images` folder in the `public` folder and paste them in the `src` folder.
+Step 2: Import the images in the `products.js` file and add the `imported` images to the `image` property of the `products` `Array`.
+
+```js
+
+// products.js
+
+import img1 from "../images/img1.jpg"; // Importing the image
+import img2 from "../images/img2.jpg"; // Importing the image
+import img3 from "../images/img3.jpg"; // Importing the image
+
+const products = [
+  {
+    id: 1,
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+    image: img1, // Using the imported image
+  },
+  {
+    id: 2,
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+    image: img2, // Using the imported image
+  },
+  {
+    id: 3,
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+    image: img3, // Using the imported image
+  },
+  ..... // rest of the products
+
+]; // Array of Objects
+
+export default products;
+
+```
+
+> I here I used the relative path to the images folder to the data folder where the products.js file is located. Because the two folders are in the same level. I need to go back one level to access the images folder.
+
+> You can name the imported images anything you want. I named them img1, img2, img3, etc. You can name them anything you want. Try it yourself to name them something else.
+
+Now, we have imported the images in the `products.js` file and added the `imported` images to the `image` property of the `products` `Array`. 
+
+We don't really need to change anything in the `Product` component. The image should have loaded in the browser.
+
+And this is the most efficient way to add images to a `React` app. From now on we will be using this method to add images to the `Product` component.
+
+### An easy task for you to do
+
+Now, that you have successfully added images to the `Product` component, I have a task for you.
+
+- Try to add images for all the products in the `products` `Array` in the `products.js` file. And see if the `Product List` component renders the new products with the new images on the screen.
+
+- Try to add a new `Attribute` to the `Product` component named `description`. Then add the `description` to the `products` `Array` in the `products.js` file. And see if the `Product List` component renders the new products with the new `description` on the screen.
+
+> if you want want to use my image folder you can just download this from my github repository. [Download Images](https://github.com/RishatTalukder/learning_react)
+
+Try it yourself before looking at the solutions below.
+
+### Solution
+
+So, let's start by adding images and a new `Attribute` named `description` to the `products` `Array` in the `products.js` file.
+
+```js
+
+import img1 from "../images/img1.jpg";
+import img2 from "../images/img2.jpg";
+import img3 from "../images/img3.jpg";
+import img4 from "../images/img4.png";
+import img5 from "../images/img5.png";
+import img6 from "../images/img6.png";
+import img7 from "../images/img7.png";
+
+const products = [
+  {
+    id: 1,
+    name: "AMD Ryzen 5 5600X",
+    price: "11,500",
+    image: img1,
+    description: "A powerful 6-core processor for gaming and productivity.",
+  },
+  {
+    id: 2,
+    name: "NVIDIA RTX 3060",
+    price: "45,000",
+    image: img2,
+    description: "A high-performance graphics card for gaming and rendering.",
+  },
+  {
+    id: 3,
+    name: "Corsair Vengeance RGB Pro 16GB",
+    price: "6,500",
+    image: img3,
+    description: "High-speed RGB RAM for enhanced gaming performance.",
+  },
+  {
+    id: 4,
+    name: "Samsung 970 EVO Plus 1TB",
+    price: "12,000",
+    image: img4,
+    description: "A fast and reliable NVMe SSD for quick data access.",
+  },
+  {
+    id: 5,
+    name: "Gigabyte B550 AORUS PRO",
+    price: "15,000",
+    image: img5,
+    description: "A feature-rich motherboard for AMD Ryzen processors.",
+  },
+  {
+    id: 6,
+    name: "Cooler Master MasterBox MB511",
+    price: "5,000",
+    image: img6,
+    description: "A stylish and spacious mid-tower case with excellent airflow.",
+  },
+  {
+    id: 7,
+    name: "Corsair RM750x",
+    price: "10,000",
+    image: img7,
+    description: "A reliable and efficient 750W power supply unit.",
+  },
+]; // Array of Objects
+
+export default products;
+
+```
+
+We have added images and a new `Attribute`. Let's see if the `Product List` component renders the new products with the new images and the new `description` on the screen.
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = ({ name, price, image, description }) => { // Adding the description
+  return (
+    <div>
+      <img src={image} alt='Product Image' />
+      <h2>{name}</h2>
+      <p>Price: ${price}</p>
+      <p>
+        <small>{description}</small>
+      </p> {/* Adding the description */}
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+Looks Good. We have a `Product List` component that renders the new products with the new images and the new `description` on the screen, we have a `product` list that has the details and `products` component that renders the details. But there are still two basic things I haven't talked about. That is the `children` `Props` and the `prop drilling`.
+
+I'll talk about `children` `Props` later but let's talk about `prop drilling` now.
+
+## Prop Drilling
+
+We have use props to pass data from a `parent` component to a `child` component. But what if we have a `grandchild` component that needs the data. This is where `prop drilling` comes in.
+
+`Prop drilling` is the process of passing `Props` from a `parent` component to a `grandchild` component by passing the `Props` through the `child` component.
+
+That's a lot of `Props`. But it's the same concept as passing `Props` from a `parent` component to a `child` component. I but I will show you a example by passing a `function` as a `Props` from a `parent` component to a `grandchild` component. Yes, you can pass a `function` as a `Props`, in `React`.🫥
+
+### Passing a function as a `Props`
+
+We made a new attribute named `description` in the `products` `Array` in the `products.js` file. Now, I want to make a button that shows the `description` of the product when clicked. So, let's go to the `Product` component and add a button that shows the `description` of the product when clicked.
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = ({ name, price, image, description }) => {
+  const showDescription = () => {
+    alert(description); // Showing the description in an alert
+  }; // A function that shows the description
+
+  return (
+    <div>
+      <img src={image} alt='Product Image' />
+      <h2>{name}</h2>
+      <p>Price: ${price}</p>
+      <button onClick={showDescription}>Show Description</button> {/* Adding a button that shows the description */}
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+This is a simple button that shows the `description` of the product in an `alert` when clicked. But what if we don't have a function in the `Product` component that shows the `description`, what if the function is in the `ProductList` component.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+import products from "./data/products";
+
+const ProductList = () => {
+  const showDescription = (description) => {
+    alert(description); // Showing the description in an alert
+  }; // A function that shows the description
+
+  return (
+    <div>
+      {products.map((product) => (
+        <Product key={product.id} {...product} showDescription={showDescription} /> {/* Passing the showDescription function as a Props */}
+      ))}
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+> We have a function named `showDescription` in the `ProductList` that takes a `description` as an `argument` and shows the `description` in an `alert`. Be careful with the naming of the function. This is a `function` that shows the `description` of the product so the name should start with a `lowercase` letter.
+
+> Then we pass the `showDescription` function as a `Props` to the `Product` component. We can pass a `function` as a `Props` by adding the `function` as a `property` of the `object` we are passing as `Props`.
+
+Noe we can call the `showDescription` function in the `Product` component by using the `showDescription` `Props`.
+
+```js
+
+// Product.js
+import React from "react";
+
+const Product = ({ name, price, image, description, showDescription }) => { // Adding the showDescription function
+  
+
+  return (
+    <div>
+      <img src={image} alt={name} />
+      <h2>{name}</h2>
+      <p>Price: ${price}</p>
+      <button
+      onClick={() => showDescription(description)} {/* Calling the showDescription as an arrow function */}
+      >show description</button>
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+> In the `onClick` event handler, we are calling the `showDescription` function as an `arrow function` because the onClick event handler expects a `function`. That function is actiavated when the button is clicked. So, no need to call the function using `()`. But our function take a `description` as an `argument`. So, we need to pass the `description` as an `argument` to the `showDescription` function. 
+
+> The arrow function acts as a `wrapper` for the `showDescription` function. It takes the `description` as an `argument` and passes it to the `showDescription` function. And the button is `clicked`, the `arrow function` is called and the `showDescription` function is called with the `description` as an `argument`.
+
+Now If you want you cna make another Component just for the button and pass the function as a prop to that component and then call the function from that component. This is called `prop drilling`.
+
+I'll leave the drilling part for you to do. 
+
+> NOTE: PROP DRILLING = `BAD`.
+
