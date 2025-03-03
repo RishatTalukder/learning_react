@@ -1,12 +1,15 @@
-import React from 'react';
-import ProductList from './ProductList';
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading";
+import './style.css';
 
 const App = () => {
-    return (
-      <>
-        <ProductList />
-      </>
-    );
-  };
+  return (
+    <>
+      <Heading />
+      <ProductList />
+    </>
+  );
+};
 
 export default App;

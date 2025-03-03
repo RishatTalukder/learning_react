@@ -1579,3 +1579,253 @@ I'll leave the drilling part for you to do.
 
 > NOTE: PROP DRILLING = `BAD`.
 
+### An easy task for you to do
+
+- Undo the prop drilling and make the button in the `Product` component that shows the `description` of the product when clicked.
+
+We finally have everything ready. We can now start To do some Styling to the app.
+
+## Styling in React
+
+I was a little afraid to talk about `Styling` in `React` because i'm a bad designer. It's actually one of my core weaknesses. I know CSS but the design part is not my thing. So, I use a small framework called `Bootstrap` for my projects. So, We will be learning to use a little bit of `css`, but a whole lot of `Bootstrap`.
+
+### CSS in React
+
+Just like `vanilla` `HTML`, you can use `CSS` in `React` in 3 ways.
+
+- Inline CSS
+- Internal CSS
+- External CSS
+
+### Inline CSS
+
+`Inline CSS` is the process of adding `CSS` to a `React` `Element` using the `style` `attribute`. You can add `CSS` to a `React` `Element` by adding the `style` `attribute` to the `Element` and setting the `value` of the `style` `attribute` to a `JavaScript` `Object`. Let's make the name of the product `red` using `Inline CSS`.
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = ({ name, price, image, description, showDescription }) => {
+  const showDescription = () => {
+    alert(description);
+  }; // after undoing the prop drilling
+
+  return (
+    <div>
+      <img src={image} alt={name} />
+      <h2 style={{ color: "red" }}>{name}</h2> {/* Adding Inline CSS as a JavaScript Object instead of a String */}
+      <p>Price: ${price}</p>
+      <button onClick={showDescription}>Show Description</button>
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+Let's break it down:
+
+- We added the `style` `attribute` to the `h2` `Element`.
+- We cannot add `CSS` as a `String` in `JSX`. We have to add `CSS` as a `JavaScript` `Object`.
+- And we also cannot write `vanilla` `js` in `JSX`. We have to use `expression` or `{}` to write `JavaScript` `Objects`.
+- So, we write `{ color: "red" }` inside the `{}` expression to add `CSS` as a `JavaScript` `Object`.
+
+This should turn the title of the product `red`. 
+
+### Internal CSS
+
+`Internal CSS` is the process of adding `CSS` to a `React` `Component` using the `style` `attribute` of the `Component`. You can add `CSS` to a `React` `Component` by adding the `style` `attribute` to the `Component` and setting the `value` of the `style` `attribute` to a `JavaScript` `Object`. Let's make a new Component named `Heading` and import it in the `ProductList` component.
+
+```js
+
+// scr/components/Heading.js
+import React from "react";
+
+const Heading = () => {
+  return (
+    <div>
+      <h1>Product List</h1>
+      <p>CHECK OUT THIS AMAZING PRODUCTS THAT I DON'T OWN</p>
+    </div>
+  );
+};
+
+export default Heading;
+
+```
+
+> I just made a simple `Heading` `Component` that has a `h1` `Element` with the text `Product List` and a `p` `Element` with the text `CHECK OUT THIS AMAZING PRODUCTS THAT I DON'T OWN`.
+
+Now, let's add this `Heading` `Component` to the `App` component right above the `ProductList` component.
+
+```js
+
+// App.js
+
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading"; // Importing the Heading Component
+
+const App = () => {
+  return (
+    <div>
+      <Heading /> {/* Adding the Heading Component */}
+      <ProductList />
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+> I added the `Heading` `Component` to the `App` component.
+
+```js
+
+// Heading.js
+import React from "react";
+
+const center = {
+  textAlign: "center", // Adding Internal CSS as a JavaScript Object
+  margin: "20px 0",
+};
+
+const Heading = () => {
+  return (
+    <div style={center}> {/* Adding the style attribute to the div Element */}
+      <h1>Product List</h1>
+      <p>CHECK OUT THIS AMAZING PRODUCTS THAT I DON'T OWN</p>
+    </div>
+  );
+};
+
+export default Heading;
+
+```
+
+> This should center the `Heading` `Component` in the `ProductList` component.
+
+As you can see the stylling is done in a `JavaScript` `Object`. The `key` of the `Object` is the `CSS` `Property` and the `value` of the `Object` is the `CSS` `Value`. Then we can add the `Object` to the `style` `attribute` of the `Element` as a `value`. That's it!!! But there is a small issue. 
+
+The naming of the `CSS` `Properties` is a little bit different. The `CSS` `Properties are written in `camelCase` instead of `kebab-case`(the normal css naming). For example, `text-align` is written as `textAlign`, `margin-top` is written as `marginTop`, etc.
+
+This is because you cannot use `-` in a `JavaScript` `Object` key. So, you have to use `camelCase` instead of `kebab-case`.
+
+Here is a list of some `CSS Properties` and their `camelCase` `counterparts` for your reference.
+
+| CSS Property | camelCase |
+| ------------ | --------- |
+| text-align   | textAlign |
+| margin-top   | marginTop |
+| margin-right | marginRight |
+| margin-bottom| marginBottom |
+| margin-left  | marginLeft |
+| padding-top  | paddingTop |
+| padding-right| paddingRight |
+| padding-bottom| paddingBottom |
+| padding-left | paddingLeft |
+| font-size    | fontSize |
+| font-weight  | fontWeight |
+
+> Moral of the story: if the `CSS` `Property` has a `-`, replace the `-` with a capital letter.
+
+Now time for the last type of styling.
+
+### External CSS
+
+`**STEP 1**`: Remove All the `Internal CSS` and `Inline CSS` from the `Product` and `Heading` `Components`.
+
+`**STEP 2**`: Create a new file named `styles.css` in the `src` folder.
+
+`**STEP 3**`: Add the `CSS` to the `styles.css` file.
+
+```css
+
+/* styles.css */
+
+.center {
+  text-align: center;
+  margin: 20px 0;
+}
+
+```
+
+`**STEP 4**`: Import the `styles.css` file in the `App.js` file.
+
+```js
+
+// App.js
+
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading";
+import "./styles.css"; // Importing the styles.css file
+
+const App = () => {
+  return (
+    <div>
+      <Heading />
+      <ProductList />
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+`**STEP 5**`: Add the `center` `class` to the `div` `Element` in the `Heading` `Component`.
+
+```js 
+
+// Heading.js
+
+import React from "react";
+
+const Heading = () => {
+  return (
+    <div className="center"> {/* Adding the center class to the div Element */}
+      <h1>Product List</h1>
+      <p>CHECK OUT THIS AMAZING PRODUCTS THAT I DON'T OWN</p>
+    </div>
+  );
+};
+
+export default Heading;
+
+```
+
+> We added the `center` `class` to the `div` `Element` in the `Heading` `Component`.
+
+> In vanilla `HTML`, we use the `class` `attribute` to add a `class` to an `Element`. But in `React`, we use the `className` `attribute` to add a `class` to an `Element`. You can try using the `class` `attribute` in `React`. It should work but it might break in the future on later versions of `React`.
+
+That's it. Now, we can just write css in the `styles.css` file and use the `classNames` in the `React` components to apply the styles.
+
+Here's a list of some `vanilla` `HTML` `Elements` and their `React` `counterparts` for your reference.
+
+| HTML Element | React Element |
+| ------------ | ------------- |
+| class        | className     |
+| for          | htmlFor       |
+| tabindex     | tabIndex      |
+| onclick      | onClick       |
+| onmouseover   | onMouseOver   |
+| onmouseout    | onMouseOut    |
+| onkeydown     | onKeyDown     |
+| onkeyup       | onKeyUp       |
+| onfocus       | onFocus       |
+| onclick       | onClick       |
+
+> Just make it camel case and you are good to go. But if you cannot find the `React` `counterpart` of an `HTML` `attribute`, just write the `HTML` `attribute`, NO BIG DEAL.
+
+That's it!!! I have reached my limit of designer skills. I hope you can do better than me But we need to style the `Product` component. 
+
+## BOOOOOOOOTSTRAAAAAAAP
+
+As I'm a `lower mid` level front-end developer and I have a `monkey` brain, a `0 iq`, a `peanut`, a `stick` and a `dummy potato` for a brain, when it comes to `design`, I use `Bootstrap` for my day to day bad `UI` designs. I will not say `UX` because when I make a `UI` there no suck thing as `experience`. It's just a `User Interface`.
+
+### What is Bootstrap?
