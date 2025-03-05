@@ -56,11 +56,10 @@ This will start the app in your default browser. You can also open the app in yo
 
 # The Process of Learning React
 
-I don't like to `memorize` things. I like to `understand` it, thr work flow, how data is getting changed and loaded onto our screen. So, I think Nothing is better than learning by making projects. So, I'll be making small projects in every part of this series and will try my best to make every project related to the topic of that part. So, As part one is about the basics of react, I'll be making some basic projects in this part. Like these `Three` projects:
+I don't like to `memorize` things. I like to `understand` it, thr work flow, how data is getting changed and loaded onto our screen. So, I think Nothing is better than learning by making projects. So, I'll be making small projects in every part of this series and will try my best to make every project related to the topic of that part. So, As part one is about the basics of react, I'll be making some basic projects in this part. Like these `Two` projects:
 
 - Product List.
 - Landing Page.
-
 
 So, let's get started with the first one.
 
@@ -1607,7 +1606,7 @@ Just like `vanilla` `HTML`, you can use `CSS` in `React` in 3 ways.
 
 import React from "react";
 
-const Product = ({ name, price, image, description, showDescription }) => {
+const Product = ({ name, price, image, description}) => {
   const showDescription = () => {
     alert(description);
   }; // after undoing the prop drilling
@@ -1829,3 +1828,461 @@ That's it!!! I have reached my limit of designer skills. I hope you can do bette
 As I'm a `lower mid` level front-end developer and I have a `monkey` brain, a `0 iq`, a `peanut`, a `stick` and a `dummy potato` for a brain, when it comes to `design`, I use `Bootstrap` for my day to day bad `UI` designs. I will not say `UX` because when I make a `UI` there no suck thing as `experience`. It's just a `User Interface`.
 
 ### What is Bootstrap?
+
+`Bootstrap` is a `CSS` `Framework` that is used to make `responsive` and `fast` `UI/UX` designs. It is a `CSS` `Framework` that has a lot of `pre-built` `CSS` `Classes` that you can use. 
+
+
+### How to use Bootstrap in React?
+
+#### 1. Using a CDN link
+
+There are many ways you can add `Bootstrap` to a `React` app. But the most common way is by using a `CDN` link. You can add the `CDN` link to the `index.html` file in the `public` folder.
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    
+    <!-- CDN link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+    
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+
+```
+
+> I added the `CDN` link to the `index.html` file in the `public` folder. This should add `Bootstrap` to the `React` app.
+
+After adding the `CDN` link to the `index.html` file, the app font and some of the styles should have changed. 
+
+#### 2. Downloading the Bootstrap files 
+
+You can also download the `Bootstrap` files and add them to the `src` folder. You can download the `Bootstrap` files from the `Bootstrap` website. [Download Bootstrap](https://getbootstrap.com/)
+
+After downloading the `Bootstrap` files, you will have to import the `CSS` file in the `App` component just like we did with the `styles.css` file.
+
+```js
+
+// App.js
+
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading";
+import "./bootstrap-5.3.3-dist/css/bootstrap.min.css"; // Importing the Bootstrap CSS file
+
+const App = () => {
+  return (
+    <div>
+      <Heading />
+      <ProductList />
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+> This should have the same effect as adding the `CDN` link to the `index.html` file in the `public` folder.
+
+Now, we can use the `Bootstrap` `Classes` in the `React` `Components` to style the `UI`.
+
+#### 3. Using npm
+
+You can also install `Bootstrap` using `npm`. You can install `Bootstrap` using the following command.
+
+```bash
+
+npm install bootstrap
+
+```
+
+After installing `Bootstrap` using `npm`, you can import the `Bootstrap` `CSS` file in the `App` component just like we did with the `styles.css` file.
+
+```js
+
+// App.js
+
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading";
+import "bootstrap/dist/css/bootstrap.min.css"; // Importing the Bootstrap CSS file
+
+const App = () => {
+  return (
+    <div>
+      <Heading />
+      <ProductList />
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+> This should have the same effect as adding the `CDN` link to the `index.html` file in the `public` folder.
+
+> A small info dump: `Bootstrap` is a `CSS` `**Framework**` that means it has a lot of `pre-built` `CSS` `Classes` that you can use to style the `UI`. So, it has to work with `js`  too. 
+
+So, if you look at the `bootstrap` `zip` file you downloaded from the official `Bootstrap` website, you will see a `js` folder after extracting the `zip` file. This folder contains the `Bootstrap` `js` files that you can use to add `Bootstrap` `js` to the `React` app.
+
+So, it's a good practice to import both the `CSS` and the `js` files of `Bootstrap` in the `App` component.
+
+##### Downloaded Bootstrap files
+
+```js
+
+// App.js
+
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading";
+import "./bootstrap-5.3.3-dist/css/bootstrap.min.css"; // Importing the Bootstrap CSS file
+import "./bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"; // Importing the Bootstrap js file
+
+// rest of the code
+.....
+
+```
+
+##### Bootstrap using npm
+
+```js
+
+// App.js
+
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading";
+import "bootstrap/dist/css/bootstrap.min.css"; // Importing the Bootstrap CSS file
+import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Importing the Bootstrap js file
+
+// rest of the code
+.....
+
+```
+
+> `Bootstrap.min.css and Bootstrap.bundle.min.js` are the minified versions of the `Bootstrap` `CSS` and `js` files that has all the `Bootstrap` `Classes` and `js` functions.
+
+Now, we can use the `Bootstrap` `Classes` in the `React` `Components` to style the `UI`.
+
+There is still another method to use `Bootstrap` in `React`. But I will use it in the next project.
+
+### Using a Different Font From Font Source
+
+[Font Source](https://fontsources.com/) is a website that has a lot of `free` `fonts` that you can use in your projects. It's easy and simple to use. You can use the `CDN` or download the `font` files or use `npm` to install the `font` files. 
+
+I like the `Open Sans` `font`. So, let's install the `Open Sans` `font` using `npm`.
+
+```bash
+
+npm install @fontsource-variable/open-sans
+
+```
+
+> use `@fontsource-variable/` before the `font` name to install the `font` using `npm`.
+
+Now, we can just add the `font` to the `styles.css` file.
+
+```css
+
+/* styles.css */
+
+body {
+  font-family: "Open Sans", sans-serif; 
+}
+
+/* remove other styles */
+
+```
+
+Now, we import this in the `index.js` file.
+
+```js
+
+// index.js
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+import './style.css'; // Importing the styles.css file
+
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+```
+
+> This should change the font of the `App` component to the `Open Sans` `font`.
+
+That's it!!! Now, we have all the things we need for the stylling. Let's start by styling the `Product` component.
+
+### Finally stylling the Component
+
+As I said earlier I'm not a stylist. SO, I won't be explaining the `CSS` `Classes` of `Bootstrap`. I will just show you how to use them.
+
+I hope you removed all the other stylling from the `Product` component and `styles.css` file.
+
+#### Heading
+
+Let's get started. First the header, let's make the `heading` `center` using `Bootstrap`.
+
+```js
+
+// Heading.js
+
+import React from "react";
+
+const Heading = () => {
+  return (
+    <div className="text-center"> {/* Adding the text-center class to the div Element */}
+      <h1>Product List</h1>
+      <p>CHECK OUT THIS AMAZING PRODUCTS THAT I DON'T OWN</p>
+    </div>
+  );
+};
+
+export default Heading;
+
+```
+
+> text-center is a Bootstrap class that centers the text.
+
+I want to add some `margin` to the `heading`. Let's add the `mb-4` class to the `div` `Element`.
+
+```js
+
+// Heading.js
+
+import React from "react";
+
+const Heading = () => {
+  return (
+    <div className="text-center mt-4"> {/* Adding the mb-4 class to the div Element */}
+      <h1>Product List</h1>
+      <p>CHECK OUT THIS AMAZING PRODUCTS THAT I DON'T OWN</p>
+    </div>
+  );
+};
+
+export default Heading;
+
+```
+
+> `mt-4` is a Bootstrap class that adds `margin-top` to the `Element`. it goes from `1` to `5`. `1` is the smallest and `5` is the largest.
+
+#### Product List
+
+Now, let's style the `Product List` component. I want to add some `padding` to the `Product List` component. Let's add the `p-4` class to the `div` `Element`.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+import products from "./data/products";
+
+const ProductList = () => {
+
+  return (
+    <div className="p-4"> {/* Adding the p-4 class to the div Element */}
+      {products.map((product) => (
+        <Product key={product.id} {...product}/>
+      ))}
+    </div>
+  );
+};
+
+export default ProductList;
+
+```
+
+> `p-4` is a Bootstrap class that adds `padding` to the `Element`. it goes from `1` to `5`. `1` is the smallest and `5` is the largest.
+
+In the `starTech` `Product` component, we saw there were 5 products in a row. So, let's make 5 products in a row using `Bootstrap`.
+
+```js
+
+// ProductList.js
+
+import React from "react";
+import Product from "./components/Product";
+import products from "./data/products";
+
+const ProductList = () => {
+  return (
+    <div className="container"> {/* Adding the container class to the div Element */}
+      <div className="p-4 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 g-4"> {/* making 5 products in a row */}
+        {products.map((products, index) => {
+          return (
+            <div className="col" key={products.id}> {/* Adding the col class to the div Element */}
+              <Product  {...products} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default ProductList;
+
+
+```
+> `container` is a Bootstrap class that makes a container. It's css equivalent to `margin: 0 auto; width: 100%;`
+> `row` is a Bootstrap class that makes a row
+> `row-cols-1` is a Bootstrap class that makes 1 column in a row
+> `row-cols-md-2` is a Bootstrap class that makes 2 columns in a row on medium devices
+> `row-cols-lg-3` is a Bootstrap class that makes 3 columns in a row on large devices
+> `row-cols-xl-5` is a Bootstrap class that makes 5 columns in a row on extra-large devices
+> `g-4` is a Bootstrap class that adds `gap` between the columns
+> `col` is a Bootstrap class that makes a column.
+
+You can try to change the screen size and see the number of products in a row change.
+
+Before addign styles to the Product Component. If you look closely I removed the `key` prop from the `Product` component and added it to the `div` `Element` that wraps the `Product` component. This is because the `key` prop should be added to the `parent` `Element` of the `Component` that is being rendered in a `loop`. As we are making the Product Components the new 
+
+But the Products in the row doesn't look good at all. Tha't because the Product component is not styled. Now the styling of the `Product` component in called `Card`. Let's make the `Product` component a `Card`.
+
+#### Product
+
+To make the `Product` component a `Card`, we have to add the `card` `class` to the `div` `Element` in the `Product` component and that will give us a `super power` to style the `Product` component as a `Card`
+
+```js
+
+// Product.js
+
+import React from "react";
+
+const Product = ({ name, price, image, description }) => {
+  const showDescription = () => {
+    alert(description);
+  };
+
+  return (
+    <div className="card h-100 rounded-1"> {/* Adding the card class to the div Element */}
+      <img src={image} alt={name} 
+      className="card-img-top p-3" 
+      /> {/* Adding the card-img-top class to the img Element */}
+      <div className="card-body"> {/* Adding the card-body class to the div Element */}
+        <h5 className="card-title">{name}</h5> {/* Adding the card-title class to the h2 Element */}
+        <p className="card-text">Price: ${price}</p> {/* Adding the card-text class to the p Element */}
+        <button
+          className="btn btn-primary"
+          onClick={showDescription}
+        >
+          Show Description
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+> `card` is a Bootstrap class that makes the `Element` a `Card`.
+> `h-100` is a Bootstrap class that makes the `Element` `100%` `height`.
+> `rounded-1` is a Bootstrap class that makes the `Element` `rounded` with a `radius` of `0.25rem`.
+> `card-img-top` is a Bootstrap class that makes the `Element` the `top` `image` of the `Card`.
+> `card-body` is a Bootstrap class that makes the `Element` the `body` of the `Card`.
+> `card-title` is a Bootstrap class that makes the `Element` the `title` of the `Card`.
+
+And we are done... 
+
+We have successfully Finished styling our `Product List` app. I know it's not a 100% copy of the `starTech` website product list. But it's a good start. You can add more `Bootstrap` `Classes` to make it look more like the `starTech` website product list.
+
+### A Final Touch
+
+Go to [bootswatch](https://bootswatch.com/) and download a `Bootstrap` `Theme` that you like. Then add the `Bootstrap` `Theme` to the `App` component.
+
+Bootswatch is a website that has a lot of `Bootstrap` `Themes` that you can use in your projects. You can download the `Bootstrap` `Theme` from the `Bootswatch` website. [Download Bootswatch](https://bootswatch.com/)
+
+Also you can install the `Bootswatch` `Theme` using `npm`.
+
+```bash
+
+npm install bootswatch
+
+```
+
+Now, scroll through the `Bootswatch` `Themes` and download the one you like or import the one you like in the `App` component.
+
+```js
+
+// App.js
+
+import React from "react";
+import ProductList from "./ProductList";
+import Heading from "./components/Heading";
+// we dont need the bootstrap css file anymore because we are using the bootswatch theme
+// import "bootstrap/dist/css/bootstrap.min.css";  
+import "bootswatch/dist/lux/bootstrap.min.css"; // Importing the Bootswatch Theme
+import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Importing the Bootstrap js file
+
+const App = () => {
+  return (
+    <div>
+      <Heading />
+      <ProductList />
+    </div>
+  );
+};
+
+export default App;
+
+```
+
+> The bootswatch theme `css` file has all the `Bootstrap` `Classes`, so we can remove the `Bootstrap` `css` file from the `App` component.
+> I like the `lux` `theme`. You can import the `theme` you like by `import "bootswatch/dist/<theme-name>/bootstrap.min.css";`.
+
+
+![alt text](image-3.png)
+
+Not bad, huh?
+
+That's it!!! We, are done with the `Product List` app. We have successfully styled the `Product List` app using `Bootstrap` and `Bootswatch`.
+
+But, is it over? No, it's not over. What is a app if it's not deployed. So, let's deploy the app.
+
+## Deploying the App
+
+### Building the App
+
+Before deploying the app, we have to build the app. We were working on the `development` server. Which is totally not suitable for `production`. So, we have to `compile` the app to `production` `build`. We will turn the `react app` into vanilla `HTML`, `CSS` and `JS` files.
+
+To build the app, you can use the following command.
+
+```bash
+
+npm run build
+
+```
+
+> This command will create a `build` folder in the `root` directory of the `React` app. This folder will contain all the `HTML`, `CSS` and `JS` files of the `React` app.
+
+### Deploying the App
+
+We can deploy the app in many ways. `Github` provides a very beginner friendly way to deploy the app. You can deploy the app using `Github Pages`. You can also deploy the app using `Netlify`, `Vercel`, `Heroku`, etc.
+
+#### Deploying the App using Github Pages
+
+1. Create a new `repository` on `Github`.
+2. Push the `React` app to the `repository`.
+3. Go to the `Settings` of the `repository`.
+4. Scroll down to the `Github Pages` section.
+5. Select the `branch` you want to deploy.
+6. Click on the `Save` button.
+7. Wait for a few minutes and the app should be deployed.
+
