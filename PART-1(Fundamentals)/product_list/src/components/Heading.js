@@ -7,7 +7,7 @@ import React from "react";
 
 const Heading = () => {
   return (
-    <div className="text-center mt-4">
+    <div className="text-center pt-4">
       <h1>Product List</h1>
       <p>CHECK OUT THIS AMAZING PRODUCTS THAT I DON'T OWN</p>
     </div>

@@ -2254,11 +2254,10 @@ Not bad, huh?
 
 That's it!!! We, are done with the `Product List` app. We have successfully styled the `Product List` app using `Bootstrap` and `Bootswatch`.
 
-But, is it over? No, it's not over. What is a app if it's not deployed. So, let's deploy the app.
+But, is it over? No, it's not over.
 
-## Deploying the App
 
-### Building the App
+## Building the App
 
 Before deploying the app, we have to build the app. We were working on the `development` server. Which is totally not suitable for `production`. So, we have to `compile` the app to `production` `build`. We will turn the `react app` into vanilla `HTML`, `CSS` and `JS` files.
 
@@ -2272,17 +2271,90 @@ npm run build
 
 > This command will create a `build` folder in the `root` directory of the `React` app. This folder will contain all the `HTML`, `CSS` and `JS` files of the `React` app.
 
-### Deploying the App
+AAAANNNND We are done. We have successfully built the `Product List` app. We have successfully styled the `Product List` app using `Bootstrap` and `Bootswatch`. 
 
-We can deploy the app in many ways. `Github` provides a very beginner friendly way to deploy the app. You can deploy the app using `Github Pages`. You can also deploy the app using `Netlify`, `Vercel`, `Heroku`, etc.
+## Deploying the App
 
-#### Deploying the App using Github Pages
+There are many ways you can deploy the app. You can deploy the app to `Netlify`, `Vercel`, `GitHub Pages`, `Heroku`, etc. I Think netlify is the easiest way to deploy a react app. Just follow the steps in the link below. And you are good to go.
 
-1. Create a new `repository` on `Github`.
-2. Push the `React` app to the `repository`.
-3. Go to the `Settings` of the `repository`.
-4. Scroll down to the `Github Pages` section.
-5. Select the `branch` you want to deploy.
-6. Click on the `Save` button.
-7. Wait for a few minutes and the app should be deployed.
+- [Deploying a React App to Netlify](https://www.netlify.com/blog/2016/07/22/deploy-react-apps-in-less-than-30-seconds/)
+
+
+And we are done with the our `PRODUCT LIST` app. Time to move on to the next project.
+
+# Project 2: Landing Page
+
+This Project is like a `Portfolio` website of your own. It's a simple `Landing Page` that has a `Header`, `About`, `Services`, `Portfolio`, `Contact` and a `Footer`.
+
+This project is a little bit more complex than the `Product List` app. But it's a good start to make a `Portfolio` website of your own.
+
+Let's get started.
+
+## Setting Up the Project
+
+Like our first project we need to make a new `React` app. But this time we will not use the `create-react-app` command, instead we will use the `Vite` command.
+
+### What is Vite?
+
+`Vite` is a `build tool` that is used to build `React, Vue, Svelte, etc` apps. It's a `fast` and `lightweight` `build tool` that is used to build `modern` `web` `apps`. It's a `zero-config` `build tool` that is used to build `React` `apps` without any `configuration`.
+
+Don't worry too much... 
+
+It's `99.85%` the same as the `create-react-app` command and the `app structure` is also `99.85%` similar to the `create-react-app` command. So, you won't have any problem using the `Vite` command.
+
+### How to use Vite?
+
+You can use the `Vite` command to create a new `React` app using the following command.
+
+```bash
+
+npm create vite@latest
+
+```
+
+This command will prompt you to enter the name of the `app`, select the `framework` you want to use, select the `variant` you want to use, etc. Just follow the steps and you will have a new `React` app in no time.
+
+
+### Creating the App
+
+Open the terminal or the command prompt and navigate to the directory where you want to create the new `React` app. I like to create the app in `desktop`, It would be noice if you had a dedicated folder for your projects. Now, run the following command to create a new `React` app.
+
+```bash
+
+npm create vite@latest
+
+```
+
+Fill in the details and you will have a new `React` app in no time.
+
+- `**Name**`: `landing-page`
+- `**Framework**`: `React`
+- `**Variant**`: `React`
+
+And the app folder should be created in the directory you selected. Now, navigate to the `landing-page` folder and open the app in your favorite code editor.
+
+```bash
+
+cd landing-page
+
+```
+
+Run the following command to start the `development` server.
+
+```bash
+
+npm install
+
+```
+
+> You have to run the `npm install` because vite doesn't install the `node_modules` folder when creating a new `React` app. After running the `npm install` command, you can now start the `development` server. This command is a little bit different from the `create-react-app` command. But it's the same as the `npm start` command.
+
+```bash
+
+npm run dev
+
+```
+
+And we are ready to start building the `Landing Page` app.
+
 
