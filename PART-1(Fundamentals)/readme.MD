@@ -2357,4 +2357,8 @@ npm run dev
 
 And we are ready to start building the `Landing Page` app.
 
+> The vite server will be served at `http://localhost:5173`, instead of the normal `http://localhost:3000`.
 
+## Landing Page Analysis
+
+Before Building the `Landing Page` app, we need to have a clear idea of what we are going to build. We are building a `Portfolio` website for a `developer`. 
