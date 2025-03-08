@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/fira-mono": "^5.2.5",
+    "bootstrap": "^5.3.3",
+    "bootswatch": "^5.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

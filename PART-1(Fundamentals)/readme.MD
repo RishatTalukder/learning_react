@@ -2359,6 +2359,165 @@ And we are ready to start building the `Landing Page` app.
 
 > The vite server will be served at `http://localhost:5173`, instead of the normal `http://localhost:3000`.
 
-## Landing Page Analysis
 
-Before Building the `Landing Page` app, we need to have a clear idea of what we are going to build. We are building a `Portfolio` website for a `developer`. 
+***Another Information Dump***
+
+Recently, `vite` also updated their `React` `version` to `19.0.0`. Which is kind of annoying because I intended to use the `React` `18` throughout the series. But it's okay. The `React` `19` is not that different from the `React` `18`. So, I'll not be downgrading the `React` `version` to `18`. I'll be using the `React` `19` throughout the series. I love challenges, So, I think this will be a good challenge for me to use the `React` `19` throughout the series. What's the worst that could happen? Breaking the app in the middle of a very important project? I don't think so. I'm a `pro` at breaking things. If the app breaks, it'll be my fault. 
+
+### The App Structure
+
+There are very small differences between the `create-react-app` command and the `vite` command. 
+
+- The `index.html` file is not in the `public` folder anymore. It's in the `root` directory of the app. 
+- Almost everything is the same in the `src` folder, except the `index.js` file is called `main.jsx` file.
+- Also we will write `React` `components` in the `jsx` `file extension` instead of the `js` `file extension`.
+
+> `.jsx` is the `React` `file extension` that is used to write `React` `components`. It's the same as the `.js` `file extension`. But it's used to write `React` `components`.
+
+Nothing else is changed. The `app structure` is the same as the `create-react-app` command.
+
+## Building the Project
+
+### Analyzing the Project
+
+The `Landing Page` app is a simple `Portfolio` website for a `mid` level `developer`.
+
+So, What do we need in the `Landing Page` app?
+
+- We need a `Header` that has a `Navigation` `Menu`.
+- We need an `Introduction` `Section` that has a `Profile` `Image` and a `Description`.
+- We need a `Projects` `Section` that has a `List` of `Projects` the `developer` has worked on.
+- Skills `Section` that has a `List` of `Skills` the `developer` has.
+- A `Contact` `Section` that has a `Form` to `contact` the `developer`.
+- A `Footer` that has the `Social` `Media` `Links`.
+
+That's it. We have all the things we need for the `Landing Page` app. Let's start building the app.
+
+## GETTING the APP READY
+
+### Removing the Boilerplate Code
+
+Delete these following files from the `src` folder.
+- `assets` folder
+- `index.css` file
+- `app.css` file
+
+Replace the code in the `App.jsx` file with the following code.
+
+```js
+
+import React from 'react'
+
+function App() {
+
+  return (
+    <>
+      <h1>
+        Hello World
+      </h1>
+    </>
+  )
+}
+
+export default App
+
+```
+
+- Don't forget to remove the `import` statement of the `index.css` file from the `main.jsx` file.
+
+The main.jsx file should look like this.
+
+```js
+
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+```
+
+Go to the `index.html` file and you can set the `title` of the `app` to `Landing Page` from `Vite + React App`.
+
+```html
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LaNdInG pAgE</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
+```
+
+- Now, we need to install `Bootstrap` and `Bootswatch` for stylling the `Landing Page` app and also the `font awesome` for the `icons`.
+
+```bash
+
+npm install bootstrap bootswatch
+
+```
+
+For the `font awesome` icons, you can use the following CDN link in the `index.html` file.
+
+```html
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- link for font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LaNdInG pAgE</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
+```
+
+> I added the `font awesome` `CDN` link to the `index.html` file. This should add the `font awesome` `icons` to the `Landing Page` app.
+
+Now, can import the `Bootstrap` `CSS` and `js` files in the `App` component.
+
+```js
+
+// App.jsx
+
+import React from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+
+function App() {
+
+  return (
+    <>
+      <h1>
+        Hello World
+      </h1>
+    </>
+  )
+}
+
+export default App
+
+```
+

@@ -1,0 +1,16 @@
+<svg
+    width="200px"
+    height="200px"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <circle cx="12" cy="12" r="10" fill="#0d6efd"/> <!-- Background Circle -->
+    <circle cx="12" cy="8" r="3" fill="white"/> <!-- Head -->
+    <path 
+        d="M7 18c0-3 2-5 5-5s5 2 5 5" 
+        stroke="white" 
+        stroke-width="2" 
+        stroke-linecap="round"
+    /> <!-- Body -->
+</svg>
