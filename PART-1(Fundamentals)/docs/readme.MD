@@ -1,9 +1,12 @@
-# REACT 18 (PART-1 : Basics, Rules, Syntax, and Some FUN PROJECTS)
+# REACT (PART-1 : Basics, Rules, Syntax, and Some FUN PROJECTS)
 
 - [LinkedIn](https://www.linkedin.com/in/pro-programmer/)
 - [YouTube](http://www.youtube.com/@itvaya)
 - [gtihub](https://github.com/RishatTalukder/learning_react)
 - [Gmail](talukderrishat2@gmail.com)
+- [discord](https://discord.gg/ZB495XggcF)
+
+
 
 ## What is React?
 
@@ -59,7 +62,11 @@ This will start the app in your default browser. You can also open the app in yo
 I don't like to `memorize` things. I like to `understand` it, thr work flow, how data is getting changed and loaded onto our screen. So, I think Nothing is better than learning by making projects. So, I'll be making small projects in every part of this series and will try my best to make every project related to the topic of that part. So, As part one is about the basics of react, I'll be making some basic projects in this part. Like these `Two` projects:
 
 - Product List.
+
+![alt text](image-10.png)
 - Landing Page.
+
+![alt text](image-9.png)
 
 So, let's get started with the first one.
 
@@ -230,7 +237,7 @@ You will see three `ProductList` components on the screen. Whith out writing the
 
 So, now you see how `react` makes a developer's life easier by allowing to nest components inside other components. This is the power of `React`.
 
-# Some debugging tips
+## Some debugging tips
 
 Before moving on with this project there is some issues that you may face while working with `React`. The `first issue` I think is the `auto refresh` of the app. 
 
@@ -262,7 +269,7 @@ Now, that you have successfully created your first component and used it in your
 - Create a new component for the `App` component we made to reactify the `Product List` text. Than import the `ProductList` component in the `App` component and finally import the `App` component in the `index.js` file and render it.
 
 
-# React Fragments
+## React Fragments
 
 If you have done the task above, you may have noticed that the `Product List` text is wrapped inside a `div`. This is because `React` doesn't allow to return multiple elements from a `Functional Component`. for example:
 
@@ -2521,3 +2528,863 @@ export default App
 
 ```
 
+> I added the `Bootstrap` `CSS` and `js` files to the `App` component. This should add the `Bootstrap` `styling` to the `Landing Page` app.
+
+And we are done with the `setup`. Now, we can start building the `Landing Page`.
+
+### Making The Components
+
+We need to make the following `Components` for the `Landing Page` app.
+
+- `Header` Component
+- `Introduction` Component
+- `Projects` Component
+- `Skills` Component
+- `Contact` Component
+
+Let's start by making the `Header` `Component`.
+
+#### Header Component
+
+Create a new folder named `components` in the `src` folder. Then create a new file named `Header.jsx` in the `components` folder.
+
+> `.jsx` because this is a `React` `Component`.
+
+```js
+
+// Header.jsx
+
+import React from 'react'
+
+const Header = () => {
+  return (
+    <h1> 
+      Header Component
+    </h1>
+  )
+}
+
+export default Header
+
+```
+
+Then we can import the `Header` `Component` in the `App` component.
+
+```js
+
+// App.jsx
+
+import React from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import Header from './components/Header'
+
+function App() {
+
+  return (
+    <>
+      <Header />
+    </>
+  )
+}
+
+export default App
+
+```
+
+Now, What should be the Header of the `Landing Page` app?
+
+It's simple. The `Header` should have a `Navigation` `Menu` that has all the links to the other `Sections` of the `Landing Page` app.
+
+- Introduction
+- Skills
+- Projects
+- Contact
+
+So, As a great UI/UX designer, I will copy a navigation template from the `Bootstrap` website and paste it in the `Header` `Component`.
+
+Bootstrap official website has some great [templates](https://getbootstrap.com/docs/5.3/examples/) that you can use in your projects. You can copy the `Navigation` `Menu` template from the `Bootstrap` website and paste it in the `Header` `Component`.
+
+![alt text](image-4.png)
+
+I'm going to use the `navigation` `menu` you can see above. You can directly take the code from the `inspect` tool of the browser or just copy my code.
+
+```js
+
+<div class="container">
+    <header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+      </ul>
+    </header>
+  </div>
+
+```
+
+Now, we can add the `navigation` `menu` to the `Header` `Component`.
+
+```js
+
+// Header.jsx
+
+import React from 'react'
+
+const Header = () => {
+  return (
+    <div className="container">
+      <header className="d-flex justify-content-center py-3">
+        <ul className="nav nav-pills">
+          <li className="nav-item"><a href="#" className="nav-link active" aria-current="page">Home</a></li>
+          <li className="nav-item"><a href="#" className="nav-link">Features</a></li>
+          <li className="nav-item"><a href="#" className="nav-link">Pricing</a></li>
+          <li className="nav-item"><a href="#" className="nav-link">FAQs</a></li>
+          <li className="nav-item"><a href="#" className="nav-link">About</a></li>
+        </ul>
+      </header>
+    </div>
+  )
+}
+
+export default Header
+
+```
+
+> Remember to change the `class` to `className` in the `React` `Components`.
+
+Now, we edit this `navigation` `menu` to have the links to the other `Sections` of the `Landing Page` app.
+
+```js
+import React from "react";
+
+const Header = () => {
+  return (
+    <div className="container">
+      <header className="d-flex justify-content-center py-3">
+        <ul className="nav nav-pills">
+          <li className="nav-item">
+            <a href="#introduction" className="nav-link">
+              Introduction
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="#skills" className="nav-link">
+              Skills
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="#projects" className="nav-link">
+              Projects
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="#contact" className="nav-link">
+              Contact
+            </a>
+          </li>
+        </ul>
+      </header>
+    </div>
+  );
+};
+
+export default Header;
+
+```
+
+Now, we should have a nice `navigation` `menu` in the `Header` `Component` that has the links to the other `Sections` of the `Landing Page` app.
+
+Also, added the href to the `Sections` of the `Landing Page` app. 
+
+> `href="#introduction"` is a `link` to the `Introduction` `Section` of the `Landing Page` app. # is used to link to the `id` of the `Element`. So, when we make the `Introduction` `Section`, we have to give the `id` of the `Element` as `introduction`.
+
+That's it. We have successfully made the `Header` `Component` for the `Landing Page` app. Now, we can move on to the `Introduction` `Section`.
+
+#### Introduction Component
+
+Create a new file named `Introduction.jsx` in the `components` folder.
+
+```js 
+
+// Introduction.jsx
+
+import React from 'react'
+
+const Introduction = () => {
+  return (
+    <h1>
+      Introduction Component
+    </h1>
+  )
+}
+
+export default Introduction
+
+```
+
+Now, we can import the `Introduction` `Component` in the `App` `Component`.
+
+```js
+
+// App.jsx
+
+import React from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import Header from './components/Header'
+import Introduction from './components/Introduction'
+
+function App() {
+
+  return (
+    <>
+      <Header />
+      <Introduction />
+    </>
+  )
+}
+
+export default App
+
+```
+
+What should `introducton` `section` have?
+
+I think the `Introduction` `Section` should have a `Profile` `Image` and a `Description` of the `developer`. That's it.
+
+Here is another info dump. The Introduction of any website has a `UI/UX` name. It's called the `Hero` `Section`. The `Hero` `Section` is the first `Section` of the website that has the `Introduction` of the website. Let's go back to the `[official Bootstrap examples](https://getbootstrap.com/docs/5.3/examples/)` and see if we can find a `Hero` `Section` template.
+
+There is a hero section templates in the `Bootstrap` website and I like the `responsive left-aligned hero with image` template. 
+
+![alt text](image-5.png)
+
+I like this `Hero` `Section` template. In the left side there is a description and in the right side there is an image. I think this is a good `Hero` `Section` for a `portfolio` website.
+
+Let's copy the code from the `Bootstrap` website and paste it in the `Introduction` `Component`.
+
+```js
+
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="bootstrap-themes.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      </div>
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Responsive left-aligned hero with image</h1>
+        <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+```
+
+Now, we make it a `React` `Component`.
+
+```js
+
+// Introduction.jsx
+
+import React from 'react'
+
+const Introduction = () => {
+  return (
+    <div className="container col-xxl-8 px-4 py-5">
+      <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div className="col-10 col-sm-8 col-lg-6">
+          <img src="bootstrap-themes.png" className="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy" />
+        </div>
+        <div className="col-lg-6">
+          <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">Responsive left-aligned hero with image</h1>
+          <p className="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+          <div className="d-grid gap-2 d-md-flex justify-content-md-start">
+            <button type="button" className="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
+            <button type="button" className="btn btn-outline-secondary btn-lg px-4">Default</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Introduction
+
+```
+
+Doing the same thing as the `Header` `Component`. 
+
+but before making the next `Section`, I want to make it a little dynamic and customizable. So, let's make a `data` `directory` in the `src` folder and create a new file named `navData.js` in the `data` folder. We will store basic navigation data in this file. For now, we can store the `name` and `description` of the `developer` in this file. Also the `image` of the `developer`.
+
+```js
+
+// navData.js
+
+// import av from '../avaters/av.svg'
+import image from '../images/image.png'
+
+const navData = {
+  brand: "MD. Rishat Talukder",
+  //image: av,
+  image: image,
+  Introduction:
+    "I'm a Lower Mid Level Web Developer. But an OG machine learning enthusiast (I know, but I can't do it). I'm an Information Technology graduate with a sub-par GPA. I'm Unemployed, So So Sooooooo Broke. Oww, Btw I'm a youtuber too. I'm a leetcode problem solver with  a rating of 1512. I also have a Discord server where I take porgramming classes. I'm proficient in Django, Tensorflow, React, and Bootstrap. I like to build things, And I 'm going to build the biggest bangladeshi Progremmers community. I'm determined to make a lasting impact in the tech industry.",
+};
+
+export default navData;
+
+```
+
+Now, we can import the `navData` in the `Introduction` `Component` and make it dynamic.
+
+```js
+
+// Introduction.jsx
+
+import React from "react";
+import navData from "../data/navData";
+
+const Introduction = () => {
+  return (
+    <div className="container col-xxl-8 px-4 py-4" id="introduction"> {/* Adding the id to the Element */}
+      <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
+        {/* Image Section */}
+        <div className="col-10 col-sm-8 col-lg-6">
+          <img
+            src={navData.image} // Keep the avatar image path
+            className="d-block mx-lg-auto img-fluid"
+            alt="Profile Avatar"
+            width="700"
+            height="500"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Text Section */}
+        <div className="col-lg-6">
+          <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+            {navData.brand} {/* Name from navData */}
+          </h1>
+          <p className="lead">{navData.Introduction}</p>
+
+          {/* Contact Button */}
+          <div className="d-grid gap-2 d-md-flex justify-content-md-start">
+            <button
+              type="button"
+              className="btn btn-primary btn-lg px-4 me-md-2"
+            >
+              Contact Me
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Introduction;
+
+```
+
+> Also an extra change I made is changing the two buttons below the description to a single `Contact Me` button.
+
+There you go, we have a dynamic `Introduction` `Section` that has the `name`, `description` and `image` of the `developer`. 
+
+### Making the Skills Section
+
+You know the drill. 
+
+- Create a new file named `Skills.jsx` in the `components` folder.
+- Find a nice `Skills` `Section` template from the `Bootstrap` website.
+- Copy the code from the `Bootstrap` website and paste it in the `Skills` `Component`.
+- Make it a `React` `Component`.
+- Make it `dynamic` and `customizable`.
+
+I want you all to follow these steps and Try to make your own `Skills` `Section`. Take your time and try to make it as good as you can, no rush.
+
+#### Making a Features Skills Section
+
+Most of the time these lists of skill or services are called `Features` but can also be done by `cards`. I'll be using the `icon grid`.
+
+![alt text](image-6.png)
+
+html for this is:
+
+```html
+
+<div class="container px-4 py-5" id="icon-grid">
+    <h2 class="pb-2 border-bottom">Icon grid</h2>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#bootstrap"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#cpu-fill"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#calendar3"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#home"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#speedometer2"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#toggles2"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#geo-fill"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#tools"></use></svg>
+        <div>
+          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+          <p>Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+```
+
+Now, we can make it a `React` `Component`.
+
+```js
+
+// Skills.jsx
+
+import React from 'react'
+
+const Skills = () => {
+  return (
+    <div className="container px-4 py-5" id="skills">
+      <h2 className="pb-2 border-bottom">Skills</h2> {/* Title as Skills */}
+
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
+        <div className="col d-flex align-items-start">
+          <svg className="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+            <use xlinkHref="#bootstrap"></use>
+          </svg>
+          <div>
+            <h3 className="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+            <p>Paragraph of text beneath the heading to explain the heading.</p>
+          </div>
+        </div>
+        <div className="col d-flex align-items-start">
+          <svg className="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+            <use xlinkHref="#cpu-fill"></use>
+          </svg>
+          <div>
+            <h3 className="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+            <p>Paragraph of text beneath the heading to explain the heading.</p>
+          </div>
+        </div>
+        <div className="col d-flex align-items-start">
+          <svg className="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+            <use xlinkHref="#calendar3"></use>
+          </svg>
+          <div>
+            <h3 className="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+            <p>Paragraph of text beneath the heading to explain the heading.</p>
+          </div>
+        </div>
+        <div className="col d-flex align-items-start">
+          <svg className="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+            <use xlinkHref="#home"></use>
+          </svg>
+          <div>
+            <h3 className="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+            <p>Paragraph of text beneath the heading to explain the heading.</p>
+          </div>
+        </div>
+        <div className="col d-flex align-items-start">
+          <svg className="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+            <use xlinkHref="#speedometer2"></use>
+          </svg>
+          <div>
+            <h3 className="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+            <p>Paragraph of text beneath the heading to explain the heading.</p>
+          </div>
+        </div>
+        <div className="col d-flex align-items-start">
+          <svg className="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+            <use xlinkHref="#toggles2"></use>
+          </svg>
+          <div>
+            <h3 className="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
+            <p>Paragraph of text beneath the heading to explain the heading.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Skills;
+
+```
+
+We have a placeholder for the `Skills` `Section`, time to make it `dynamic`. Before making it `dynamic`, we need to find the similarities between the `Skills`. 
+
+- Every `Skill` has an `icon`.
+- Every `Skill` has a `title`.
+- Every `Skill` has a `description`.
+
+So, we can now make a new `data` file named `skillsData.js` in the `data` folder. We can store the `icon`, `title` and `description` of the `Skills` in this file.
+
+```js
+
+// skillsData.js
+
+const skillsData = [
+    {
+      icon: "fa-brands fa-bootstrap",
+      title: "Bootstrap",
+      description: "3+ years of experience in building responsive UIs.",
+    },
+    {
+      icon: "fa-brands fa-react",
+      title: "React",
+      description: "2+ years of experience in developing dynamic web apps.",
+    },
+    {
+      icon: "fa-brands fa-python",
+      title: "Django",
+      description: "2+ years of experience in backend development with Django.",
+    },
+    {
+      icon: "fa-solid fa-brain",
+      title: "TensorFlow",
+      description: "1 year of hands-on experience in deep learning models.",
+    },
+    {
+      icon: "fa-solid fa-code",
+      title: "LeetCode",
+      description: "Solved 500+ problems, currently rated 1512.",
+    },
+    {
+      icon: "fa-brands fa-js",
+      title: "JavaScript",
+      description: "3+ years of experience in writing clean, efficient JS code.",
+    },
+    {
+      icon: "fa-brands fa-git-alt",
+      title: "Git & GitHub",
+      description: "3+ years of version control experience with Git.",
+    },
+    {
+      icon: "fa-brands fa-node-js",
+      title: "Node.js",
+      description:
+        "1.5+ years of experience in backend development with Node.js.",
+    },
+  ];
+
+export default skillsData;
+
+```
+
+So, time to make the `Skills` `Section` `dynamic`. We will use the `map` method to loop through the `skillsData` and display the `Skills`. In the process we need to make some changes too.
+
+> The bootstrap icons don't work in the `React` `Components`. That's why I'm using the `font awesome` `icons` instead of the `bootstrap` `icons`.
+
+```js
+
+// Skills.jsx
+
+import React from "react";
+import skillsData from "../data/skillsData";
+
+const Skills = () => {
+  return (
+    <div id="skills">
+      <div class="container px-4 py-5" id="icon-grid">
+        <h2 class="pb-2 border-bottom">Skills</h2> {/* Title as Skills */}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5"> {/* Grid */}
+          {/** Looping through the skillsData */}
+          {skillsData.map((skill, index) => (
+            <div key={index} className="col d-flex align-items-start"> {/* Single Skill */}
+              <i className={`${skill.icon} text-primary fs-3 me-3`}></i> {/* loading the icon from the skillsData */}
+              <div>
+                <h3 className="fw-bold mb-0 fs-4 text-body-emphasis">
+                  {skill.title} {/* loading the title from the skillsData */}
+                </h3>
+                <p>{skill.description}</p> {/* loading the description from the skillsData */}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Skills;
+
+```
+
+AAAAAANNNNDDDDD, Done. 
+
+### Making the Projects Section
+
+Time for the final touch.
+
+The most important part of a portfolio website is the `Projects showcase`. The `Projects` `Section` should have a `List` of `Projects` and the `technologies` used in the `Projects` along with the `descriptions and links`.
+
+There are two common ways to showcase the `Projects` in a `portfolio` website.
+
+- Use Over the top `responsive` `animated` `cards` to showcase the `Projects`.
+
+- Use a `simple` `list` of `features` to showcase the `Projects`.
+
+In bootstrap templates there are both of these in the [features examples](https://getbootstrap.com/docs/5.3/examples/features/)
+
+- Custom `cards` for each `Project`.
+
+![alt text](image-7.png)
+
+- Features with List of `Projects`.
+
+![alt text](image-8.png)
+
+You can use both, but I'll not be using the `cards` for the `Projects` `Section`. I'll be using the `list` of `features` to showcase the `Projects`.
+
+I think up until now you know what to and how to do it. And you can Find my implementation in the `github` repo. So, i wont be explaining and I would leave it to you understand what I did on your own. 
+
+SOOOOOOOOOOOOOOO... 
+
+- Build the `projectsData.js` file in the `data` folder. Write your own projects according to the template. ORRRRR, you can just use this....
+
+
+```js
+
+const projectData = [
+  {
+    title: "Tic-Tac-Toe Game",
+    description:
+      "A simple Tic-Tac-Toe game built using HTML, CSS, and JavaScript. It features a two-player mode and basic AI opponent.",
+    link: "https://github.com/your-profile/tic-tac-toe",
+    features: [
+      {
+        icon: "fas fa-gamepad",
+        title: "Fun Gameplay",
+        description: "Engaging two-player mode with an AI option.",
+      },
+      {
+        icon: "fas fa-code",
+        title: "Simple Codebase",
+        description: "Beginner-friendly JavaScript logic for easy learning.",
+      },
+      {
+        icon: "fas fa-mobile-alt",
+        title: "Responsive Design",
+        description: "Works on both desktop and mobile devices.",
+      },
+      {
+        icon: "fas fa-trophy",
+        title: "Win/Loss Detection",
+        description:
+          "Automatically detects game results and highlights the winner.",
+      },
+    ],
+  },
+  {
+    title: "Portfolio Website",
+    description:
+      "A beginner-friendly personal portfolio website built using React and Bootstrap. Showcases projects, skills, and contact info.",
+    link: "https://your-portfolio-site.com",
+    features: [
+      {
+        icon: "fas fa-laptop-code",
+        title: "Modern UI",
+        description: "Clean and minimal design for a professional look.",
+      },
+      {
+        icon: "fas fa-server",
+        title: "Deployed Online",
+        description: "Live on GitHub Pages or Netlify for easy access.",
+      },
+      {
+        icon: "fas fa-user",
+        title: "Contact Form",
+        description: "Simple form for visitors to reach out via email.",
+      },
+      {
+        icon: "fas fa-project-diagram",
+        title: "Project Showcase",
+        description:
+          "Displays projects with live links and GitHub repositories.",
+      },
+    ],
+  },
+  {
+    title: "House Price Predictor",
+    description:
+      "A simple machine learning project using Python and Scikit-Learn to predict house prices based on various features.",
+    link: "https://github.com/your-profile/house-price-predictor",
+    features: [
+      {
+        icon: "fas fa-chart-line",
+        title: "Predictive Model",
+        description: "Uses linear regression to estimate house prices.",
+      },
+      {
+        icon: "fas fa-database",
+        title: "Real-World Data",
+        description: "Trained on real housing market datasets.",
+      },
+      {
+        icon: "fas fa-tools",
+        title: "Scikit-Learn",
+        description: "Built using Python, Pandas, and Scikit-Learn libraries.",
+      },
+      {
+        icon: "fas fa-robot",
+        title: "Future Scope",
+        description:
+          "Can be extended to use deep learning models for better accuracy.",
+      },
+    ],
+  },
+];
+
+export default projectData;
+
+```
+
+This is for the `Projects` with the `features` list template...
+
+I would heavily recommend you to try the `cards` template for the `Projects` `Section`. 
+
+Time to make the `Projects` `component`.
+
+```js
+
+import React from "react";
+import projectData from "../data/projectData";
+
+const Projects = () => {
+  return (
+    <div className="container px-4 py-5">
+      <h2 className="pb-2 border-bottom">Projects</h2>
+
+      {projectData.map((project, index) => (
+        <div
+          key={index}
+          className="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5"
+        >
+          {/* Left Side: Project Info */}
+          <div className="col d-flex flex-column align-items-start gap-2">
+            <h2 className="fw-bold text-body-emphasis">{project.title}</h2>
+            <p className="text-body-secondary">{project.description}</p>
+            <a
+              href={project.link}
+              className="btn btn-primary btn-lg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Project
+            </a>
+          </div>
+
+          {/* Right Side: Features */}
+          <div className="col">
+            <div className="row row-cols-1 row-cols-sm-2 g-4">
+              {project.features.map((feature, idx) => (
+                <div
+                  key={idx}
+                  className="col d-flex flex-column gap-2 align-items-start"
+                >
+                  <div className="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                    <i
+                      className={`${feature.icon} p-3`}
+                      width="1em"
+                      height="1em"
+                    ></i>
+                  </div>
+                  <h4 className="fw-semibold mb-0 text-body-emphasis">
+                    {feature.title}
+                  </h4>
+                  <p className="text-body-secondary">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Projects;
+
+```
+
+> Spoiler Alert: it's the hardest part of the `Landing Page` app. 😁😁😁😁😁😁😁😁
+
+> You have to use all the Knowledge you have gained from the previous `Sections` to make the `Projects` `Section`.
+
+> I have faith in you. You can do it. 🫰🫰🫰🫰
+
+### Making the Contact Section
+
+## MAKE IT YOURSELF
+
+> it's called a footer.
+
+# Bye Bye
+
+Well that was a rough one. We learned all the fundamentals of `React` and `Bootstrap` and made **TWO PROJECTS**.
+
+I hope you learned a lot from this. Here is little extra explanation on why I left the `features` `Section` for you to understand and also the `footer` section for you to make on your own.
+
+This is because in all of my time as a developer, I have learned that there is no better way to learn than to `experiment` and `try` things `on your own`. You can learn a lot by just copying and pasting code, but you when it comes to using that knowledge to build something later on, you get the `imposter syndrome`. 
+
+> The `imposter syndrome` is a psychological pattern in which an individual doubts their skills, talents, or accomplishments and has a persistent internalized fear of being exposed as a "fraud".
+
+So, I want you to `experiment` and I believe, if you read the whole thing until the end of project 1, you can somewhat get the picture of what to do.
+
+I know most of you won't and can't do it. But the picture is there. Which patterns you need to follow, which components you need to make, how do you need to make the data files, how to make the components dynamic. 
+
+If you have those things in your mind, you will eventually be able to make the the whole `Landing Page` app on your own one day. 
+
+All you need is a little `patience`, a little `consistency` and a lot of `practice`.
+
+I hope I was able to help you in your journey to become a `React` `Developer` and this whole article was helpful to you. If it was and you want more of these articles in the future because I'll be starting the `article` on `advanced` `React` `topics` soon, you can join me on my [Discord Server](https://discord.gg/7Qb3bJ6) and follow me on my socials.
+
+# Thank you For Reading and Happy Coding 😊
