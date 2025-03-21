@@ -3,7 +3,7 @@ import projectData from "../data/projectData";
 
 const Projects = () => {
   return (
-    <div className="container px-4 py-5">
+    <div className="container px-4 py-5" id="projects">
       <h2 className="pb-2 border-bottom">Projects</h2>
 
       {projectData.map((project, index) => (

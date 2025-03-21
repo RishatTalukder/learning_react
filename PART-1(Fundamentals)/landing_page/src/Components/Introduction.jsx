@@ -5,7 +5,8 @@ const Introduction = () => {
     <div className="container col-xxl-8 px-4 py-4" id="introduction">
       <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
         {/* Image Section */}
-        <div className="col-10 col-sm-8 col-lg-6">
+        {/* image in the center */}
+        <div className="col-10 col-sm-auto col-lg-6">
           <img
             src={navData.image} // Keep the avatar image path
             className="d-block mx-lg-auto img-fluid"
