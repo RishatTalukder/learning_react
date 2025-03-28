@@ -4,10 +4,10 @@ import skillsData from "../data/skillsData";
 const Skills = () => {
   return (
     <div id="skills">
-      <div class="container px-4 py-5" id="icon-grid">
-        <h2 class="pb-2 border-bottom">Skills</h2>
+      <div className="container px-4 py-5" id="icon-grid">
+        <h2 className="pb-2 border-bottom">Skills</h2>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
           {skillsData.map((skill, index) => (
             <div key={index} className="col d-flex align-items-start">
               <i className={`${skill.icon} text-primary fs-3 me-3`}></i>

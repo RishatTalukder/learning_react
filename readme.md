@@ -14,10 +14,10 @@ Structure of this repository is like this:
 
 ```bash
 
-PART-1
+PART_1
     - Some Folders
     - readme.md
-PART-2
+PART_2
     - Some Folders
     - readme.md
  .....

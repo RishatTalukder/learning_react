@@ -3,13 +3,13 @@ import av from '../avaters/av.svg'
 const navData = {
   brand: "MD. Rishat Talukder",
   image: av,
-  links: [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Projects", path: "/projects" },
-    { name: "Skills", path: "/skills" },
-    { name: "Contact", path: "/contact" },
-  ],
+  // links: [
+  //   { name: "Home", path: "/" },
+  //   { name: "About", path: "/about" },
+  //   { name: "Projects", path: "/projects" },
+  //   { name: "Skills", path: "/skills" },
+  //   { name: "Contact", path: "/contact" },
+  // ],
   socialLinks: [
     {
       name: "GitHub",
