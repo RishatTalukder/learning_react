@@ -34,7 +34,7 @@ const Todo = () => {
           className="form-control"
           placeholder="Enter todo item..."
           style={{ maxWidth: "500px" }}
-          value={task}
+          // value={task}
           onChange={handleChange}
           name="task"
         />

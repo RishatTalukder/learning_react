@@ -1024,7 +1024,7 @@ const Todo = () => {
 export default Todo;
 ```
 
-> Now, when we click the `delete` button, the todo item should be removed from the list. 
+> Now, when we click the `delete` button, the todo item should be removed from the list.
 
 We are using the `filter` method to filter out the todo item with the `id` that we passed to the `deleteTodo` function.
 
@@ -1032,7 +1032,7 @@ I think this example will help you understand how the `filter` method works.
 
 ### Understanding the Filter method
 
-The `filter` method is a `built-in` method in `JavaScript` that is used to `filter out` elements from an `array` based on a condition. It takes a `callback`. 
+The `filter` method is a `built-in` method in `JavaScript` that is used to `filter out` elements from an `array` based on a condition. It takes a `callback`.
 
 Make a new file named `filter_example.js` in the `projects/project_2` folder and add the following code to it:
 
@@ -1047,6 +1047,7 @@ const newArr = arr.filter((item) => {
 
 console.log(newArr); // [6, 7, 8, 9, 10]
 ```
+
 > Now, run the file using `node filter_example.js` and see the output in the console. You should see an array of numbers that are greater than `5`.
 
 The `filter` methods `callback` function takes three arguments:
@@ -1055,7 +1056,7 @@ The `filter` methods `callback` function takes three arguments:
 - The second argument is the `index` of the current element.
 - The third argument is the `array` itself.
 
-Exactly like the `map` method. The only difference is that the `filter` method returns a new array with the elements that pass the condition in the callback function. 
+Exactly like the `map` method. The only difference is that the `filter` method returns a new array with the elements that pass the condition in the callback function.
 
 So, when we are using the `filter` method to filter out the todo item with the `id` that we passed to the `deleteTodo` function, we are `checking` if the `id` of the `current` todo item is not equal to the `id` that we passed to the `deleteTodo` function because we want to remove the todo item with that `id`. So, we are using the `!==` operator to check if the `id` is not equal to the `id` that we passed.
 
@@ -1063,7 +1064,7 @@ And this way the `filter` method return me an `array` without the `id` we want t
 
 This is how the `filter` method works.
 
-## The Clear All 
+## The Clear All
 
 Like the `delete` button, we can also add a `clear all` button to clear all the todo items. So, let's add a `button` below the todo list and style it with `bootstrap` classes.
 
@@ -1087,13 +1088,11 @@ const Todo = () => {
     <div className="p-5">
       <h1 className="text-center mb-5">Todo List</h1>
       <div className="d-flex flex-column align-items-center gap-3">
-
         ... {/* everything else is the same */}
-      
       </div>
       <button onClick={clearAll} className="btn btn-danger mt-3">
         Clear All
-      </button> 
+      </button>
       {/* button to clear all the todo items */}
     </div>
   );
@@ -1101,7 +1100,7 @@ const Todo = () => {
 export default Todo;
 ```
 
-> We will just `set` the `data` state variable to an empty array to clear all the todo items. 
+> We will just `set` the `data` state variable to an empty array to clear all the todo items.
 
 > Now, when we click the `clear all` button, all the todo items should be removed from the list.
 
@@ -1153,14 +1152,15 @@ const Todo = () => {
           type="text"
           className="form-control w-50"
           placeholder="Enter a todo item"
-        /> 
+          style={{ maxWidth: "500px" }} // to limit the width of the input field
+        />
         <button className="btn btn-primary">Add Todo</button>
       </div>
 
       <div className="d-flex flex-column align-items-center gap-3">
-        
+
         ...{/* everything else is the same */}
-      
+
       </div>
 
       <button onClick={clearAll} className="btn btn-danger mt-3">
@@ -1175,4 +1175,173 @@ export default Todo;
 
 > i just added a simple `input` field that takes a `text` input and a button to add the todo item and I added some `bootstrap` classes to style the input field and the button.
 
-We have the input field ready. Now, time for step 2. 
+We have the input field ready. Now, time for step 2.
+
+### Getting the value of the input field
+
+Getting the value from a input field can be a little tricky. But we just need to know the underlying concept logic behind it.
+
+Let's first figure out how can we get the value of the input field.
+
+We can use the `onChange` event to get the value of the input field.
+
+> `onChange` event is a built-in event in `JavaScript` that is triggered when the value of an input field changes. And like a `onClick` event, we can pass a function to the `onChange` event to get the value of the input field.
+
+```js {.line-numbers}
+// projects/project_2/TodoList.jsx
+import React, { useState } from "react";
+import todoData from "./todoData";
+
+const Todo = () => {
+  const [data, setData] = useState(todoData); // state variable to store the todoData array
+  const [inputValue, setInputValue] = useState(""); // state variable to store the input value
+
+  const deleteTodo = (id) => {
+    ... // everything else is the same
+  };
+
+  const clearAll = () => {
+    ... // everything else is the same
+  };
+
+
+  return (
+    <div className="p-5">
+      <h1 className="text-center mb-5">Todo List</h1>
+      {/* input field and button to add a todo item */}
+      <div className="d-flex flex-column align-items-center gap-3 mb-4">
+        <input
+          type="text"
+          className="form-control w-50"
+          placeholder="Enter a todo item"
+          style={{ maxWidth: "500px" }} // to limit the width of the input field
+          onChange={(e) => setInputValue(e.target.value)} // getting the value of the input field
+        />
+        <button className="btn btn-primary">Add Todo</button>
+      </div>
+
+      <div className="d-flex flex-column align-items-center gap-3">
+        ...{/* everything else is the same */}
+      </div>
+
+      <button onClick={clearAll} className="btn btn-danger mt-3">
+        Clear All
+      </button>
+    </div>
+  );
+};
+
+export default Todo;
+```
+
+As you can see I used the `onChange` event where I passed an `arrow` function that takes the event as an argument and in that function I used the `setInputValue` function that I created to update the `inputValue` state variable at the top of the component. So, when we type something in the input field, the `inputValue` state variable will be updated with the value of the input field.
+
+> `e` is the event object that is passed to the `onChange` event and `e.target.value` is the value of the input field.
+
+> We will always get a `event` object when we use the `onChange` event. So, we can use the `e.target.value` to get the value of the input field.
+
+> The `target` property of the event object is the element that triggered the event. So, in this case, the `target` property is the input field and the `value` property is the value of the input field.
+
+> Value of a input field will always be a string.
+
+Now, we have a state variable that stores the value of the input field. Now, we can use this value to add a todo item to the list.
+
+### Adding the todo item
+
+So, that we can get a `value` from the `input field`, we can now use this value to add a todo item to the list. So, we can make a function named `handleAdd` that will add the todo item to the list. We can just pass this function to the `onClick` attribute of the button. And then,
+
+- We need to make sure that the `inputValue` is not empty. If it is empty, we can just return from the function.
+
+- We can use the `setData` function to update the `data` state variable.
+- Than we can merge the two arrays using the `spread` operator.
+
+> Spread operator can be used as a `syntax` to merge two arrays as the `spread` operator copies the elements of the array and adds them to the new array.
+
+- We can make a `new array` with the `inputValue` and a copy of the `data` array using the spread operator.
+
+- Before that we need to make sure that the `inputValue` should also have a unique `id` and the `id` should be the last `id` of the `data` array + 1. We can manage that by getting the `length` of the `data` array and adding `1` to it. So, the `id` will be `data.length + 1`.
+
+- We can also clear the input field after adding the todo item by setting the `inputValue` state variable to an empty string.
+
+```js {.line-numbers}
+// projects/project_2/TodoList.jsx
+import React, { useState } from "react";
+import todoData from "./todoData";
+
+const Todo = () => {
+  const [data, setData] = useState(todoData); // state variable to store the todoData array
+  const [inputValue, setInputValue] = useState(""); // state variable to store the input value
+
+  const deleteTodo = (id) => {
+    ... // everything else is the same
+  };
+
+  const clearAll = () => {
+    ... // everything else is the same
+  };
+
+  const handleAdd = () => {
+    if (inputValue === "") return; // if input value is empty, return from the function
+
+    newData = {
+      id: data.length + 1, // unique id for the new todo item
+      task: inputValue, // value of the input field
+    }
+    setData((prevState) => [
+      newData, // adding the new todo item to the list
+      ...prevState, // merging the two arrays
+    ]); // adding the new todo item to the list
+    setInputValue(""); // clearing the input field
+  };
+
+  return (
+    <div className="p-5">
+      <h1 className="text-center mb-5">Todo List</h1>
+      {/* input field and button to add a todo item */}
+      <div className="d-flex flex-column align-items-center gap-3 mb-4">
+        <input
+          type="text"
+          className="form-control w-50"
+          placeholder="Enter a todo item"
+          style={{ maxWidth: "500px" }} // to limit the width of the input field
+          onChange={(e) => setInputValue(e.target.value)} // getting the value of the input field
+          value={inputValue} // setting the value of the input field
+        />
+        <button onClick={handleAdd} className="btn btn-primary">
+          Add Todo
+        </button>
+      </div>
+
+      <div className="d-flex flex-column align-items-center gap-3">
+        ...{/* everything else is the same */}
+      </div>
+
+      <button onClick={clearAll} className="btn btn-danger mt-3">
+        Clear All
+      </button>
+    </div>
+  );
+};
+
+export default Todo;
+```
+
+> Now, when we click the `add todo` button, the todo item should be added to the list and the input field should be cleared.
+
+But there is a question for you. 
+
+Why Am I passing `inputValue` to the `value` attribute of the input field?
+
+I would encourge you to try to figure it out yourself. But if you are not able to do it, I will explain it to you.
+
+Normally the value types in the input field is `controlled` by the `state` variable. So, when we type something in the input field, the value of the input field will be updated with the value of the `inputValue` state variable by default by. But this is controlled by the `value` attribute of the input field. The `value` attribute gets what's wriiten in the input field and shows it in the input field. But when we are adding the `value` attribute to the input field, we are controlling the value of the input field with the `inputValue` state variable. 
+
+So, when we are adding the `new Task` in the `todo` list we are updating the `inputValue` state variable to an empty string. But the value of the input field is set to the `previous` value because it is not a `state` variable. So, we need to set the `value` attribute of the input field to the `inputValue` state variable. This way, when we update the `inputValue` state variable, the value of the input field will also be updated with the value of the `inputValue` state variable. 
+
+Pheew! That was a lot of information. But I hope you understand how the `value` attribute works in the input field. 
+
+Now we have a working `todo` app that can add, delete and clear all the todo items. 
+
+## Recap
+
+By doing these two projects, we learned a lot about `React` and how to use the `useState` hook to manage the state of the component. We also learned about the `virtual DOM` and how it works. And we also learned about some `quirks` of `React` that you should know. But there are some other things that you should know about `useState` hook. But we cannot cover `everything` in this `project`. So, I let's move on to the `next project` and we will learn some more things about `React` in the next project.
