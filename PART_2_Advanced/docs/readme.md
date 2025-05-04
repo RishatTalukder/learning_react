@@ -1328,20 +1328,183 @@ export default Todo;
 
 > Now, when we click the `add todo` button, the todo item should be added to the list and the input field should be cleared.
 
-But there is a question for you. 
+But there is a question for you.
 
 Why Am I passing `inputValue` to the `value` attribute of the input field?
 
 I would encourge you to try to figure it out yourself. But if you are not able to do it, I will explain it to you.
 
-Normally the value types in the input field is `controlled` by the `state` variable. So, when we type something in the input field, the value of the input field will be updated with the value of the `inputValue` state variable by default by. But this is controlled by the `value` attribute of the input field. The `value` attribute gets what's wriiten in the input field and shows it in the input field. But when we are adding the `value` attribute to the input field, we are controlling the value of the input field with the `inputValue` state variable. 
+Normally the value types in the input field is `controlled` by the `state` variable. So, when we type something in the input field, the value of the input field will be updated with the value of the `inputValue` state variable by default by. But this is controlled by the `value` attribute of the input field. The `value` attribute gets what's wriiten in the input field and shows it in the input field. But when we are adding the `value` attribute to the input field, we are controlling the value of the input field with the `inputValue` state variable.
 
-So, when we are adding the `new Task` in the `todo` list we are updating the `inputValue` state variable to an empty string. But the value of the input field is set to the `previous` value because it is not a `state` variable. So, we need to set the `value` attribute of the input field to the `inputValue` state variable. This way, when we update the `inputValue` state variable, the value of the input field will also be updated with the value of the `inputValue` state variable. 
+So, when we are adding the `new Task` in the `todo` list we are updating the `inputValue` state variable to an empty string. But the value of the input field is set to the `previous` value because it is not a `state` variable. So, we need to set the `value` attribute of the input field to the `inputValue` state variable. This way, when we update the `inputValue` state variable, the value of the input field will also be updated with the value of the `inputValue` state variable.
 
-Pheew! That was a lot of information. But I hope you understand how the `value` attribute works in the input field. 
+Pheew! That was a lot of information. But I hope you understand how the `value` attribute works in the input field.
 
-Now we have a working `todo` app that can add, delete and clear all the todo items. 
+Now we have a working `todo` app that can add, delete and clear all the todo items.
 
 ## Recap
 
 By doing these two projects, we learned a lot about `React` and how to use the `useState` hook to manage the state of the component. We also learned about the `virtual DOM` and how it works. And we also learned about some `quirks` of `React` that you should know. But there are some other things that you should know about `useState` hook. But we cannot cover `everything` in this `project`. So, I let's move on to the `next project` and we will learn some more things about `React` in the next project.
+
+# Project 3: UseEffect Example(Counter Again)
+
+## UseEffect
+
+The `useEffect` hook is another `built-in` hook in `React` that is used to perform `side effects` in a functional component. Now, you might be wondering what is a `side effect`?
+
+A `side effect` is anything that is not a `pure` function. A `pure` function is a function that does not have any side effects. For example, a function that `returns a value` is a `pure` function. But a function that `updates the state` or `makes an API call` is not a `pure` function. So, we can say that a `side effect` is anything that is not a `pure` function.
+
+Sooooo, the `useEffect` hook is used to perform `side effects` in a functional component. It takes two arguments:
+
+- The first argument is a `callback` function that is executed after the component is rendered.
+
+- The second argument is an `array` of dependencies that tells `React` when to run the `callback` function.
+
+Enough of the theory. Let's see an example of how to use the `useEffect` hook in a functional component.
+
+```js {.line-numbers}
+import React, { useState, useEffect } from "react";
+
+const App = () => {
+  useEffect(() => {
+    console.log("Component mounted");
+  }, []); // empty array means that the effect will only run once when the component is mounted
+
+  return (
+    <div>
+      <h1>Hello World</h1>
+    </div>
+  );
+};
+export default App;
+```
+
+Now, start the app and see the console. You should see `Component mounted` in the console. This means that the `useEffect` hook is working and the `callback` function is executed after the component is rendered. But have you noticed something?
+
+The `useEffect` `callback` function is executed twice in the console. Because `component mounted` is printed twice in the console. This is because `React` runs the `useEffect` hook twice in `development mode` to help you find bugs in your code. But in `production mode`, it will only run once. So, don't worry about it.
+
+Let's do a small experiement. Remove the `[]` from the `useEffect` hook and see what happens.
+
+You should see `Component mounted` in the console every time the component is re-rendered. This is because the `useEffect` hook is executed every time the component is re-rendered. The `[]` is an empty array that tells `React` to only run the `callback` function once when the component is mounted.
+
+We can also pass a `state` variable to the `useEffect` hook and every time the state variable is updated, the `callback` function will be executed. So, let's make a simple counter app again but this time we will only have the increase button.
+
+## Remaking the counter app
+
+YOu know the process. Make a new folder named `project_3` in the `projects` folder and add a new file named `Counter.jsx` in the `project_3` folder. And then, add the following code to the `Counter.jsx` file:
+
+```js {.line-numbers}
+// projects/project_3/Counter.jsx
+import React, { useState, useEffect } from "react";
+const Counter = () => {
+  const [count, setCount] = useState(0); // counter variable
+
+  const increase = () => {
+    setCount((prevState) => prevState + 1); // function to increase the counter
+  };
+
+  useEffect(() => {
+    console.log("Counter updated"); // this will run every time the component is re-rendered
+  });
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1
+        className="text-center text-primary
+      display-1
+      "
+      >
+        {count}
+      </h1>
+
+      <div className="mt-1">
+        <button className="btn btn-primary mx-2" onClick={increase}>
+          increase
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Counter;
+```
+> Now, import the `Counter` component in the `App.jsx` file and render it in the `App` component.
+
+```js {.line-numbers}
+// App.jsx
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import Counter from "./projects/project_3/Counter"; // importing the Counter component
+
+function App() {
+  return (
+    <div className="container">
+      <Counter /> {/* rendering the Counter component */}
+      {/* <Todo /> */}
+    </div>
+  );
+}
+export default App;
+```
+
+Now start the development server with `npm run dev` and see the output in the browser. You should see a counter that increases when you click the `increase` button. And you should also see `Counter updated` in the console every time you click the button.
+
+Time to do another experiment.
+
+Call the `increase` function inside the `useEffect` hook and see what happens. 
+
+```js {.line-numbers}
+// projects/project_3/Counter.jsx
+import React, { useState, useEffect } from "react";
+
+const Counter = () => {
+  const [count, setCount] = useState(0); // counter variable
+
+  const increase = () => {
+    setCount((prevState) => prevState + 1); // function to increase the counter
+  };
+
+  useEffect(() => {
+    console.log("Counter updated"); // this will run every time the component is re-rendered
+    increase(); // calling the increase function inside the useEffect hook
+  });
+
+  return (
+    ... // everything else is the same
+  );
+};
+
+export default Counter;
+```
+
+This should blank the screen and you should see an `error` in the console saying `Maximum update depth exceeded` or something like that. 
+
+This is because the `useEffect` hook is executed every time the component is re-rendered and when we call the `increase` function inside the `useEffect` hook, it updates the state and causes the component to re-render again and again and again and again. This causes an infinite loop and the component keeps re-rendering until the maximum update depth is exceeded. 
+
+Not gonna lie, this scenario is waay too common in `React` and you will face this issue a lot. So, that's why we can add a `dependency` array to the `useEffect` hook to tell `React` when to run the `callback` function. And if we keep the dependency array empty, the `callback` function will only run once when the component is mounted. So, let's just add an empty array to the `useEffect` hook and see what happens.
+
+```js {.line-numbers}
+// projects/project_3/Counter.jsx
+import React, { useState, useEffect } from "react";
+
+const Counter = () => {
+  const [count, setCount] = useState(0); // counter variable
+
+  const increase = () => {
+    setCount((prevState) => prevState + 1); // function to increase the counter
+  };
+
+  useEffect(() => {
+    console.log("Counter updated"); // this will run every time the component is re-rendered
+    increase(); // calling the increase function inside the useEffect hook
+  }, []); // empty array means that the effect will only run once when the component is mounted
+
+  return (
+    ... // everything else is the same
+  );
+};
+
+export default Counter;
+```
+> Now, when you start the development server and see the output in the browser, you should see `Counter updated` in the console twice and the counter should be increased by `2` and not `1`. Like I said before, the `useEffect` hook is executed twice in `development mode` to help you find bugs in your code. But in `production mode`, it will only run once. So, don't worry about it.
+
