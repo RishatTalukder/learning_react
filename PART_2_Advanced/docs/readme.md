@@ -1451,6 +1451,8 @@ Now start the development server with `npm run dev` and see the output in the br
 
 Time to do another experiment.
 
+### Infinite loop
+
 Call the `increase` function inside the `useEffect` hook and see what happens. 
 
 ```js {.line-numbers}
@@ -1508,3 +1510,158 @@ export default Counter;
 ```
 > Now, when you start the development server and see the output in the browser, you should see `Counter updated` in the console twice and the counter should be increased by `2` and not `1`. Like I said before, the `useEffect` hook is executed twice in `development mode` to help you find bugs in your code. But in `production mode`, it will only run once. So, don't worry about it.
 
+This `empty array` is the `dependency array` that tells `React` when to run the `callback` function. And when it's empty, the `callback` function which has the `side effect` will only run once when the component is mounted or render for the first time. 
+
+Inside the `dependency` array, we can also add `state` variables and when the state variable is updated, the `callback` function will be executed.
+
+So,  `empty == only run once when the component is mounted` and `with state variable == run every time the state variable is updated`.
+
+Now, I hope you guys understand one of the use cases of the `useEffect` hook. As this was a example of accidentally creating an infinite loop I will go back to the `Counter` app and remove the `increase` function from the `useEffect` hook. And I will also add a `console.log` statement to the `increase` function to see when it is called.
+
+```js {.line-numbers}
+// projects/project_3/Counter.jsx
+import React, { useState, useEffect } from "react";
+
+const Counter = () => {
+  const [count, setCount] = useState(0); // counter variable
+
+  const increase = () => {
+    console.log("Increase function called"); // this will run every time the increase function is called
+    setCount((prevState) => prevState + 1); // function to increase the counter
+  };
+
+  useEffect(() => {
+    console.log("Counter updated"); // this will run every time the component is re-rendered
+  }, []); // empty array means that the effect will only run once when the component is mounted
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1
+        className="text-center text-primary
+      display-1
+      "
+      >
+        {count}
+      </h1>
+
+      <div className="mt-1">
+        <button className="btn btn-primary mx-2" onClick={increase}>
+          increase
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Counter;
+```
+
+## Multiple Side Effects
+
+Like I said before, the `useEffect` hook takes two arguments. The first argument is a `callback` function that is executed after the component is rendered. And the second argument is an `array` of dependencies that tells `React` when to run the `callback` function.
+
+So, by theory we can say that if we now put the `count` variable in the `dependency` array, the `callback` function will be executed every time the `count` variable is updated. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_3/Counter.jsx
+import React, { useState, useEffect } from "react";
+
+const Counter = () => {
+  const [count, setCount] = useState(0); // counter variable
+
+  const increase = () => {
+    console.log("Increase function called"); // this will run every time the increase function is called
+    setCount((prevState) => prevState + 1); // function to increase the counter
+  };
+
+  useEffect(() => {
+    console.log("Counter updated"); // this will run every time the component is re-rendered
+  }, [count]); // empty array means that the effect will only run once when the component is mounted
+
+  return (
+    ... // everything else is the same
+  );
+};
+
+export default Counter;
+```
+
+> I hace added the `count` variable to the `dependency` array. 
+
+Now, go to the server and open the console. Let's test it out. You should see `Counter updated` in the console every time you click the `increase` button or the `count` variable is updated. And now you can see that the `useEffect` hook is executed every time the `count` variable is updated. This is because we added the `count` variable to the `dependency` array. So, when the `increase` function is called, the `count` variable is updated and the `useEffect` hook `detects` that the `count` variable is updated and executes the `callback` function.
+
+But now the question is, what if we had 2 `counters` each with their own `side effects`? How can we do that?
+
+### Setting up the second counter
+
+So, let's set up the second counter inside the `Counter` component. We can just copy the `Counter` component and change the name of the `state` variable to `count2` and the `increase` function to `increase2`. And we can also change the `id` of the second counter to `2`. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_3/Counter.jsx
+import React, { useState, useEffect } from "react";
+
+const Counter = () => {
+  const [count, setCount] = useState(0); // counter variable
+  const [count2, setCount2] = useState(0); // second counter variable
+
+  const increase = () => {
+    console.log("Increase function called"); // this will run every time the increase function is called
+    setCount((prevState) => prevState + 1); // function to increase the counter
+  };
+
+  const increase2 = () => {
+    console.log("Increase2 function called"); // this will run every time the increase2 function is called
+    setCount2((prevState) => prevState + 1); // function to increase the second counter
+  };
+
+  useEffect(() => {
+    console.log("Counter updated"); // this will run every time the component is re-rendered
+  }, [count]); // empty array means that the effect will only run once when the component is mounted
+
+  useEffect(() => {
+    console.log("Counter2 updated"); // this will run every time the component is re-rendered
+  }, [count2]); // empty array means that the effect will only run once when the component is mounted
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1
+        className="text-center text-primary
+      display-1
+      "
+      >
+        {count}
+      </h1>
+
+      <div className="mt-1">
+        <button className="btn btn-primary mx-2" onClick={increase}>
+          increase
+        </button>
+      </div>
+
+      <h1
+        className="text-center text-primary
+      display-1
+      "
+      >
+        {count2}
+      </h1>
+
+      <div className="mt-1">
+        <button className="btn btn-primary mx-2" onClick={increase2}>
+          increase2
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Counter;
+```
+
+> Now, we have two counters with their own `side effects`. The first counter is `count` and the second counter is `count2`. And we have two `increase` functions to increase the counters.
+
+Now, start the development server and see the output in the browser. 
+
+You should see two counters with their own `increase` buttons. And when you click the `increase` button, you should see `Counter updated` in the console and when you click the `increase2` button, you should see `Counter2 updated` in the console and even though `re-renders` are happening for both the counters, the `useEffect` hook is executed only for the counter that is updated. 
+
+This is the power of the `useEffect` hook. We can define `isolated` side effects for each `state` variable and we can also define multiple `side effects` for the same `state` variable. And they will not interfere with each other. We can do a lot of cool things with this `useState` and `useEffect` combination. 
