@@ -1665,3 +1665,282 @@ Now, start the development server and see the output in the browser.
 You should see two counters with their own `increase` buttons. And when you click the `increase` button, you should see `Counter updated` in the console and when you click the `increase2` button, you should see `Counter2 updated` in the console and even though `re-renders` are happening for both the counters, the `useEffect` hook is executed only for the counter that is updated. 
 
 This is the power of the `useEffect` hook. We can define `isolated` side effects for each `state` variable and we can also define multiple `side effects` for the same `state` variable. And they will not interfere with each other. We can do a lot of cool things with this `useState` and `useEffect` combination. 
+
+# Fetching data with useEffect Project
+
+WEll well well, you've made it this far. No way I'm going to let you go without doing a little bit of data fetching. This is the part that will stay with you forever and this is the main basis of `React` and `web development in general`. So, let's learn how to fetch data in react using the `useEffect` hook by doing this simple `user's list project`.
+
+## Setting up the project
+
+We will start as usual. Create a new folder named `project_4` in the `projects` folder and add a new file named `Users.jsx` in the `project_4` folder and let's start by creating a simple `Users` component that will only show a `h1` tag with the text `Users List`. 
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React from "react";
+
+const Users = () => {
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1 className="text-center text-primary display-1">Users List</h1>
+    </div>
+  );
+};
+export default Users;
+```
+
+Now, we can `import` the `Users` component in the `App.jsx` file and render it in the `App` component. So, let's do that.
+
+```js {.line-numbers}
+// App.jsx
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import Users from "./projects/project_4/Users"; // importing the Users component
+
+function App() {
+  return (
+    <div className="container">
+      <Users /> {/* rendering the Users component */}
+      {/* <Counter /> */}
+      {/* <Todo /> */}
+    </div>
+  );
+}
+
+export default App;
+```
+
+Now, start the development server and see the output in the browser. You should see a huge `Users List` in the center of the screen. Now, we can start making the structure of the `Users` component. 
+
+### Using dummy data 
+
+Before fetching we will make the app with dummy data and see if every-thing works fine. So, let's create some dummy data. 
+
+
+Now let's think about what info about the user do we want in this users list. I want 3 attributes for each of the users,
+
+- `Name`
+- `Email`
+- `Porfile image`
+
+I can set random names for the users and random email addresses. And I can set the `profile image` as the `svg` avater we made in `Landing Page` project we did for the `part 1(react fundamentals)` of this course. 
+
+So, I copied the `svg` avatar from the `Landing Page` project and pasted it in the `project_4` folder. And I named it `av.svg`. And now I will create a new file named `dummyData.js` in the `project_4` folder and add the following code to it:
+
+```js {.line-numbers}
+// projects/project_4/dummyData.js
+import av from "./av.svg"; // importing the svg avatar
+const dummyData = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john@doe.com",
+    image: av,
+  },
+  {
+    id: 2,
+    name: "Jane Doe",
+    email: "jane@doe.com",
+    image: av,
+  },
+  {
+    id: 3,
+    name: "Jack Ripper",
+    email: "jack666@reaper.com",
+    image: av,
+  },
+]
+
+export default dummyData; // exporting the dummy data
+```
+
+> I have created an array of objects with the `id`, `name`, `email` and `image` attributes. And I have set the `image` attribute to the `svg` avatar we made in the `Landing Page` project.
+
+Now, let's go to the `Users` component and import the `dummyData` array and render it in the `Users` component. 
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React from "react";
+import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1 className="text-center text-primary display-1">Users List</h1>
+      <div className="d-flex flex-column align-items-center gap-3 mt-5">
+        {dummyData.map((user) => {
+          return (
+            <div
+              key={user.id}
+              className="card d-flex flex-row justify-content-between align-items-center gap-3 p-3 shadow-sm w-100"
+            >
+              <img
+                src={user.image}
+                alt="avatar"
+                className="rounded-circle"
+                style={{ width: "50px", height: "50px" }}
+              />
+              <div className="d-flex flex-column">
+                <h5 className="text-primary">{user.name}</h5>
+                <p className="text-secondary">{user.email}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Users;
+```
+
+Now, we have a small `Users` component that renders the `dummyData` array. We are using the `map` method to iterate over the `dummyData` array and render each user in a card. And we are using the `key` prop to give each user a unique key.
+
+But this looks a little bit boring. I want to add a button to create a illusion of loading. 
+
+The idea is there will be button called `load users` and when we click on it, the `dummyData` will be rendered in the `Users` component. Let's see how we can do that.
+
+### Adding the load users button
+So, let's add a button below the `Users List` heading and style it with `bootstrap` classes. And we will also add a `loading` state variable to show the loading state of the users list. 
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useState } from "react";
+import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [users, setUsers] = useState([...dummyData]); // users state variable
+
+  const loadUsers = () => {
+    setLoading(true); 
+  } // function to load the users
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+      <h1 className="text-center text-primary display-1">Users List</h1>
+      <button
+        onClick={loadUsers}
+        className="btn btn-primary mt-3"
+      >
+        Load Users
+      </button>
+      <div className="d-flex flex-column align-items-center gap-3 mt-5">
+        {users.map((user) => {
+          return (
+            <div
+              key={user.id}
+              className="card d-flex flex-row justify-content-between align-items-center gap-3 p-3 shadow-sm w-100"
+            >
+              <img
+                src={user.image}
+                alt="avatar"
+                className="rounded-circle"
+                style={{ width: "50px", height: "50px" }}
+              />
+              <div className="d-flex flex-column">
+                <h5 className="text-primary">{user.name}</h5>
+                <p className="text-secondary">{user.email}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Users;
+```
+
+We made two new state variables. One is `loading` and the other is `users`. The `loading` state variable is used to show the loading state of the users list and the `users` state variable is used to store the users list.
+
+Now you should see a button right below the `Users List` heading. And also the `users` list should be rendered below the button. But we need to add a little bit of logic to show the loading state of the users list. So, let's do that.
+
+So, what can be the logic to show the loading state of the users list?
+
+- We can just use a simple `if` statement to check if the `loading` state variable is `true`. If it is `true`, we can just render the `users` list. If it is `false`, we can just render the `load Users` button.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useState } from "react";
+import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [users, setUsers] = useState([...dummyData]); // users state variable
+
+  const loadUsers = () => {
+    setLoading(true); 
+  } // function to load the users
+
+  if (loading) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <h1 className="text-center text-primary display-1">Users List</h1>
+        <div className="d-flex flex-column align-items-center gap-3 mt-5">
+          {users.map((user) => {
+            return (
+              <div
+                key={user.id}
+                className="card d-flex flex-row justify-content-between align-items-center gap-3 p-3 shadow-sm w-100"
+              >
+                <img
+                  src={user.image}
+                  alt="avatar"
+                  className="rounded-circle"
+                  style={{ width: "50px", height: "50px" }}
+                />
+                <div className="d-flex flex-column">
+                  <h5 className="text-primary">{user.name}</h5>
+                  <p className="text-secondary">{user.email}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  else {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <h1 className="text-center text-primary display-1">Users List</h1>
+        <button
+          onClick={loadUsers}
+          className="btn btn-primary mt-3"
+        >
+          Load Users
+        </button>
+      </div>
+    );
+  }
+};
+
+export default Users;
+
+```
+
+> As the component will re-render when the `loading` state variable is updated, the check will be done again and the `users` list will be rendered.
+
+Now let's see if our logic is working. 
+
+IT WORKSSSS!!??? YEEEEEE BABYYYYY!!!
+
+I got little too excited there, didn't I? All's good now...
+
+Let's get going. 
+
+We have a functioning `load users` button that loads the users list when we click on it. Now, time to start fetching the data from the API.
+
+## Fetching data from the API
+
+Time for the main event. We will fetch the data and load it in the `Users` component.
+
+But where will we find the `API`?
+
+That is a good question. There are many `free APIs` specially from `github` that you can use to fetch data. Visit [api.github.com](https://api.github.com/) to see the list of APIs that you can use. There a api endpoint called `users` that we can use to fetch the users list. 
