@@ -1939,8 +1939,140 @@ We have a functioning `load users` button that loads the users list when we clic
 
 ## Fetching data from the API
 
+First we need to know what is an `API`. Simplely, it's a `javaScript object` that has a `link` to the data we want to fetch. Now going to go any deeper now, you'll have a better understanding of it when we start fetching the data.
+
 Time for the main event. We will fetch the data and load it in the `Users` component.
 
 But where will we find the `API`?
 
-That is a good question. There are many `free APIs` specially from `github` that you can use to fetch data. Visit [api.github.com](https://api.github.com/) to see the list of APIs that you can use. There a api endpoint called `users` that we can use to fetch the users list. 
+That is a good question. There are many `free APIs` specially from `github` that you can use to fetch data. Visit [github API](https://docs.github.com/en/rest/quickstart?apiVersion=2022-11-28) to see the list of APIs you can use.
+
+There is a `users API` that we can use to fetch the users list. The API is `api.github.com/users`. This API will return a list of users with a lot of information about the users. You can find all the info about the users in the [API documentation](https://docs.github.com/en/rest/reference/users#list-users).
+
+Now, go to the `api.github.com/users` and you should see a list of users objects. Nothing too fancy. 
+
+The data should look like this:
+
+```json
+[
+  {
+    "login": "mojombo",
+    "id": 1,
+    "node_id": "MDQ6VXNlcjE=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/1?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/mojombo",
+    "html_url": "https://github.com/mojombo",
+    "followers_url": "https://api.github.com/users/mojombo/followers",
+    "following_url": "https://api.github.com/users/mojombo/following{/other_user}",
+    "gists_url": "https://api.github.com/users/mojombo/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/mojombo/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/mojombo/subscriptions",
+    "organizations_url": "https://api.github.com/users/mojombo/orgs",
+    "repos_url": "https://api.github.com/users/mojombo/repos",
+    "events_url": "https://api.github.com/users/mojombo/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/mojombo/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  ...
+]
+```
+
+Each object has a lot of information about the user. But we need only some of the information(`login`, `id`, `avatar_url`, `html_url`) to render the users list. 
+
+So, let's get this list of users and render it in the `Users` and load it in the `console`.
+
+### Fetching the data
+
+To fetch the data we need to send a `GET` request to the API link and there is a built-in `fetch` method in `JavaScript` that we can use to fetch the data. But the syntax of the `fetch` method can be a little bit tricky and hard to understand. So, I'll use another library called `axios` to fetch the data.
+
+> Axios is a promise based HTTP client for the browser and node.js. It is a simple and easy to use library to fetch data from the API. You can find the documentation of `axios` [here](https://axios-http.com/docs/intro).
+
+Stop the development server and install `axios` using the following command:
+
+```bash
+npm install axios
+```
+
+Now, start the server again and let's import `axios` in the `Users` component and use it to fetch the data from the API.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useState } from "react";
+import axios from "axios"; // importing axios
+import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+... // everything else is the same
+```
+
+### Fetching the data with axios
+
+axios has a `get` method that we can use to send a `GET` request to the API. The `get` method takes the API link as an argument and returns a promise. What is a promise, you ask? I have no idea. I just know that is a way to handle asynchronous operations in JavaScript.
+
+#### Promise
+
+A `promise` is an `object` that `represents the eventual completion (or failure) of an asynchronous operation and its resulting value`. 
+
+Let's say you ordered a pizza. The pizza is the `promise` and the `pizza delivery guy` is the `asynchronous operation`. Now, the pizza delivery guy will take some time to deliver the pizza. So, when you order the pizza, you get a `promise` that the pizza will be delivered to you. But it may take some time. So, when the pizza is delivered to you, the `promise` is `resolved` and you get the pizza. But if the pizza delivery guy gets into an accident or something happens and he doesn't deliver the pizza, the `promise` is `rejected` and you don't get the pizza.
+
+It's a `placeholder` for the `value` that will be `returned` in the future. So, when the `promise` is `resolved`, you get the `value` and when the `promise` is `rejected`, you get an `error`.
+
+There are three states of a `promise`:
+
+- `Pending`: The initial state of the promise. The promise is still being processed and the value is not yet available.
+- `Fulfilled`: The promise is resolved and the value is available. The pizza is delivered to you.
+- `Rejected`: The promise is rejected and the value is not available. The pizza is not delivered to you.
+
+Assssss, we are all beginners here(including myself) and we don't know what the hell is going on. So, let's do some practice coding and see how the `promise` works in real life.
+
+Try out these examples in the `test.js` file and see how the `promise` works.
+
+```js {.line-numbers}
+// test.js
+// pending and fulfilled example
+import axios from "axios";
+
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Pizza delivered");
+  }, 2000);
+});
+
+try {
+  const result = await promise;
+  console.log(result);
+} catch (error) {
+  console.log(error);
+}
+```
+
+> Here i used the `promise` constructor to create a new `promise` and I used the `setTimeout` method to simulate the `asynchronous operation`. 
+
+> The `setTimeout` method takes a callback function and a time in milliseconds as arguments. The callback function will be executed after the time is up. 
+
+> Resolve is a method of the `promise` object that is used to resolve the promise and return the value. 
+
+Here the `promise` is `pending` and after 2 seconds the `promise` is `resolved` and the value inside the `resolve` method is returned.
+
+When the `promise` is `resolved`, the `result` variable will have the value of the `promise` and this way the `promise` is `fulfilled`.
+
+```js {.line-numbers}
+// test.js
+// rejected example
+import axios from "axios";
+
+const url = "https://api.github.com/user";
+
+try {
+  const result = await axios.get(url);
+  console.log(result);
+} catch (error) {
+  console.log(error);
+}
+```
+> Here I used the `axios` library to send a `GET` request to the API. The `get` method takes the API link as an argument and returns a promise.
+
+The `url` is the API link which is `https://api.github.com/user`(it has a syntax error). So, when we send a `GET` request to the API, the `promise` is `pending` and when the API returns a response, the `promise` is `fulfilled` and the value is returned. But if there is an error in the API or the API is not found, the `promise` is `rejected` and the error is returned.
