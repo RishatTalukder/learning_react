@@ -2028,7 +2028,7 @@ There are three states of a `promise`:
 
 Assssss, we are all beginners here(including myself) and we don't know what the hell is going on. So, let's do some practice coding and see how the `promise` works in real life.
 
-Try out these examples in the `test.js` file and see how the `promise` works.
+Try out these examples in the `src/test.js` file. 
 
 ```js {.line-numbers}
 // test.js
