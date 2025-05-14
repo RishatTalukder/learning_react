@@ -1428,6 +1428,7 @@ const Counter = () => {
 
 export default Counter;
 ```
+
 > Now, import the `Counter` component in the `App.jsx` file and render it in the `App` component.
 
 ```js {.line-numbers}
@@ -1453,7 +1454,7 @@ Time to do another experiment.
 
 ### Infinite loop
 
-Call the `increase` function inside the `useEffect` hook and see what happens. 
+Call the `increase` function inside the `useEffect` hook and see what happens.
 
 ```js {.line-numbers}
 // projects/project_3/Counter.jsx
@@ -1479,9 +1480,9 @@ const Counter = () => {
 export default Counter;
 ```
 
-This should blank the screen and you should see an `error` in the console saying `Maximum update depth exceeded` or something like that. 
+This should blank the screen and you should see an `error` in the console saying `Maximum update depth exceeded` or something like that.
 
-This is because the `useEffect` hook is executed every time the component is re-rendered and when we call the `increase` function inside the `useEffect` hook, it updates the state and causes the component to re-render again and again and again and again. This causes an infinite loop and the component keeps re-rendering until the maximum update depth is exceeded. 
+This is because the `useEffect` hook is executed every time the component is re-rendered and when we call the `increase` function inside the `useEffect` hook, it updates the state and causes the component to re-render again and again and again and again. This causes an infinite loop and the component keeps re-rendering until the maximum update depth is exceeded.
 
 Not gonna lie, this scenario is waay too common in `React` and you will face this issue a lot. So, that's why we can add a `dependency` array to the `useEffect` hook to tell `React` when to run the `callback` function. And if we keep the dependency array empty, the `callback` function will only run once when the component is mounted. So, let's just add an empty array to the `useEffect` hook and see what happens.
 
@@ -1508,13 +1509,14 @@ const Counter = () => {
 
 export default Counter;
 ```
+
 > Now, when you start the development server and see the output in the browser, you should see `Counter updated` in the console twice and the counter should be increased by `2` and not `1`. Like I said before, the `useEffect` hook is executed twice in `development mode` to help you find bugs in your code. But in `production mode`, it will only run once. So, don't worry about it.
 
-This `empty array` is the `dependency array` that tells `React` when to run the `callback` function. And when it's empty, the `callback` function which has the `side effect` will only run once when the component is mounted or render for the first time. 
+This `empty array` is the `dependency array` that tells `React` when to run the `callback` function. And when it's empty, the `callback` function which has the `side effect` will only run once when the component is mounted or render for the first time.
 
 Inside the `dependency` array, we can also add `state` variables and when the state variable is updated, the `callback` function will be executed.
 
-So,  `empty == only run once when the component is mounted` and `with state variable == run every time the state variable is updated`.
+So, `empty == only run once when the component is mounted` and `with state variable == run every time the state variable is updated`.
 
 Now, I hope you guys understand one of the use cases of the `useEffect` hook. As this was a example of accidentally creating an infinite loop I will go back to the `Counter` app and remove the `increase` function from the `useEffect` hook. And I will also add a `console.log` statement to the `increase` function to see when it is called.
 
@@ -1586,7 +1588,7 @@ const Counter = () => {
 export default Counter;
 ```
 
-> I hace added the `count` variable to the `dependency` array. 
+> I hace added the `count` variable to the `dependency` array.
 
 Now, go to the server and open the console. Let's test it out. You should see `Counter updated` in the console every time you click the `increase` button or the `count` variable is updated. And now you can see that the `useEffect` hook is executed every time the `count` variable is updated. This is because we added the `count` variable to the `dependency` array. So, when the `increase` function is called, the `count` variable is updated and the `useEffect` hook `detects` that the `count` variable is updated and executes the `callback` function.
 
@@ -1660,11 +1662,11 @@ export default Counter;
 
 > Now, we have two counters with their own `side effects`. The first counter is `count` and the second counter is `count2`. And we have two `increase` functions to increase the counters.
 
-Now, start the development server and see the output in the browser. 
+Now, start the development server and see the output in the browser.
 
-You should see two counters with their own `increase` buttons. And when you click the `increase` button, you should see `Counter updated` in the console and when you click the `increase2` button, you should see `Counter2 updated` in the console and even though `re-renders` are happening for both the counters, the `useEffect` hook is executed only for the counter that is updated. 
+You should see two counters with their own `increase` buttons. And when you click the `increase` button, you should see `Counter updated` in the console and when you click the `increase2` button, you should see `Counter2 updated` in the console and even though `re-renders` are happening for both the counters, the `useEffect` hook is executed only for the counter that is updated.
 
-This is the power of the `useEffect` hook. We can define `isolated` side effects for each `state` variable and we can also define multiple `side effects` for the same `state` variable. And they will not interfere with each other. We can do a lot of cool things with this `useState` and `useEffect` combination. 
+This is the power of the `useEffect` hook. We can define `isolated` side effects for each `state` variable and we can also define multiple `side effects` for the same `state` variable. And they will not interfere with each other. We can do a lot of cool things with this `useState` and `useEffect` combination.
 
 # Fetching data with useEffect Project
 
@@ -1672,7 +1674,7 @@ WEll well well, you've made it this far. No way I'm going to let you go without 
 
 ## Setting up the project
 
-We will start as usual. Create a new folder named `project_4` in the `projects` folder and add a new file named `Users.jsx` in the `project_4` folder and let's start by creating a simple `Users` component that will only show a `h1` tag with the text `Users List`. 
+We will start as usual. Create a new folder named `project_4` in the `projects` folder and add a new file named `Users.jsx` in the `project_4` folder and let's start by creating a simple `Users` component that will only show a `h1` tag with the text `Users List`.
 
 ```js {.line-numbers}
 // projects/project_4/Users.jsx
@@ -1709,12 +1711,11 @@ function App() {
 export default App;
 ```
 
-Now, start the development server and see the output in the browser. You should see a huge `Users List` in the center of the screen. Now, we can start making the structure of the `Users` component. 
+Now, start the development server and see the output in the browser. You should see a huge `Users List` in the center of the screen. Now, we can start making the structure of the `Users` component.
 
-### Using dummy data 
+### Using dummy data
 
-Before fetching we will make the app with dummy data and see if every-thing works fine. So, let's create some dummy data. 
-
+Before fetching we will make the app with dummy data and see if every-thing works fine. So, let's create some dummy data.
 
 Now let's think about what info about the user do we want in this users list. I want 3 attributes for each of the users,
 
@@ -1722,7 +1723,7 @@ Now let's think about what info about the user do we want in this users list. I 
 - `Email`
 - `Porfile image`
 
-I can set random names for the users and random email addresses. And I can set the `profile image` as the `svg` avater we made in `Landing Page` project we did for the `part 1(react fundamentals)` of this course. 
+I can set random names for the users and random email addresses. And I can set the `profile image` as the `svg` avater we made in `Landing Page` project we did for the `part 1(react fundamentals)` of this course.
 
 So, I copied the `svg` avatar from the `Landing Page` project and pasted it in the `project_4` folder. And I named it `av.svg`. And now I will create a new file named `dummyData.js` in the `project_4` folder and add the following code to it:
 
@@ -1748,14 +1749,14 @@ const dummyData = [
     email: "jack666@reaper.com",
     image: av,
   },
-]
+];
 
 export default dummyData; // exporting the dummy data
 ```
 
 > I have created an array of objects with the `id`, `name`, `email` and `image` attributes. And I have set the `image` attribute to the `svg` avatar we made in the `Landing Page` project.
 
-Now, let's go to the `Users` component and import the `dummyData` array and render it in the `Users` component. 
+Now, let's go to the `Users` component and import the `dummyData` array and render it in the `Users` component.
 
 ```js {.line-numbers}
 // projects/project_4/Users.jsx
@@ -1797,12 +1798,13 @@ export default Users;
 
 Now, we have a small `Users` component that renders the `dummyData` array. We are using the `map` method to iterate over the `dummyData` array and render each user in a card. And we are using the `key` prop to give each user a unique key.
 
-But this looks a little bit boring. I want to add a button to create a illusion of loading. 
+But this looks a little bit boring. I want to add a button to create a illusion of loading.
 
 The idea is there will be button called `load users` and when we click on it, the `dummyData` will be rendered in the `Users` component. Let's see how we can do that.
 
 ### Adding the load users button
-So, let's add a button below the `Users List` heading and style it with `bootstrap` classes. And we will also add a `loading` state variable to show the loading state of the users list. 
+
+So, let's add a button below the `Users List` heading and style it with `bootstrap` classes. And we will also add a `loading` state variable to show the loading state of the users list.
 
 ```js {.line-numbers}
 // projects/project_4/Users.jsx
@@ -1815,16 +1817,13 @@ const Users = () => {
   const [users, setUsers] = useState([...dummyData]); // users state variable
 
   const loadUsers = () => {
-    setLoading(true); 
-  } // function to load the users
+    setLoading(true);
+  }; // function to load the users
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center vh-100">
       <h1 className="text-center text-primary display-1">Users List</h1>
-      <button
-        onClick={loadUsers}
-        className="btn btn-primary mt-3"
-      >
+      <button onClick={loadUsers} className="btn btn-primary mt-3">
         Load Users
       </button>
       <div className="d-flex flex-column align-items-center gap-3 mt-5">
@@ -1874,8 +1873,8 @@ const Users = () => {
   const [users, setUsers] = useState([...dummyData]); // users state variable
 
   const loadUsers = () => {
-    setLoading(true); 
-  } // function to load the users
+    setLoading(true);
+  }; // function to load the users
 
   if (loading) {
     return (
@@ -1904,16 +1903,11 @@ const Users = () => {
         </div>
       </div>
     );
-  }
-
-  else {
+  } else {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center vh-100">
         <h1 className="text-center text-primary display-1">Users List</h1>
-        <button
-          onClick={loadUsers}
-          className="btn btn-primary mt-3"
-        >
+        <button onClick={loadUsers} className="btn btn-primary mt-3">
           Load Users
         </button>
       </div>
@@ -1922,18 +1916,17 @@ const Users = () => {
 };
 
 export default Users;
-
 ```
 
 > As the component will re-render when the `loading` state variable is updated, the check will be done again and the `users` list will be rendered.
 
-Now let's see if our logic is working. 
+Now let's see if our logic is working.
 
 IT WORKSSSS!!??? YEEEEEE BABYYYYY!!!
 
 I got little too excited there, didn't I? All's good now...
 
-Let's get going. 
+Let's get going.
 
 We have a functioning `load users` button that loads the users list when we click on it. Now, time to start fetching the data from the API.
 
@@ -1949,7 +1942,7 @@ That is a good question. There are many `free APIs` specially from `github` that
 
 There is a `users API` that we can use to fetch the users list. The API is `api.github.com/users`. This API will return a list of users with a lot of information about the users. You can find all the info about the users in the [API documentation](https://docs.github.com/en/rest/reference/users#list-users).
 
-Now, go to the `api.github.com/users` and you should see a list of users objects. Nothing too fancy. 
+Now, go to the `api.github.com/users` and you should see a list of users objects. Nothing too fancy.
 
 The data should look like this:
 
@@ -1980,7 +1973,7 @@ The data should look like this:
 ]
 ```
 
-Each object has a lot of information about the user. But we need only some of the information(`login`, `id`, `avatar_url`, `html_url`) to render the users list. 
+Each object has a lot of information about the user. But we need only some of the information(`login`, `id`, `avatar_url`, `html_url`) to render the users list.
 
 So, let's get this list of users and render it in the `Users` and load it in the `console`.
 
@@ -2014,7 +2007,7 @@ axios has a `get` method that we can use to send a `GET` request to the API. The
 
 #### Promise
 
-A `promise` is an `object` that `represents the eventual completion (or failure) of an asynchronous operation and its resulting value`. 
+A `promise` is an `object` that `represents the eventual completion (or failure) of an asynchronous operation and its resulting value`.
 
 Let's say you ordered a pizza. The pizza is the `promise` and the `pizza delivery guy` is the `asynchronous operation`. Now, the pizza delivery guy will take some time to deliver the pizza. So, when you order the pizza, you get a `promise` that the pizza will be delivered to you. But it may take some time. So, when the pizza is delivered to you, the `promise` is `resolved` and you get the pizza. But if the pizza delivery guy gets into an accident or something happens and he doesn't deliver the pizza, the `promise` is `rejected` and you don't get the pizza.
 
@@ -2028,7 +2021,7 @@ There are three states of a `promise`:
 
 Assssss, we are all beginners here(including myself) and we don't know what the hell is going on. So, let's do some practice coding and see how the `promise` works in real life.
 
-Try out these examples in the `src/test.js` file. 
+Try out these examples in the `src/test.js` file.
 
 ```js {.line-numbers}
 // test.js
@@ -2049,11 +2042,11 @@ try {
 }
 ```
 
-> Here i used the `promise` constructor to create a new `promise` and I used the `setTimeout` method to simulate the `asynchronous operation`. 
+> Here i used the `promise` constructor to create a new `promise` and I used the `setTimeout` method to simulate the `asynchronous operation`.
 
-> The `setTimeout` method takes a callback function and a time in milliseconds as arguments. The callback function will be executed after the time is up. 
+> The `setTimeout` method takes a callback function and a time in milliseconds as arguments. The callback function will be executed after the time is up.
 
-> Resolve is a method of the `promise` object that is used to resolve the promise and return the value. 
+> Resolve is a method of the `promise` object that is used to resolve the promise and return the value.
 
 Here the `promise` is `pending` and after 2 seconds the `promise` is `resolved` and the value inside the `resolve` method is returned.
 
@@ -2073,6 +2066,357 @@ try {
   console.log(error);
 }
 ```
+
+> Note: Dont forget the `htpp://` or `https://` in the url.
+
 > Here I used the `axios` library to send a `GET` request to the API. The `get` method takes the API link as an argument and returns a promise.
 
 The `url` is the API link which is `https://api.github.com/user`(it has a syntax error). So, when we send a `GET` request to the API, the `promise` is `pending` and when the API returns a response, the `promise` is `fulfilled` and the value is returned. But if there is an error in the API or the API is not found, the `promise` is `rejected` and the error is returned.
+
+> The `catch` block is used to handle the error and log it to the console.
+
+> try it with `https://api.github.com/users` and see the difference.
+
+#### fetching the data with axios
+
+Now, let's go back to the `Users` component and use the `axios` library to fetch the data from the API. I'll just make a new function called `fetchUsers` where I'll log the data to the console and I'll call this function inside the `loadUsers` function. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useState } from "react";
+import axios from "axios"; // importing axios
+import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [users, setUsers] = useState([...dummyData]); // users state variable
+
+  const fetchUsers = ()=> {
+    const url = "https://api.github.com/users"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      console.log(result.data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  } // function to fetch the users
+
+  const loadUsers = () => {
+    setLoading(true);
+    fetchUsers(); // calling the fetchUsers function
+  } // function to load the users
+
+  ... // everything else is the same
+
+```
+
+Now, try the above code and see the output in the console. You should see an error straight away.
+
+![alt text](image.png)
+
+> REACT linter prevented the `await` keyword from being used outside of an `async` function.
+
+Time for some theory.
+
+### Async and Await
+
+`async` and `await` are used to handle asynchronous operations in JavaScript.
+
+#### Why fetching from an API is asynchronous?
+
+When we send a `GET` request to the API, the API takes some time to respond. So, we need to wait for the API to respond before we can use the data. This is where `async` and `await` come in.
+
+This process will stop other code from executing until the API responds. So, for the `promise` to be `fulfilled`, we must make it a `asynchronous` function.
+
+That's why to prevent this from happening again and to make the code cleaner, `react` will force you to use the `async` keyword before a function that uses the `await` keyword.
+
+### Fixing the bug
+
+So, let's add the `async` keyword to the `fetchUsers` function and see if it works.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useState } from "react";
+import axios from "axios"; // importing axios
+import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [users, setUsers] = useState([...dummyData]); // users state variable
+
+  const fetchUsers = async () => { // adding the async keyword
+    const url = "https://api.github.com/users"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      console.log(result.data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  } // function to fetch the users
+
+  const loadUsers = () => {
+    setLoading(true);
+    fetchUsers(); // calling the fetchUsers function
+  } // function to load the users
+
+  ... // everything else is the same
+```
+
+Now, start the development server and the error should be gone. And you should see the data in the console.
+
+![alt text](image-1.png)
+
+And we successfully fetched the data from the API.
+
+### Preparing the fetched data
+
+We can see the data in the console. `axios.get` returns an object with a lot of information about the response and in the `result` object, we can see the `data` property which contains the data we want. So, we can just use the `result.data` to get the data we want.
+
+In the console we can see that the data is an array of objects and each object has a lot of information about the user. But we need only some of the information for our users list app.
+
+So, we need to map the data and get only the information we need. We can create a new array of objects with the `id`, `name`, `email` and `image` attributes. And we can use the `map` method to iterate over the data and create a new array of objects with the information we need.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useState } from "react";
+import axios from "axios"; // importing axios
+import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [users, setUsers] = useState([]); // users state variable
+
+  const fetchUsers = async () => { // adding the async keyword
+    const url = "https://api.github.com/users"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      const data = result.data.map((user) => { // mapping the data to get only the information we need
+        return {
+          id: user.id,
+          name: user.login,
+          email: user.html_url,
+          image: user.avatar_url,
+        };
+      });
+      console.log(data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  } // function to fetch the users
+
+  const loadUsers = () => {
+    setLoading(true);
+    fetchUsers(); // calling the fetchUsers function
+  } // function to load the users
+
+  ... // everything else is the same
+```
+
+> We mapped over the `result.data` array and created a new array of objects with the `id`, `name`, `email` and `image` attributes that has the values we need.
+> The `name` attribute is set to the `login` property of the user object, the `email` attribute is set to the `html_url` property of the user object and the `image` attribute is set to the `avatar_url` property of the user object.
+
+Now, we can set the `users` state variable to the new array of objects we created. So, let's do that.
+
+```js {.line-numbers}
+
+// projects/project_4/Users.jsx
+... // everything else is the same
+
+  const fetchUsers = async () => { // adding the async keyword
+    const url = "https://api.github.com/users"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      const data = result.data.map((user) => { // mapping the data to get only the information we need
+        return {
+          id: user.id,
+          name: user.login,
+          email: user.html_url,
+          image: user.avatar_url,
+        };
+      });
+      setUsers(data); // setting the users state variable to the new array of objects
+      console.log(data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  } // function to fetch the users
+
+  ... // everything else is the same
+```
+
+And that's it, we don't need the `dummyData` array anymore. So, let's remove it from the code and we will have a clean project where we are fetching the data from the API and rendering it in the `Users` component.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+// import dummyData from "./dummyData"; // importing the dummy data
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  const [Loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]); // users state variable is an empty array
+
+  const fetchUsers = async () => {
+    // adding the async keyword
+    const url = "https://api.github.com/users"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      const data = result.data.map((user) => {
+        // mapping the data to get only the information we need
+        return {
+          id: user.id,
+          name: user.login,
+          email: user.html_url,
+          image: user.avatar_url,
+        };
+      });
+      setUsers(data); // setting the users state variable to the new array of objects
+      console.log(data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  }; // function to fetch the users
+
+  const loadUsers = () => {
+    setLoading(true);
+    fetchUsers(); // calling the fetchUsers function
+  }; // function to load the users
+
+  if (Loading) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center h-100">
+        <h1 className="text-center text-primary display-1">Users List</h1>
+        <div className="d-flex flex-column align-items-center gap-3 mt-5">
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="card d-flex flex-row justify-content-between align-items-center gap-3 p-3 shadow-sm w-100"
+            >
+              <img
+                src={user.image}
+                alt="avatar"
+                className="rounded-circle"
+                style={{ width: "50px", height: "50px" }}
+              />
+              <div className="d-flex flex-column">
+                <h5 className="text-primary">{user.name}</h5>
+                <p className="text-secondary">{user.email}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center h-100">
+      <h1 className="text-center text-primary display-1">Users List</h1>
+      <button onClick={loadUsers} className="btn btn-primary mt-3">
+        Load Users
+      </button>
+    </div>
+  );
+};
+
+export default Users;
+```
+
+Now, let's start the development server and see the output in the browser. You should see the `Load Users` button and when you click on it, the users list should be rendered in the `Users` component like this:
+![alt text](image-2.png)
+
+And we are successfully fetching the data from the API and rendering it in the `Users` component. And we also have a `loading` state variable that shows the loading state of the users list.
+
+That should be the end of this project, right? Well, not quite. We are not using the `useEffect` hook yet. We can say this is a `fully functional` project but we could have done it in `vanilla js` too. So, time to reactify this project. But before that, let's make the `component code cleaner`.
+
+## Ternary operator
+
+In this project we are using a lot of `if` statements to check the loading state of the users list, which can make the code a little bit messy and hard to read. We can do the checking using the `ternary operator` which is a shorthand way of writing an `if` statement. Try out this example in the `src/test.js` file.
+
+```js {.line-numbers}
+// test.js
+const age = 18;
+
+// normal if statement
+if (age >= 18) {
+  console.log("You are an adult");
+} else {
+  console.log("You are a minor");
+}
+
+// ternary operator
+const result = age >= 18 ? "You are an adult" : "You are a minor";
+
+console.log(result);
+```
+
+> `?` is the `ternary operator`.
+
+`?` operates takes a condition and two values. If the condition is true, it returns the first value, otherwise it returns the second value.
+
+The syntax of the `ternary operator` is:
+
+```js
+condition ? ifTrue : ifFalse;
+```
+
+> If the condition is true, it returns the value of `ifTrue`, otherwise it returns the value of `ifFalse`.
+
+> `:` is used to separate the two values. Left side of the `:` is the value that will be returned if the `condition` is `true` and the right side of the `:` is the value that will be returned if the `condition` is `false`.
+
+This might be a little bit confusing at first but we can use this to make our code cleaner and more readable. So, let's use the `ternary operator` to check the loading state of the users list.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+... // everything else is the same
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center h-100">
+      <h1 className="text-center text-primary display-1">Users List</h1>
+
+      {Loading ? ( // using the ternary operator to check the loading state
+        <div className="d-flex flex-column align-items-center gap-3 mt-5">
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="card d-flex flex-row justify-content-between align-items-center gap-3 p-3 shadow-sm w-100"
+            >
+              <img
+                src={user.image}
+                alt="avatar"
+                className="rounded-circle"
+                style={{ width: "50px", height: "50px" }}
+              />
+              <div className="d-flex flex-column">
+                <h5 className="text-primary">{user.name}</h5>
+                <p className="text-secondary">{user.email}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <button onClick={loadUsers} className="btn btn-primary mt-3">
+          Load Users
+        </button>
+      )}
+
+    </div>
+  );
+};
+
+export default Users;
+
+```
+Her istead of using the `if` statement to check the loading state of the users list and then returning the `users` list or the `load users` button using 2 separate `return` statements, we can now use the `ternary operator` to check the loading state of inside the `return` statement and return the `users` list or the `load users` button based on the loading state of the users list. This makes the code cleaner and more understandable.
+
+But too much tarnary operator can make the code even more messy so here are some rules to follow:
+
+- Use the `ternary operator` only when you have a simple condition to check.
+- If the conditional statement is too long or complex, use the `if` statement instead.
+- If the return value is too big and can be re-used, create a `new component` and return that component instead of using the `ternary operator`.
+
+Use this operator wisely and it will make your code cleaner and more readable. But if you overuse it, it can make the code even more messy and turn it into a `spaghetti code`. So, use it wisely.
+
