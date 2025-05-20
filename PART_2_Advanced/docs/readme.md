@@ -2257,7 +2257,7 @@ import axios from "axios";
 import av from "./av.svg"; // importing the svg avatar
 
 const Users = () => {
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]); // users state variable is an empty array
 
   const fetchUsers = async () => {
@@ -2286,7 +2286,7 @@ const Users = () => {
     fetchUsers(); // calling the fetchUsers function
   }; // function to load the users
 
-  if (Loading) {
+  if (loading) {
     return (
       <div className="d-flex flex-column justify-content-center align-items-center h-100">
         <h1 className="text-center text-primary display-1">Users List</h1>
@@ -2377,7 +2377,7 @@ This might be a little bit confusing at first but we can use this to make our co
     <div className="d-flex flex-column justify-content-center align-items-center h-100">
       <h1 className="text-center text-primary display-1">Users List</h1>
 
-      {Loading ? ( // using the ternary operator to check the loading state
+      {loading ? ( // using the ternary operator to check the loading state
         <div className="d-flex flex-column align-items-center gap-3 mt-5">
           {users.map((user) => (
             <div
@@ -2420,3 +2420,204 @@ But too much tarnary operator can make the code even more messy so here are some
 
 Use this operator wisely and it will make your code cleaner and more readable. But if you overuse it, it can make the code even more messy and turn it into a `spaghetti code`. So, use it wisely.
 
+## Reactify the project
+
+Now, let's use the `useEffect` hook to fetch the data from the API when the component mounts. The `useEffect` hook is used to perform side effects in a functional component. It takes a function as an argument and runs that function after the component renders. We can use this hook to fetch the data from the API when the component mounts.
+
+````js {.line-numbers}
+// projects/project_4/Users.jsx
+
+... // everything else is the same
+const Users = () => {
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]); // users state variable is an empty array
+
+  const fetchUsers = async () => {
+    // adding the async keyword
+    const url = "https://api.github.com/users"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      const data = result.data.map((user) => {
+        // mapping the data to get only the information we need
+        return {
+          id: user.id,
+          name: user.login,
+          email: user.html_url,
+          image: user.avatar_url,
+        };
+      });
+      setUsers(data); // setting the users state variable to the new array of objects
+      console.log(data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  }; // function to fetch the users
+  
+  const loadUsers = () => {
+    setLoading(true); // calling the fetchUsers function
+    // fetchUsers(); // removing the fetchUsers function
+  }; // function to load the users
+
+  useEffect(() => {
+    fetchUsers(); // calling the fetchUsers function
+  }, [loading]); // passing the setLoading function as a dependency to the useEffect hook  
+
+  return (
+    ... // everything else is the same
+  )
+};
+
+export default Users;
+````
+
+> AS we have learned earlier in this project, the `useEffect` hook takes a function as an argument and runs that function after the component renders. So, we can use this hook to fetch the data from the API when the component mounts.
+
+> We removed the `fetchUsers` function from the `loadUsers` function and called it inside the `useEffect` hook and added the `loading` state variable as a dependency to the `useEffect` hook. 
+
+We know by adding the `loading` state variable as a dependency to the `useEffect` hook, the `useEffect` hook will run every time the `loading` state variable changes. So, in the `loadUsers` function, we change the `loading` state variable to `true` and the `useEffect` hook will run and fetch the data from the API. 
+
+BUT (there's always a but) Do you remember the definition of the `useEffect` hook? 
+
+The `useEffect` is used to perform side effects in a functional component. So, when the component mounts, the `useEffect` hook will run and fetch the data from the API. But when the `loading` state variable changes, the `useEffect` hook will run again and fetch the data from the API again. So, how can we prevent this from happening?
+
+We can setup a condition to check if the `loading` state variable is `true` or `false`. If it is `true`, we can fetch call the `fetchUsers` function and if it is `false`, we can just return `null`. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+... // everything else is the same
+
+const Users = () => {
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]); // users state variable is an empty array
+
+  const fetchUsers = async () => {
+    ... // everything else is the same
+  }; // function to fetch the users
+
+  const loadUsers = () => {
+    setLoading(true); // calling the fetchUsers function
+    // fetchUsers(); // removing the fetchUsers function
+  }; // function to load the users
+
+  useEffect(() => {
+    if (loading) {
+      fetchUsers(); // calling the fetchUsers function
+    } 
+  }, [loading]); // passing the setLoading function as a dependency to the useEffect hook
+
+  ... // everything else is the same
+}
+export default Users;
+```
+
+And that's it. Now, when the `loading` state variable is `true`, the `useEffect` hook will run and fetch the data from the API. But when the `loading` state variable is `false`, the `useEffect` hook will not run the `fetchUsers` function and the data will not be fetched from the API.
+
+Even though we are using the `useEffect` hook which will trigger when the component mounts, we are preventing the `fetchUsers` function from running at the first render. 
+
+AAAANNNNNDDDD we have successfully reactified the project.
+
+And our project is now fully functional and we are fetching the data from the API and rendering it in the `Users` component. That bring's us to the end of this heavily loaded project.
+
+## Bonus (Setting a Error state variable)
+
+You can add this bonus feature to the project if you want to. But I think a API fetching project is not complete without an error management. I won't explain that much here because it's farely simple and you can understand the logic easily.
+
+We will just take a `error` state variable and set it to `true` when there is an error in the API. And we will use the `error` state variable to show the error message in the UI. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_4/Users.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+import av from "./av.svg"; // importing the svg avatar
+
+const Users = () => {
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]); // users state variable is an empty array
+  const [error, setError] = useState(false); // error state variable
+
+  const fetchUsers = async () => {
+    // adding the async keyword
+    const url = "https://api.github.com/users"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      const data = result.data.map((user) => {
+        // mapping the data to get only the information we need
+        return {
+          id: user.id,
+          name: user.login,
+          email: user.html_url,
+          image: user.avatar_url,
+        };
+      });
+      setUsers(data); // setting the users state variable to the new array of objects
+      console.log(data); // logging the data to the console
+    } catch (error) {
+      setError(true); // setting the error state variable to true
+      console.log(error); // logging the error to the console
+    }
+  }; // function to fetch the users
+
+  const loadUsers = () => {
+    setLoading(true); // calling the fetchUsers function
+    // fetchUsers(); // removing the fetchUsers function
+  }; // function to load the users
+
+  useEffect(() => {
+    if (loading) {
+      fetchUsers(); // calling the fetchUsers function
+    }
+  }, [loading]); // passing the setLoading function as a dependency to the useEffect hook
+
+  if (error) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center h-100">
+        <h1 className="text-center text-primary display-1">Users List</h1>
+        <p className="text-danger">Error fetching data from the API</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center h-100">
+      <h1 className="text-center text-primary display-1">Users List</h1>
+
+      {loading ? ( // using the ternary operator to check the loading state
+        <div className="d-flex flex-column align-items-center gap-3 mt-5">
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="card d-flex flex-row justify-content-between align-items-center gap-3 p-3 shadow-sm w-100"
+            >
+              <img
+                src={user.image}
+                alt="avatar"
+                className="rounded-circle"
+                style={{ width: "50px", height: "50px" }}
+              />
+              <div className="d-flex flex-column">
+                <h5 className="text-primary">{user.name}</h5>
+                <p className="text-secondary">{user.email}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <button onClick={loadUsers} className="btn btn-primary mt-3">
+          Load Users
+        </button>
+      )}
+    </div>
+  );
+};
+export default Users;
+```
+
+> We declaired a new state variable called `error` and set it to `false` by default. When we catch an error in the API, we set the `error` state variable to `true`. And we check the `error` state variable if it's `true`, we return an error message in the UI. 
+
+Because we are returning the error message in the UI the other code will not be executed. So, we are preventing the `users` list from being rendered in the UI when there is an error in the API.
+
+And we are done, I hope you enjoyed this project and learned a LOT from it. It took waaaay longer than I expected to finish this project. But I hope I didn't bore you to death with all the theory and explanations. I tried to keep it as simple as possible and I hope you learned a lot from this project.
+
+# Project 5: Destination 
+
+Now, that we haver
