@@ -1,0 +1,25 @@
+{
+  "destinations": [
+    {
+      "id": 1,
+      "name": "Kaptai Lake",
+      "image": "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRrxZpFY6bAJb4Hi3p6h89jIWfbIlA57zm5DPKF_HQP-aN1G9EfRy4mwzD7-5xtK6NJwhTaifV_ttXh2yaV9Lp7ZKmwWuhCoPnm_CJd2g",
+      "description": "Kaptai Lake is a natural lake located in the Rangamati district of Bangladesh. With amazing views and a serene atmosphere, it is a popular destination for tourists and locals alike. The lake is surrounded by lush green hills and is home to various species of fish and birds. Visitors can enjoy boating, fishing, and exploring the nearby hills.",
+      "location": "Rangamati, Bangladesh"
+    },
+    {
+      "id": 2,
+      "name": "Sundarbans",
+      "image": "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcTlnqro3eX6Ak-C2QJzU4DGaMnXz-NgY4J1XsEDJHNnpOsYpHG-yHM-YB0TXZsBP_-kYi5L89nwHzRS1DufiOx4NESb8OoTInde00T4hQ",
+      "description": "The Sundarbans is the largest mangrove forest in the world, located in the delta region of the Padma, Meghna and Brahmaputra river basins. It is home to the Royal Bengal Tiger and various other species of flora and fauna. The forest is a UNESCO World Heritage Site and is a popular destination for eco-tourism.",
+      "location": "Khulna, Bangladesh"
+    },
+    {
+      "id": 3,
+      "name": "Cox's Bazar",
+      "image": "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRdt88zHYhx576FxvfcU3jP0qw2jJDcrv6e6cKhPBS0EcPzdz9S4H_hMpIwwwUIylZlJGuI8ov7RrWK--wIVXF_4IbJaQshh7EO9ALNjQ",
+      "description": "Cox's Bazar is the longest natural sea beach in the world, stretching over 120 kilometers along the southeastern coast of Bangladesh. It is a popular tourist destination known for its stunning views, golden sands, and vibrant culture. Visitors can enjoy swimming, sunbathing, and exploring the nearby hills and forests.",
+      "location": "Cox's Bazar, Bangladesh"
+    }
+  ]
+}

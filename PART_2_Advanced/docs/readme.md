@@ -2410,6 +2410,7 @@ This might be a little bit confusing at first but we can use this to make our co
 export default Users;
 
 ```
+
 Her istead of using the `if` statement to check the loading state of the users list and then returning the `users` list or the `load users` button using 2 separate `return` statements, we can now use the `ternary operator` to check the loading state of inside the `return` statement and return the `users` list or the `load users` button based on the loading state of the users list. This makes the code cleaner and more understandable.
 
 But too much tarnary operator can make the code even more messy so here are some rules to follow:
@@ -2424,7 +2425,7 @@ Use this operator wisely and it will make your code cleaner and more readable. B
 
 Now, let's use the `useEffect` hook to fetch the data from the API when the component mounts. The `useEffect` hook is used to perform side effects in a functional component. It takes a function as an argument and runs that function after the component renders. We can use this hook to fetch the data from the API when the component mounts.
 
-````js {.line-numbers}
+```js {.line-numbers}
 // projects/project_4/Users.jsx
 
 ... // everything else is the same
@@ -2452,7 +2453,7 @@ const Users = () => {
       console.log(error); // logging the error to the console
     }
   }; // function to fetch the users
-  
+
   const loadUsers = () => {
     setLoading(true); // calling the fetchUsers function
     // fetchUsers(); // removing the fetchUsers function
@@ -2460,7 +2461,7 @@ const Users = () => {
 
   useEffect(() => {
     fetchUsers(); // calling the fetchUsers function
-  }, [loading]); // passing the setLoading function as a dependency to the useEffect hook  
+  }, [loading]); // passing the setLoading function as a dependency to the useEffect hook
 
   return (
     ... // everything else is the same
@@ -2468,15 +2469,15 @@ const Users = () => {
 };
 
 export default Users;
-````
+```
 
 > AS we have learned earlier in this project, the `useEffect` hook takes a function as an argument and runs that function after the component renders. So, we can use this hook to fetch the data from the API when the component mounts.
 
-> We removed the `fetchUsers` function from the `loadUsers` function and called it inside the `useEffect` hook and added the `loading` state variable as a dependency to the `useEffect` hook. 
+> We removed the `fetchUsers` function from the `loadUsers` function and called it inside the `useEffect` hook and added the `loading` state variable as a dependency to the `useEffect` hook.
 
-We know by adding the `loading` state variable as a dependency to the `useEffect` hook, the `useEffect` hook will run every time the `loading` state variable changes. So, in the `loadUsers` function, we change the `loading` state variable to `true` and the `useEffect` hook will run and fetch the data from the API. 
+We know by adding the `loading` state variable as a dependency to the `useEffect` hook, the `useEffect` hook will run every time the `loading` state variable changes. So, in the `loadUsers` function, we change the `loading` state variable to `true` and the `useEffect` hook will run and fetch the data from the API.
 
-BUT (there's always a but) Do you remember the definition of the `useEffect` hook? 
+BUT (there's always a but) Do you remember the definition of the `useEffect` hook?
 
 The `useEffect` is used to perform side effects in a functional component. So, when the component mounts, the `useEffect` hook will run and fetch the data from the API. But when the `loading` state variable changes, the `useEffect` hook will run again and fetch the data from the API again. So, how can we prevent this from happening?
 
@@ -2502,7 +2503,7 @@ const Users = () => {
   useEffect(() => {
     if (loading) {
       fetchUsers(); // calling the fetchUsers function
-    } 
+    }
   }, [loading]); // passing the setLoading function as a dependency to the useEffect hook
 
   ... // everything else is the same
@@ -2512,7 +2513,7 @@ export default Users;
 
 And that's it. Now, when the `loading` state variable is `true`, the `useEffect` hook will run and fetch the data from the API. But when the `loading` state variable is `false`, the `useEffect` hook will not run the `fetchUsers` function and the data will not be fetched from the API.
 
-Even though we are using the `useEffect` hook which will trigger when the component mounts, we are preventing the `fetchUsers` function from running at the first render. 
+Even though we are using the `useEffect` hook which will trigger when the component mounts, we are preventing the `fetchUsers` function from running at the first render.
 
 AAAANNNNNDDDD we have successfully reactified the project.
 
@@ -2612,12 +2613,704 @@ const Users = () => {
 export default Users;
 ```
 
-> We declaired a new state variable called `error` and set it to `false` by default. When we catch an error in the API, we set the `error` state variable to `true`. And we check the `error` state variable if it's `true`, we return an error message in the UI. 
+> We declaired a new state variable called `error` and set it to `false` by default. When we catch an error in the API, we set the `error` state variable to `true`. And we check the `error` state variable if it's `true`, we return an error message in the UI.
 
 Because we are returning the error message in the UI the other code will not be executed. So, we are preventing the `users` list from being rendered in the UI when there is an error in the API.
 
 And we are done, I hope you enjoyed this project and learned a LOT from it. It took waaaay longer than I expected to finish this project. But I hope I didn't bore you to death with all the theory and explanations. I tried to keep it as simple as possible and I hope you learned a lot from this project.
 
-# Project 5: Destination 
+# Project 5: Destination
 
-Now, that we haver
+Now, that we have learned 2 of the most important concepts of `react` and we have a fully functional project, it's crucial to practice what we have learned so far. That's why we are going to build project that will help you practice and recap what we have learned so far.
+
+This project is a simple `destination` app that will show you fun destinations for traveling. It's will be another list like app but this time we can click on a destination it will expand and show more information about the destination. We will also use the `useEffect` hook to fetch the data from a `dummy API` that we will create using `json-server`. So, let's get started.
+
+## Setting up the project
+
+First as we will be setting a `json-server` to create a dummy API, let's set up a `json-server` in the project.
+
+First make a file named `db.json` in the `root` of the project. This file will be used to create a dummy API using `json-server`.
+
+Than we need the dummy data to be used in the `db.json` file. So, Go to the `db.json` file and add the following data:
+
+```json
+{
+  "destinations": [
+    {
+      "id": 1,
+      "name": "Kaptai Lake",
+      "image": "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRrxZpFY6bAJb4Hi3p6h89jIWfbIlA57zm5DPKF_HQP-aN1G9EfRy4mwzD7-5xtK6NJwhTaifV_ttXh2yaV9Lp7ZKmwWuhCoPnm_CJd2g",
+      "description": "Kaptai Lake is a natural lake located in the Rangamati district of Bangladesh. With amazing views and a serene atmosphere, it is a popular destination for tourists and locals alike. The lake is surrounded by lush green hills and is home to various species of fish and birds. Visitors can enjoy boating, fishing, and exploring the nearby hills.",
+      "location": "Rangamati, Bangladesh"
+    },
+    {
+      "id": 2,
+      "name": "Sundarbans",
+      "image": "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcTlnqro3eX6Ak-C2QJzU4DGaMnXz-NgY4J1XsEDJHNnpOsYpHG-yHM-YB0TXZsBP_-kYi5L89nwHzRS1DufiOx4NESb8OoTInde00T4hQ",
+      "description": "The Sundarbans is the largest mangrove forest in the world, located in the delta region of the Padma, Meghna and Brahmaputra river basins. It is home to the Royal Bengal Tiger and various other species of flora and fauna. The forest is a UNESCO World Heritage Site and is a popular destination for eco-tourism.",
+      "location": "Khulna, Bangladesh"
+    },
+    {
+      "id": 3,
+      "name": "Cox's Bazar",
+      "image": "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRdt88zHYhx576FxvfcU3jP0qw2jJDcrv6e6cKhPBS0EcPzdz9S4H_hMpIwwwUIylZlJGuI8ov7RrWK--wIVXF_4IbJaQshh7EO9ALNjQ",
+      "description": "Cox's Bazar is the longest natural sea beach in the world, stretching over 120 kilometers along the southeastern coast of Bangladesh. It is a popular tourist destination known for its stunning views, golden sands, and vibrant culture. Visitors can enjoy swimming, sunbathing, and exploring the nearby hills and forests.",
+      "location": "Cox's Bazar, Bangladesh"
+    }
+  ]
+}
+```
+
+> This is a simple data that we will use to create a dummy API using `json-server`. This is just an JS objest with one property called `destinations` which will be the `endpoint` of the API.
+
+We hare have a list of destinations with their `id`, `name`, `image`, `description` and `location`. I think you are familiar with this data as we have used it in the previous projects.
+
+Time to make a server using `json-server`.
+
+### Setting up json-server
+
+Now, we need to install `json-server` in the project. So, stop the development server and run the following command in the terminal:
+
+```bash
+npm install -g json-server
+```
+
+> The `-g` flag is used to install the package globally. This will allow us to use the `json-server` command in any project.
+
+Now, we can just run the following command to start the server:
+
+```bash
+json-server --watch db.json
+```
+
+> The `--watch` flag is used to watch the `db.json` file for changes and restart the server automatically. This will allow us to make changes to the `db.json` file and see the changes in the API without restarting the server manually.
+
+After running the above command, you should see the following output in the terminal:
+
+```bash
+--watch/-w can be omitted, JSON Server 1+ watches for file changes by default
+JSON Server started on PORT :3000
+Press CTRL-C to stop
+Watching db.json...
+
+♡( ◡‿◡ )
+
+Index:
+http://localhost:3000/
+
+Static files:
+Serving ./public directory if it exists
+
+Endpoints:
+http://localhost:3000/destinations
+
+```
+
+> The server is running on `http://localhost:3000/` and the API endpoint is `http://localhost:3000/destinations`.
+
+So, here we can see in the `db.json` file whatever property we have, it will be the endpoint of the API. So, in our case the `destinations` property is the endpoint of the API. And we can access the data by going to `http://localhost:3000/destinations`.
+
+And we have a simple API running on our local machine. Now, we can use this API to fetch the data in our project.
+
+### Setting up the project
+
+You already know what to do here.
+
+- Create a new folder called `project_5` in the `src` folder and create a new file called `Destination.jsx` inside the `project_5` folder.
+- Import the `Destination` component in the `App.jsx` file and render it in the `App` component.
+
+And that's it. Now, we can start building the `Destination` component.
+
+## Building the Destination component
+
+### Fetching The Data from the API
+
+Now, we can use the `axios` library to fetch the data from the API. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+
+  const fetchDestinations = async () => { // function to fetch the destinations
+    const url = "http://localhost:3000/destinations"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      console.log(result.data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  } // function to fetch the destinations
+
+  useEffect(() => {
+    fetchDestinations(); // calling the fetchDestinations function
+  }, []); // passing an empty array as a dependency to the useEffect hook
+
+  return (
+    <div>
+      <h1>Destination</h1>
+    </div>
+  );
+};
+
+export default Destination;
+```
+
+Here, I passed an empty array as a dependency to the `useEffect` hook. This will make the `useEffect` hook run only once when the component mounts. So, we are fetching the data from the API when the component mounts only.
+
+If you have no errors in the console and see the data in the console, then we are good to go. Now, we can set the `destinations` state variable to the data we fetched from the API ans render the destination names in the UI.
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+
+  const fetchDestinations = async () => { // function to fetch the destinations
+    const url = "http://localhost:3000/destinations"; // API link
+    try {
+      const result = await axios.get(url); // sending a GET request to the API
+      setDestinations(result.data); // setting the destinations state variable to the data we fetched from the API
+      console.log(result.data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    }
+  } // function to fetch the destinations
+
+  useEffect(() => {
+    fetchDestinations(); // calling the fetchDestinations function
+  }, []); // passing an empty array as a dependency to the useEffect hook
+
+  return (
+    <div>
+      <h1>Destination</h1>
+      {destinations.map((destination) => (
+        <div key={destination.id} className="card">
+          <h2>{destination.name}</h2>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Destination;
+```
+
+You should see the destination names rendered in the UI.
+
+If that's the case, then we are good to go. And now we can start building the UI of the `Destination` component.
+
+### Loading screen 
+
+It's like a side quest. But I just want to see aloading screen before the data actually loads. So, what we can do is set the `loading` state variable to `true` when we start fetching the data and set it to `false` when the data is fetched. And when according to that we can show a loading screen in the UI. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+
+  const fetchDestinations = async () => { // function to fetch the destinations
+    const url = "http://localhost:3000/destinations"; // API link
+    try {
+      setLoading(true); // setting the loading state variable to true
+      const result = await axios.get(url); // sending a GET request to the API
+      setDestinations(result.data); // setting the destinations state variable to the data we fetched from the API
+      console.log(result.data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    } finally {
+      setLoading(false); // setting the loading state variable to false
+    }
+  } // function to fetch the destinations
+
+  useEffect(() => {
+    fetchDestinations(); // calling the fetchDestinations function
+  }, []); // passing an empty array as a dependency to the useEffect hook
+
+  if (loading) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center h-100">
+        <h1 className="text-center text-primary display-1">Loading...</h1>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h1>Destination</h1>
+      {destinations.map((destination) => (
+        <div key={destination.id} className="card">
+          <h2>{destination.name}</h2>
+        </div>
+      ))}
+    </div>
+  );
+};
+export default Destination;
+```
+
+You might not see the loading screen because the data is fetched very quickly. But if you add a `setTimeout` in the `fetchDestinations` function, you will see the loading screen.
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+
+  const fetchDestinations = async () => { // function to fetch the destinations
+    const url = "http://localhost:3000/destinations"; // API link
+    try {
+      setLoading(true); // setting the loading state variable to true
+      const result = await axios.get(url); // sending a GET request to the API
+      setDestinations(result.data); // setting the destinations state variable to the data we fetched from the API
+      console.log(result.data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    } finally {
+      setTimeout(() => {
+        setLoading(false); // setting the loading state variable to false
+      }, 2000);
+    }
+  } // function to fetch the destinations
+
+  ... // everything else is the same
+
+```
+
+And you should see the loading screen for 2 seconds before the data is rendered in the screen. You can remove the `setTimeout` after that. I just wanted to show you how to implement a loading screen in the UI.
+
+### Rendering everthing
+
+We will first render all the data and implement hte features one by one. So, let's render all the data in the UI and then we will implement the features one by one.
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+
+  const fetchDestinations = async () => { 
+    ... // everything else is the same
+  } // function to fetch the destinations
+
+  useEffect(() => {
+    fetchDestinations(); // calling the fetchDestinations function
+  }, []); // passing an empty array as a dependency to the useEffect hook
+
+  if (loading) {
+    return (
+      ... // everything else is the same
+    );
+  }
+
+  return (
+    <div className="my-5">
+      <h1 className="text-center mb-4">Destinations</h1>
+      <div className="d-flex flex-column align-items-center gap-4">
+        {destinations.map((destination) => {
+          return (
+            <div
+              key={destination.id}
+              className="card shadow-sm"
+              style={{ width: '100%', maxWidth: '500px' }}
+            >
+              <img
+                src={destination.image}
+                alt={destination.name}
+                className="card-img-top"
+                style={{ height: '200px', objectFit: 'cover' }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-center">{destination.name}</h5>
+                <p className="card-text text-center">
+                  {destination.description}
+                </p>
+                {destination.location}
+                <button
+                  className="btn btn-primary mx-auto mt-auto"
+                  onClick={}
+                >
+                  Show More
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Destination;
+```
+
+> I added a `Show More` button in the card for toggling the card. and also added some styles to the card to make it look good. 
+
+And now you should be able to see all the data rendered in the UI. You can also add some styles of your own to make it look even better. But I think this is good enough for now.
+
+This hsould show the whole data in the UI. But we don't need to show all the data at once. We need to show only the name and image of the destination and some part of the description. And
+
+### Toggling the card
+
+Now We can implement the toggling feature. As we will update the state of the card when we click on the `Show More` button, we need to create a new state variable to keep track of the toggled cards. But first let's implement a logic where when a show more button is clicked, the card id will be shown on the console. This will help us to know which card is toggled. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+
+  const fetchDestinations = async () => { 
+    ... // everything else is the same
+  } // function to fetch the destinations
+
+  useEffect(() => {
+    fetchDestinations(); // calling the fetchDestinations function
+  }, []); // passing an empty array as a dependency to the useEffect hook
+
+  if (loading) {
+    return (
+      ... // everything else is the same
+    );
+  }
+
+  return (
+    <div className="my-5">
+      <h1 className="text-center mb-4">Destinations</h1>
+      <div className="d-flex flex-column align-items-center gap-4">
+        {destinations.map((destination) => {
+          return (
+            <div
+              key={destination.id}
+              className="card shadow-sm"
+              style={{ width: '100%', maxWidth: '500px' }}
+            >
+              <img
+                src={destination.image}
+                alt={destination.name}
+                className="card-img-top"
+                style={{ height: '200px', objectFit: 'cover' }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-center">{destination.name}</h5>
+                <p className="card-text text-center">
+                  {destination.description}
+                </p>
+                {destination.location}
+                <button
+                  className="btn btn-primary mx-auto mt-auto"
+                  onClick={() => {
+                    console.log(destination.id); // logging the id of the toggled card
+                  }}
+                >
+                  Show More
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+export default Destination;
+```
+
+> I added an `onClick` event to the `Show More` button and logged the `id` of the destination to the console. This will help us to know which card is toggled.
+
+Now, when you click on the `Show More` button, you should see the id of the destination in the console. If this works we can go to the next step. 
+
+What scenarios can we face here?
+
+- One card is toggled
+- Multiple cards are toggled
+- Also look for un-toggling the card
+
+So, we cannot just use a simple `boolean` state variable to keep track of the toggled cards. We need to create a new state variable that will keep track of all the card that are toggled. So, we can use an object to keep track of the toggled cards. The key of the object will be the `id` of the destination and the value will be a `boolean` value that will tell us if the card is toggled or not. When we click a card, we will set the value of the key to `true` and when we click it again, we will set the value of the key to `false`. Let's do that with a simple example first. 
+
+Make a new component called `Toggle.jsx` in the `project_5` folder and add the following code in it:
+
+```js {.line-numbers}
+// projects/project_5/Toggle.jsx
+import React, { useState } from "react";
+const Toggle = () => {
+  const [toggle, setToggle] = useState(false); // toggle state variable
+
+  return (
+    <div>
+      <h1>Toggle</h1>
+      <button
+        onClick={() => {
+          setToggle(!toggle); // toggling the state variable
+        }}
+      >
+        Toggle
+      </button>
+      {toggle ? (
+        <div>
+          <h2>Toggle is ON</h2>
+          <p>This is the toggled content</p>
+        </div>
+      ) : (
+        <div>
+          <h2>Toggle is OFF</h2>
+          <p>This is the untoggled content</p>
+        </div>
+      )}
+    </div>
+  );
+};
+export default Toggle;
+```
+
+Now import the `Toggle` component in the `Destination` component and render it in the `Destination` component. You should see a button that toggles the content when clicked. 
+
+What's happening there?
+
+We have a button that `sets` the `toggle` state variable to it's opposite value when clicked. You can use the traditional `if` statement to check the value of the `toggle` state variable and render the content based on that in the `callback` function of the `onClick` event. But we can just inverse the value of the `toggle` state variable and use the `ternary operator` to check the value of the `toggle` state variable and render the content based on that. This is a simple example of how to use the `ternary operator` to toggle a state variable.
+
+Now, Let's go through the steps to implement the toggling feature in the `Destination` component.
+
+- We need to keep track of the toggled cards. So, we need to create a new state variable called `toggledCards` and set it to an empty object by default.
+- We can make a new function to handle the toggling of the cards. 
+- In that function, we will take the `id` of the destination and check if the `id` is already in the `toggledCards` object. If it is, we will set the value of the key to `false` and if it is not, we will set the value of the key to `true`.
+- How can we do that? If the `id` is already in the `toggledCards` object, we can just inverse the value of the key. If it is not, it's default value will be `false` so we can just inverse the value of the key and set it to `true`.
+- In both cases we can just inverse the value of the key so, it makes the implementation easier. But Understanding the logic can be difficult for a beginner. So, take your time and try to emulate the logic in your mind. Once you understand the logic, you can implement it in the code.
+
+let's now make a function that will add the `id` of the destination to the `toggledCards` object along with the value of the key and log it in the console. 
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+  const [toggledCards, setToggledCards] = useState({}); // toggled cards state variable
+
+  ... // everything else is the same
+
+  const handleToggle = (id) => {
+    setToggledCards((prev) => {
+      return {
+        ...prev, // spread the previous state to make a new object
+        [id]: !prev[id], // inverse the value of the key and add 
+      };
+    });
+    console.log(toggledCards); // logging the toggled cards to the console
+  }; // function to handle the toggling of the cards
+  
+  return (
+    <div className="my-5">
+      <h1 className="text-center mb-4">Destinations</h1>
+      <div className="d-flex flex-column align-items-center gap-4">
+        {destinations.map((destination) => {
+          return (
+            <div
+              key={destination.id}
+              className="card shadow-sm"
+              style={{ width: '100%', maxWidth: '500px' }}
+            >
+              <img
+                src={destination.image}
+                alt={destination.name}
+                className="card-img-top"
+                style={{ height: '200px', objectFit: 'cover' }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-center">{destination.name}</h5>
+                <p className="card-text text-center">
+                  {destination.description}
+                </p>
+                {destination.location}
+                <button
+                  className="btn btn-primary mx-auto mt-auto"
+                  onClick={() => {
+                    handleToggle(destination.id); // calling the handleToggle function
+                  }}
+                >
+                  Show More
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+export default Destination;
+```
+
+> I added a new state variable called `toggledCards` and set it to an empty object by default. I also added a new function called `handleToggle` that takes the `id` of the destination and sets the value of the key to `true` or `false` based on the value of the key. And I called the `handleToggle` function in the `onClick` event of the `Show More` button.
+
+Now, you should see the `toggledCards` object in the console when you click on the `Show More` button. You can also check the value of the key in the `toggledCards` object to see if it is `true` or `false`. This works!!!
+
+Now, What what we can do is, we can see the value of the key in the `toggledCards` object and if it is `true`, we can show the full description of the destination and if it is `false`, we can show only a part of the description. So, let's do that.
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  
+  ... // everything else is the same
+
+  return (
+    <div className="my-5">
+      <h1 className="text-center mb-4">Destinations</h1>
+      <div className="d-flex flex-column align-items-center gap-4">
+        {destinations.map((destination) => {
+          
+          const isToggled = toggledCards[destination.id]; // checking if the card is toggled
+
+          return (
+            <div
+              key={destination.id}
+              className="card shadow-sm"
+              style={{ width: '100%', maxWidth: '500px' }}
+            >
+              <img
+                src={destination.image}
+                alt={destination.name}
+                className="card-img-top"
+                style={{ height: '200px', objectFit: 'cover' }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-center">{destination.name}</h5>
+                <p className="card-text text-center">
+                  {isToggled ? destination.description : `${destination.description.slice(0, 50)}...`}
+                </p>
+                {destination.location}
+                <button
+                  className="btn btn-primary mx-auto mt-auto"
+                  onClick={() => {
+                    handleToggle(destination.id); // calling the handleToggle function
+                  }}
+                >
+                  Show More
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Destination;
+```
+
+> I added a new variable called `isToggled` that checks if the card is toggled or not. If it is toggled, we show the full description of the destination and if it is not toggled, we show only a part of the description.
+
+Now, when you click on the `Show More` button, you should see the full description of the destination and when you click it again, you should see only a part of the description. 
+
+But our work is not done yet. I also want the `location` to be shown when the card is toggled. So, let's do that too and the final code will look like this:
+
+```js {.line-numbers}
+// projects/project_5/Destination.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // importing axios
+
+const Destination = () => {
+  const [loading, setLoading] = useState(false); // loading state variable
+  const [destinations, setDestinations] = useState([]); // destinations state variable
+  const [toggledCards, setToggledCards] = useState({}); // toggled cards state variable
+
+  const fetchDestinations = async () => { 
+    const url = "http://localhost:3000/destinations"; // API link
+    try {
+      setLoading(true); // setting the loading state variable to true
+      const result = await axios.get(url); // sending a GET request to the API
+      setDestinations(result.data); // setting the destinations state variable to the data we fetched from the API
+      console.log(result.data); // logging the data to the console
+    } catch (error) {
+      console.log(error); // logging the error to the console
+    } finally {
+      setLoading(false); // setting the loading state variable to false
+    }
+  } // function to fetch the destinations
+
+  useEffect(() => {
+    fetchDestinations(); // calling the fetchDestinations function
+  }, []); // passing an empty array as a dependency to the useEffect hook
+
+  if (loading) {
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center h-100">
+        <h1 className="text-center text-primary display-1">Loading...</h1>
+      </div>
+    );
+  }
+
+  return (
+    <div className="my-5">
+      <h1 className="text-center mb-4">Destinations</h1>
+      <div className="d-flex flex-column align-items-center gap-4">
+        {destinations.map((destination) => {
+          const isToggled = toggledCards[destination.id]; // checking if the card is toggled
+
+          return (
+            <div
+              key={destination.id}
+              className="card shadow-sm"
+              style={{ width: '100%', maxWidth: '500px' }}
+            >
+              <img
+                src={destination.image}
+                alt={destination.name}
+                className="card-img-top"
+                style={{ height: '200px', objectFit: 'cover' }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-center">{destination.name}</h5>
+                <p className="card-text text-center">
+                  {isToggled ? destination.description : `${destination.description.slice(0, 50)}...`}
+                </p>
+                {isToggled && <p className="text-secondary">{destination.location}</p>} {/* using logical && operator to show the location */}
+                <button 
+                  className="btn btn-primary mx-auto mt-auto"
+                  onClick={() => {
+                    handleToggle(destination.id); // calling the handleToggle function
+                  }}
+                >
+                  Show More
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Destination;
+```
+
+> I'm using a logical `&&` operator to show the location when the card is toggled. This will only show the location when the card is toggled and will not show it when the card is not toggled. This is called `short-circuit evaluation` in JavaScript. It's almost like the `ternary operator` but it's a bit different. Try it Yourself and see if you can understand the difference between the two.
+
+And that's it. We are done with the `Destination` component. You can also add some styles of your own to make it look even better. But I think this is good enough for now and we have successfully recapped everything we have learned so far and learned some new logics too. I hope you enjoyed this project and learned a lot from it. We can now move to the next project.
