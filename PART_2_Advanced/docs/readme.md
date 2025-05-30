@@ -3314,3 +3314,136 @@ export default Destination;
 > I'm using a logical `&&` operator to show the location when the card is toggled. This will only show the location when the card is toggled and will not show it when the card is not toggled. This is called `short-circuit evaluation` in JavaScript. It's almost like the `ternary operator` but it's a bit different. Try it Yourself and see if you can understand the difference between the two.
 
 And that's it. We are done with the `Destination` component. You can also add some styles of your own to make it look even better. But I think this is good enough for now and we have successfully recapped everything we have learned so far and learned some new logics too. I hope you enjoyed this project and learned a lot from it. We can now move to the next project.
+
+# React Folder Structure
+
+Before Going into the next project, there are some things that I want to discuss with you. If you've been following along with the projects from the fundamentals of React, you might have noticed that everytime we import a component, we have to write the full path of the component. Maybe because of the `es7` extension, we don't have to write the while import path because it automatically imports the component for us. But when we work on a large project, it can be a bit tedious to write the full path of the component every time we import it and evrytime we import a component, we add a new line to the import section. This can make the import section look messy and hard to read.
+
+Also when we are working on a large project, we cannot just make a folder named components and put all the components in that `components` folder. We need to `organize` the `components` in a way that makes sense and is easy to `navigate`. So, let's figure out how we can fix this issues and make our project more organized.
+
+## Organizing the components
+
+Most of the time when working on a project we should have a folder structure like this:
+
+```
+src
+├── components
+│   ├── Header.jsx
+│   ├── Footer.jsx
+│   ├── Button.jsx
+│   └── Card.jsx
+├── pages
+│   ├── Home.jsx
+│   ├── About.jsx
+│   └── Contact.jsx
+├── utils
+│   ├── api.js
+│   └── helpers.js
+├── App.jsx
+├── index.js
+└── styles.css
+```
+
+Here we have 3 main folders:
+- `components`: This folder will contain all the reusable components that we will use in the project. For example, `Header`, `Footer`, `Button`, `Card` etc.
+- `pages`: This folder will contain all the pages of the project. For example, `Home`, `About`, `Contact` etc.
+- `utils`: This folder will contain all the utility functions that we will use in the project. For example, `api.js`, `helpers.js` etc.
+
+This is a simple folder `structure` that is followed by most of the React projects. To organize the components and pages in a way that we can distinguish between them easily. This makes navigating the project easier and also makes it easier to find the components and pages we need.
+
+But still we have to write the full path of the component every time we import it. So, how can we fix that?
+
+## Using `index.jsx` to simplify imports
+
+In this whole aritcle series I haven't really talked about the `index.jsx` file. 
+
+`index.js` or `index.jsx` file is a `special file` in React that is used to `export` all the components from a folder. It's like a `representation` of the folder itself. When we go into a folder `index.jsx` file is the first file that is loaded without `explicitly importing it`. 
+
+Go ahead test it out by youself.
+
+- Make folder structure like the structure mentioned above.
+- Inside the `components` folder, create a file called `Header.jsx` and inside the make a simple `Header` component that returns a `h1` tag with the text `Header`. 
+
+- Make a new file named `index.jsx` inside the `components` folder and import the header component.
+
+- Make a new component in the `index.jsx` file that and render the `Header` component there. Now export the `newly made component` from the `index.jsx` file.
+
+- Now go to the `App.jsx` file and file write the following code:
+
+```js {.line-numbers}
+// App.jsx
+import React from "react";
+import NewComponent from "./components"; // importing the new component from the index.jsx file
+
+const App = () => {
+  return (
+    <div>
+      <NewComponent />
+    </div>
+  );
+};
+
+export default App;
+```
+
+You should see the `Header` component rendered in the UI without explicitly importing it from the `index.jsx` file. 
+
+We wrote `import NewComponent from "./components";` instead of `import NewComponent from "./components/index.jsx";`. This is because React automatically looks for the `index.jsx` file when we import a folder. 
+
+We can use this to our advantage and simplify our imports.
+
+We can import all the components from the `components` folder in the `index.jsx` file and then export them from there. This way we can import all the components from the `components` folder in a single line.
+
+Let's make three new files in the `pages` folder and i'll give the files the following names `page1.jsx`, `page2.jsx`, and `page3.jsx`. And inside each file, I will make a simple component that returns a `h1` tag with the text `Page 1`, `Page 2`, and `Page 3` respectively.
+
+Now I'll make a new file called `index.jsx` inside the `pages` folder and import all the components from the `page1.jsx`, `page2.jsx`, and `page3.jsx` files and export them from there as a single object. 
+
+```js {.line-numbers}
+// pages/index.jsx
+import Page1 from "./page1";
+import Page2 from "./page2";
+import Page3 from "./page3";
+
+export { Page1, Page2, Page3 };
+```
+
+Now, when we import the `pages` folder, we can import all the components from the `index.jsx` file in a single line.
+
+So, previously we had to write:
+
+```js {.line-numbers}
+// App.jsx
+import React from "react";
+import Page1 from "./pages/page1";
+import Page2 from "./pages/page2";
+import Page3 from "./pages/page3";
+```
+Now we can just write:
+
+```js {.line-numbers}
+// App.jsx
+import React from "react";
+import { Page1, Page2, Page3 } from "./pages"; // importing the components from the index.jsx file
+```
+
+So, we can now import all the components from the `pages` folder in a single line. This makes our imports cleaner and easier to read.
+
+Now you might ask what's the point of this? Instead of importing the components directly from the `pages` folder, we are importing them from the `index.jsx` file. But we have to write the same amount of code because we are still importing the components in the `index.jsx` file, ain’t that just a waste of time?
+
+Well, you are right in a way. But let me explain why this is better than directly importing the components from the `pages` folder.
+
+We have a large project with a lot of components, pages and features. Im not talking about a project with 10-20 components. I am talking about a project with 100+ components. We sometimes have to import most of the components in the `App.jsx` file. And when we do that, we have almost 100 lines of imports in the `App.jsx` file. Which is not ideal. So, what we can do is we can create an `index.jsx` file in the folders and as a component in bieng made we can just import the component in the `index.jsx` file and export it from there. So, no matter how many components we have in the folder, we will only have to write one line of import in the `App.jsx` file or any file for that folder. 
+
+In this way we have a cleaner and more organized codebase. And a file `solely` dedicated to exporting the components from the folder. 
+
+I hopw this makes sense to you. If you have any questions regarding this, feel free to ask me in the discord server or in the comments section of the article.
+
+## Bonus: Glean
+
+`Glean` is a `VS Code` extension that helps you to organize your imports in a better way. It can refactor you code into new components with just a click. If you have a large component with a lot of code, you can select the code and click on the `Glean` icon in the sidebar and it will refactor the code into a new component and import it in the current file.
+
+It's a nice tool that can make your life easier when working on a large project. 
+You should install it and try it out. [Glean](https://marketplace.visualstudio.com/items?itemName=wix.glean)
+
+
+
