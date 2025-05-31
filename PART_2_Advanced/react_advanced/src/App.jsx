@@ -6,6 +6,7 @@ import AccidentalLoopsExample from "./projects/project_3/Accidental_loops_exampl
 import Use_effect_counter_app from "./projects/project_3/Use_effect_counter_app";
 import Users from "./projects/project_4/Users";
 import Destinations from "./projects/project_5/Destinations";
+import MissingData from "./missing_data_handling/MissingData";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
       {/* <AccidentalLoopsExample /> */}
       {/* <Use_effect_counter_app /> */}
       {/* <Users /> */}
-      <Destinations />
+      {/* <Destinations /> */}
+      <MissingData />
     </div>
   );
 }

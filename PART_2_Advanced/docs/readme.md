@@ -2736,7 +2736,8 @@ const Destination = () => {
   const [loading, setLoading] = useState(false); // loading state variable
   const [destinations, setDestinations] = useState([]); // destinations state variable
 
-  const fetchDestinations = async () => { // function to fetch the destinations
+  const fetchDestinations = async () => {
+    // function to fetch the destinations
     const url = "http://localhost:3000/destinations"; // API link
     try {
       const result = await axios.get(url); // sending a GET request to the API
@@ -2744,7 +2745,7 @@ const Destination = () => {
     } catch (error) {
       console.log(error); // logging the error to the console
     }
-  } // function to fetch the destinations
+  }; // function to fetch the destinations
 
   useEffect(() => {
     fetchDestinations(); // calling the fetchDestinations function
@@ -2773,7 +2774,8 @@ const Destination = () => {
   const [loading, setLoading] = useState(false); // loading state variable
   const [destinations, setDestinations] = useState([]); // destinations state variable
 
-  const fetchDestinations = async () => { // function to fetch the destinations
+  const fetchDestinations = async () => {
+    // function to fetch the destinations
     const url = "http://localhost:3000/destinations"; // API link
     try {
       const result = await axios.get(url); // sending a GET request to the API
@@ -2782,7 +2784,7 @@ const Destination = () => {
     } catch (error) {
       console.log(error); // logging the error to the console
     }
-  } // function to fetch the destinations
+  }; // function to fetch the destinations
 
   useEffect(() => {
     fetchDestinations(); // calling the fetchDestinations function
@@ -2807,7 +2809,7 @@ You should see the destination names rendered in the UI.
 
 If that's the case, then we are good to go. And now we can start building the UI of the `Destination` component.
 
-### Loading screen 
+### Loading screen
 
 It's like a side quest. But I just want to see aloading screen before the data actually loads. So, what we can do is set the `loading` state variable to `true` when we start fetching the data and set it to `false` when the data is fetched. And when according to that we can show a loading screen in the UI. So, let's do that.
 
@@ -2820,7 +2822,8 @@ const Destination = () => {
   const [loading, setLoading] = useState(false); // loading state variable
   const [destinations, setDestinations] = useState([]); // destinations state variable
 
-  const fetchDestinations = async () => { // function to fetch the destinations
+  const fetchDestinations = async () => {
+    // function to fetch the destinations
     const url = "http://localhost:3000/destinations"; // API link
     try {
       setLoading(true); // setting the loading state variable to true
@@ -2832,7 +2835,7 @@ const Destination = () => {
     } finally {
       setLoading(false); // setting the loading state variable to false
     }
-  } // function to fetch the destinations
+  }; // function to fetch the destinations
 
   useEffect(() => {
     fetchDestinations(); // calling the fetchDestinations function
@@ -2906,7 +2909,7 @@ const Destination = () => {
   const [loading, setLoading] = useState(false); // loading state variable
   const [destinations, setDestinations] = useState([]); // destinations state variable
 
-  const fetchDestinations = async () => { 
+  const fetchDestinations = async () => {
     ... // everything else is the same
   } // function to fetch the destinations
 
@@ -2961,7 +2964,7 @@ const Destination = () => {
 export default Destination;
 ```
 
-> I added a `Show More` button in the card for toggling the card. and also added some styles to the card to make it look good. 
+> I added a `Show More` button in the card for toggling the card. and also added some styles to the card to make it look good.
 
 And now you should be able to see all the data rendered in the UI. You can also add some styles of your own to make it look even better. But I think this is good enough for now.
 
@@ -2980,7 +2983,7 @@ const Destination = () => {
   const [loading, setLoading] = useState(false); // loading state variable
   const [destinations, setDestinations] = useState([]); // destinations state variable
 
-  const fetchDestinations = async () => { 
+  const fetchDestinations = async () => {
     ... // everything else is the same
   } // function to fetch the destinations
 
@@ -3038,7 +3041,7 @@ export default Destination;
 
 > I added an `onClick` event to the `Show More` button and logged the `id` of the destination to the console. This will help us to know which card is toggled.
 
-Now, when you click on the `Show More` button, you should see the id of the destination in the console. If this works we can go to the next step. 
+Now, when you click on the `Show More` button, you should see the id of the destination in the console. If this works we can go to the next step.
 
 What scenarios can we face here?
 
@@ -3046,7 +3049,7 @@ What scenarios can we face here?
 - Multiple cards are toggled
 - Also look for un-toggling the card
 
-So, we cannot just use a simple `boolean` state variable to keep track of the toggled cards. We need to create a new state variable that will keep track of all the card that are toggled. So, we can use an object to keep track of the toggled cards. The key of the object will be the `id` of the destination and the value will be a `boolean` value that will tell us if the card is toggled or not. When we click a card, we will set the value of the key to `true` and when we click it again, we will set the value of the key to `false`. Let's do that with a simple example first. 
+So, we cannot just use a simple `boolean` state variable to keep track of the toggled cards. We need to create a new state variable that will keep track of all the card that are toggled. So, we can use an object to keep track of the toggled cards. The key of the object will be the `id` of the destination and the value will be a `boolean` value that will tell us if the card is toggled or not. When we click a card, we will set the value of the key to `true` and when we click it again, we will set the value of the key to `false`. Let's do that with a simple example first.
 
 Make a new component called `Toggle.jsx` in the `project_5` folder and add the following code in it:
 
@@ -3083,7 +3086,7 @@ const Toggle = () => {
 export default Toggle;
 ```
 
-Now import the `Toggle` component in the `Destination` component and render it in the `Destination` component. You should see a button that toggles the content when clicked. 
+Now import the `Toggle` component in the `Destination` component and render it in the `Destination` component. You should see a button that toggles the content when clicked.
 
 What's happening there?
 
@@ -3092,12 +3095,12 @@ We have a button that `sets` the `toggle` state variable to it's opposite value 
 Now, Let's go through the steps to implement the toggling feature in the `Destination` component.
 
 - We need to keep track of the toggled cards. So, we need to create a new state variable called `toggledCards` and set it to an empty object by default.
-- We can make a new function to handle the toggling of the cards. 
+- We can make a new function to handle the toggling of the cards.
 - In that function, we will take the `id` of the destination and check if the `id` is already in the `toggledCards` object. If it is, we will set the value of the key to `false` and if it is not, we will set the value of the key to `true`.
 - How can we do that? If the `id` is already in the `toggledCards` object, we can just inverse the value of the key. If it is not, it's default value will be `false` so we can just inverse the value of the key and set it to `true`.
 - In both cases we can just inverse the value of the key so, it makes the implementation easier. But Understanding the logic can be difficult for a beginner. So, take your time and try to emulate the logic in your mind. Once you understand the logic, you can implement it in the code.
 
-let's now make a function that will add the `id` of the destination to the `toggledCards` object along with the value of the key and log it in the console. 
+let's now make a function that will add the `id` of the destination to the `toggledCards` object along with the value of the key and log it in the console.
 
 ```js {.line-numbers}
 // projects/project_5/Destination.jsx
@@ -3115,12 +3118,12 @@ const Destination = () => {
     setToggledCards((prev) => {
       return {
         ...prev, // spread the previous state to make a new object
-        [id]: !prev[id], // inverse the value of the key and add 
+        [id]: !prev[id], // inverse the value of the key and add
       };
     });
     console.log(toggledCards); // logging the toggled cards to the console
   }; // function to handle the toggling of the cards
-  
+
   return (
     <div className="my-5">
       <h1 className="text-center mb-4">Destinations</h1>
@@ -3175,7 +3178,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios"; // importing axios
 
 const Destination = () => {
-  
+
   ... // everything else is the same
 
   return (
@@ -3183,7 +3186,7 @@ const Destination = () => {
       <h1 className="text-center mb-4">Destinations</h1>
       <div className="d-flex flex-column align-items-center gap-4">
         {destinations.map((destination) => {
-          
+
           const isToggled = toggledCards[destination.id]; // checking if the card is toggled
 
           return (
@@ -3226,7 +3229,7 @@ export default Destination;
 
 > I added a new variable called `isToggled` that checks if the card is toggled or not. If it is toggled, we show the full description of the destination and if it is not toggled, we show only a part of the description.
 
-Now, when you click on the `Show More` button, you should see the full description of the destination and when you click it again, you should see only a part of the description. 
+Now, when you click on the `Show More` button, you should see the full description of the destination and when you click it again, you should see only a part of the description.
 
 But our work is not done yet. I also want the `location` to be shown when the card is toggled. So, let's do that too and the final code will look like this:
 
@@ -3240,7 +3243,7 @@ const Destination = () => {
   const [destinations, setDestinations] = useState([]); // destinations state variable
   const [toggledCards, setToggledCards] = useState({}); // toggled cards state variable
 
-  const fetchDestinations = async () => { 
+  const fetchDestinations = async () => {
     const url = "http://localhost:3000/destinations"; // API link
     try {
       setLoading(true); // setting the loading state variable to true
@@ -3252,7 +3255,7 @@ const Destination = () => {
     } finally {
       setLoading(false); // setting the loading state variable to false
     }
-  } // function to fetch the destinations
+  }; // function to fetch the destinations
 
   useEffect(() => {
     fetchDestinations(); // calling the fetchDestinations function
@@ -3277,21 +3280,26 @@ const Destination = () => {
             <div
               key={destination.id}
               className="card shadow-sm"
-              style={{ width: '100%', maxWidth: '500px' }}
+              style={{ width: "100%", maxWidth: "500px" }}
             >
               <img
                 src={destination.image}
                 alt={destination.name}
                 className="card-img-top"
-                style={{ height: '200px', objectFit: 'cover' }}
+                style={{ height: "200px", objectFit: "cover" }}
               />
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title text-center">{destination.name}</h5>
                 <p className="card-text text-center">
-                  {isToggled ? destination.description : `${destination.description.slice(0, 50)}...`}
+                  {isToggled
+                    ? destination.description
+                    : `${destination.description.slice(0, 50)}...`}
                 </p>
-                {isToggled && <p className="text-secondary">{destination.location}</p>} {/* using logical && operator to show the location */}
-                <button 
+                {isToggled && (
+                  <p className="text-secondary">{destination.location}</p>
+                )}{" "}
+                {/* using logical && operator to show the location */}
+                <button
                   className="btn btn-primary mx-auto mt-auto"
                   onClick={() => {
                     handleToggle(destination.id); // calling the handleToggle function
@@ -3345,6 +3353,7 @@ src
 ```
 
 Here we have 3 main folders:
+
 - `components`: This folder will contain all the reusable components that we will use in the project. For example, `Header`, `Footer`, `Button`, `Card` etc.
 - `pages`: This folder will contain all the pages of the project. For example, `Home`, `About`, `Contact` etc.
 - `utils`: This folder will contain all the utility functions that we will use in the project. For example, `api.js`, `helpers.js` etc.
@@ -3355,14 +3364,14 @@ But still we have to write the full path of the component every time we import i
 
 ## Using `index.jsx` to simplify imports
 
-In this whole aritcle series I haven't really talked about the `index.jsx` file. 
+In this whole aritcle series I haven't really talked about the `index.jsx` file.
 
-`index.js` or `index.jsx` file is a `special file` in React that is used to `export` all the components from a folder. It's like a `representation` of the folder itself. When we go into a folder `index.jsx` file is the first file that is loaded without `explicitly importing it`. 
+`index.js` or `index.jsx` file is a `special file` in React that is used to `export` all the components from a folder. It's like a `representation` of the folder itself. When we go into a folder `index.jsx` file is the first file that is loaded without `explicitly importing it`.
 
 Go ahead test it out by youself.
 
 - Make folder structure like the structure mentioned above.
-- Inside the `components` folder, create a file called `Header.jsx` and inside the make a simple `Header` component that returns a `h1` tag with the text `Header`. 
+- Inside the `components` folder, create a file called `Header.jsx` and inside the make a simple `Header` component that returns a `h1` tag with the text `Header`.
 
 - Make a new file named `index.jsx` inside the `components` folder and import the header component.
 
@@ -3386,9 +3395,9 @@ const App = () => {
 export default App;
 ```
 
-You should see the `Header` component rendered in the UI without explicitly importing it from the `index.jsx` file. 
+You should see the `Header` component rendered in the UI without explicitly importing it from the `index.jsx` file.
 
-We wrote `import NewComponent from "./components";` instead of `import NewComponent from "./components/index.jsx";`. This is because React automatically looks for the `index.jsx` file when we import a folder. 
+We wrote `import NewComponent from "./components";` instead of `import NewComponent from "./components/index.jsx";`. This is because React automatically looks for the `index.jsx` file when we import a folder.
 
 We can use this to our advantage and simplify our imports.
 
@@ -3396,7 +3405,7 @@ We can import all the components from the `components` folder in the `index.jsx`
 
 Let's make three new files in the `pages` folder and i'll give the files the following names `page1.jsx`, `page2.jsx`, and `page3.jsx`. And inside each file, I will make a simple component that returns a `h1` tag with the text `Page 1`, `Page 2`, and `Page 3` respectively.
 
-Now I'll make a new file called `index.jsx` inside the `pages` folder and import all the components from the `page1.jsx`, `page2.jsx`, and `page3.jsx` files and export them from there as a single object. 
+Now I'll make a new file called `index.jsx` inside the `pages` folder and import all the components from the `page1.jsx`, `page2.jsx`, and `page3.jsx` files and export them from there as a single object.
 
 ```js {.line-numbers}
 // pages/index.jsx
@@ -3418,6 +3427,7 @@ import Page1 from "./pages/page1";
 import Page2 from "./pages/page2";
 import Page3 from "./pages/page3";
 ```
+
 Now we can just write:
 
 ```js {.line-numbers}
@@ -3432,9 +3442,9 @@ Now you might ask what's the point of this? Instead of importing the components 
 
 Well, you are right in a way. But let me explain why this is better than directly importing the components from the `pages` folder.
 
-We have a large project with a lot of components, pages and features. Im not talking about a project with 10-20 components. I am talking about a project with 100+ components. We sometimes have to import most of the components in the `App.jsx` file. And when we do that, we have almost 100 lines of imports in the `App.jsx` file. Which is not ideal. So, what we can do is we can create an `index.jsx` file in the folders and as a component in bieng made we can just import the component in the `index.jsx` file and export it from there. So, no matter how many components we have in the folder, we will only have to write one line of import in the `App.jsx` file or any file for that folder. 
+We have a large project with a lot of components, pages and features. Im not talking about a project with 10-20 components. I am talking about a project with 100+ components. We sometimes have to import most of the components in the `App.jsx` file. And when we do that, we have almost 100 lines of imports in the `App.jsx` file. Which is not ideal. So, what we can do is we can create an `index.jsx` file in the folders and as a component in bieng made we can just import the component in the `index.jsx` file and export it from there. So, no matter how many components we have in the folder, we will only have to write one line of import in the `App.jsx` file or any file for that folder.
 
-In this way we have a cleaner and more organized codebase. And a file `solely` dedicated to exporting the components from the folder. 
+In this way we have a cleaner and more organized codebase. And a file `solely` dedicated to exporting the components from the folder.
 
 I hopw this makes sense to you. If you have any questions regarding this, feel free to ask me in the discord server or in the comments section of the article.
 
@@ -3442,8 +3452,378 @@ I hopw this makes sense to you. If you have any questions regarding this, feel f
 
 `Glean` is a `VS Code` extension that helps you to organize your imports in a better way. It can refactor you code into new components with just a click. If you have a large component with a lot of code, you can select the code and click on the `Glean` icon in the sidebar and it will refactor the code into a new component and import it in the current file.
 
-It's a nice tool that can make your life easier when working on a large project. 
+It's a nice tool that can make your life easier when working on a large project.
 You should install it and try it out. [Glean](https://marketplace.visualstudio.com/items?itemName=wix.glean)
 
+# Handling Missing Data
 
+In the `previous project`, we `fetched` the data from the `API` and `rendered` it in the `UI`. But what if there was some data missing in the API? What if one object in the API didn't have an `image` or a `description` or the `attribute` name was misspelled?
 
+YOu might ask:
+
+_How can that happen? The API is supposed to be well-structured and have all the data we need. because developers are supposed to follow the best practices when creating an API._
+
+Well, you are right. But it's not a very uncommon scenario.
+
+When you are working with a large API, there can be some data that is `missing` or `not available`. This can happen due to various reasons like:
+
+- The data is not available in the database.
+- The data is not correctly formatted.
+- The data is not correctly fetched from the API. etc.
+
+So, we need a way to handle these scenarios and show a alternatives to the user.
+
+There are different methods to handle missing data. We can use `Vanilla JS` to check if the data is available or not and then render the data accordingly or we can set a default value for the attribute that is missing.
+
+## Using Vanilla JS to handle missing data
+
+Let's make a folder named `missing_data_handling` in the `src` folder and inside that folder, make a file named `MissingData.jsx` and data.js. In the `data.js` file, paste the following code:
+
+```js {.line-numbers}
+// src/missing_data_handling/data.js
+export const data = [
+  {
+    id: 1,
+    name: {
+      full: "John Doe",
+      nickname: "Johnny",
+    },
+    images: [
+      {
+        profile:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB1PDgsDVk9EVq2xFjKpAwi7mPkZ-Uk1KZVQ&s",
+        cover: "https://example.com/cover.jpg",
+      },
+    ],
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    location: "New York, USA",
+  },
+  {
+    id: 2,
+    name: {
+      full: "Jane Smith",
+      nickname: "Janey",
+    },
+    description:
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    location: "Los Angeles, USA",
+  },
+  {
+    id: 3,
+    name: {
+      full: "Alice Johnson",
+    },
+    description: null, // missing description
+    location: "Chicago, USA",
+  },
+];
+```
+
+> Here in this `data.js` file, we have an array of objects that represent the data we want to render in the UI. But some of the objects are missing some data like the `description` or the `images` attribute. This is a common scenario when working with APIs.
+
+So, let's try to render these attributes one by one and see how we can handle the missing data.
+
+Now, in the `MissingData.jsx` file, import the `data` from the `data.js` file and render the data in the UI. But first, let's try to render the `name` attribute of the object.
+
+```js {.line-numbers}
+// src/missing_data_handling/MissingData.jsx
+import React from "react";
+import { data } from "./data"; // importing the data from the data.js file
+
+const MissingData = () => {
+  return (
+    <div>
+      <h1>Missing Data Handling</h1>
+      {data.map((item) => (
+        <div key={item.id} className="card">
+          <h2>{item.name.full}</h2>
+          <p>{item.name.nickname}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+export default MissingData;
+```
+
+> Here we are trying to render the `name` attribute of the object. But what if the `nickname` attribute is missing in the object? We will get an error in the console saying that `nickname` is not defined. So, we need to handle this scenario.
+
+We can use the `ternary operator` to check if the `nickname` attribute is available or not. If it is available, we will render it and if it is not available, we will render a default value like `No nickname available`. Let's do that.
+
+```js {.line-numbers}
+// src/missing_data_handling/MissingData.jsx
+import React from "react";
+import { data } from "./data"; // importing the data from the data.js file
+const MissingData = () => {
+  return (
+    <div>
+      <h1>Missing Data Handling</h1>
+      {data.map((item) => (
+        <div key={item.id} className="card">
+          <h2>{item.name.full}</h2>
+          <p>
+            {item.name.nickname ? item.name.nickname : "No nickname available"}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+export default MissingData;
+```
+
+> Here we are using the `ternary operator` to check if the `nickname` attribute is available or not.
+
+But As I said earlier in the article, we should not overuse the `ternary operator` as it can make the code hard to read. So, instead we can use the `logical OR` operator to check if the `nickname` attribute is available or not. If it is available, we will render it and if it is not available, we will render a default value like `No nickname available`. Let's do that.
+
+```js {.line-numbers}
+// src/missing_data_handling/MissingData.jsx
+import React from "react";
+import { data } from "./data"; // importing the data from the data.js file
+
+const MissingData = () => {
+  return (
+    <div>
+      <h1>Missing Data Handling</h1>
+      {data.map((item) => (
+        <div key={item.id} className="card">
+          <h2>{item.name.full}</h2>
+          <p>{item.name.nickname || "No nickname available"}</p> {/* using logical OR operator */}
+        </div>
+      ))}
+    </div>
+  );
+};
+export default MissingData;
+```
+
+> Here we are using the `logical OR short-circuit` operator to check if the `nickname` attribute is available or not. If it is available, react will render it and if it is not available, it will render the default value `No nickname available`.
+
+Description can be missing too and could be handles the same way. Let's do that too.
+
+```js {.line-numbers}
+// src/missing_data_handling/MissingData.jsx
+import React from "react";
+import { data } from "./data"; // importing the data from the data.js file
+const MissingData = () => {
+  return (
+    <div>
+      <h1>Missing Data Handling</h1>
+      {data.map((item) => (
+        <div key={item.id} className="card">
+          <h2>{item.name.full}</h2>
+          <p>{item.name.nickname || "No nickname available"}</p>
+          <p>{item.description || "No description available"}</p>{" "}
+          {/* using logical OR operator */}
+        </div>
+      ))}
+    </div>
+  );
+};
+export default MissingData;
+```
+
+Now what if there is whole attribute missing from the object? Like the `images` attribute is missing from the object. How can we hadle that?
+
+To understand the first approach we need to make a sub-component from the `MissingData.jsx` file. So, make a new Component called `Item.jsx` in the `missing_data_handling` folder and move the code that renders the item to that component. The code will look like this:
+
+```js {.line-numbers}
+// src/missing_data_handling/Item.jsx
+import React from "react";
+const Item = ({ item }) => {
+  return (
+    <div key={item.id} className="card">
+      <h2>{item.name.full}</h2>
+      <p>{item.name.nickname || "No nickname available"}</p>
+      <p>{item.description || "No description available"}</p>
+    </div>
+  );
+};
+export default Item;
+```
+
+Now, in the `MissingData.jsx` file, import the `Item` component and render it in the `map` function. The code will look like this:
+
+```js {.line-numbers}
+// src/missing_data_handling/MissingData.jsx
+import React from "react";
+import { data } from "./data"; // importing the data from the data.js file
+import Item from "./Item"; // importing the Item component
+const MissingData = () => {
+  return (
+    <div>
+      <h1>Missing Data Handling</h1>
+      {data.map((item) => (
+        <Item key={item.id} item={item} /> // rendering the Item component
+      ))}
+    </div>
+  );
+};
+export default MissingData;
+```
+
+This should work like before and we passed the `item` as a prop to the `Item` component. Now, what I like to do is, I like to destructure the `item` prop in the `Item` component and render the `images` attribute if it is available. If it is not available, I we can set a default value for the `images` attribute like an empty array or just a text saying `No images available`. Let's do that.
+
+```js {.line-numbers}
+// src/missing_data_handling/Item.jsx
+import React from "react";
+const Item = ({ id, name, nickname, description, images }) => {
+  return (
+    <div key={id} className="card">
+      <h2>{name.full}</h2>
+      <p>{nickname || "No nickname available"}</p>
+      <p>{description || "No description available"}</p>
+      {/* <img
+        src={images[0].profile}
+        alt={name.full}
+        className="card-img-top"
+      /> */}
+    </div>
+  );
+};
+export default Item;
+```
+> Here I commented out the `img` tag because we will get an error if the `images` attribute is not available in the object. 
+
+We, will find the `images` attribute in the `data.js` file and see that it is an array of objects. So, we can take the first object from the array and render the `profile` image. So, we can do `images[0].profile` to get the profile image. But as not every object in the data has the `images` attribute, this will break the code and we will get an error in the console saying that `images is not defined`. So, we need to handle this scenario too.
+
+What we can do is while `destructuring` the `images` attribute, we can set a default value for it like an text saying `No images available` or an empty array. This way, if the `images` attribute is not available in the object, we will not get an error and we can render the default value instead. Let's do that.
+
+```js {.line-numbers}
+// src/missing_data_handling/Item.jsx
+import React from "react";
+const Item = ({
+  id,
+  name,
+  nickname,
+  description,
+  images = "No images available", // setting a default value for the images attribute
+}) => {
+  return (
+    <div key={id} className="card">
+      <h2>{name.full}</h2>
+      <p>{nickname || "No nickname available"}</p>
+      <p>{description || "No description available"}</p>
+      {images !== "No images available" && ( // checking if the images attribute is not the default value
+        <img
+          src={images[0].profile}
+          alt={name.full}
+          className="card-img-top"
+          style={{ width: "200px", height: "auto" }}
+        />
+      )}
+    </div>
+  );
+};
+export default Item;
+```
+> Here I set a default value for the `images` attribute to be a text saying `No images available`. And then I checked if the `images` attribute is not the default value before rendering the `img` tag. This way, if the `images` attribute is not available in the object, we will not get an error and we can render the default value instead.
+
+Another way is to use `optional chaining` to check if the `images` attribute is available or not. 
+
+> This is the part where vanilla js syntax goes full coo-coo. 
+
+Optional chaining is a feature in JavaScript that allows you to access the properties of an object without having to check if the object is defined or not. Normally we can check if the object is defined or not by using the `ternary operator` or the `logical AND/OR` operator. As we need a specific attribute from the object, we can use the `AND` operator to check if the object is defined or not and `if it is defined, we can access the attribute from the object`. So, in our case we can do this.
+
+```js {.line-numbers}
+// src/missing_data_handling/Item.jsx
+import React from "react";
+const Item = ({
+  id,
+  name,
+  nickname,
+  description,
+  images
+}) => {
+  const image = images && images[0] && images[0].profile
+  return (
+    <div key={id} className="card">
+      <h2>{name.full}</h2>
+      <p>{nickname || "No nickname available"}</p>
+      <p>{description || "No description available"}</p>
+        <img
+          src={image}
+          alt={name.full}
+          className="card-img-top"
+          style={{ width: "200px", height: "auto" }}
+        />
+    </div>
+  );
+};
+export default Item;
+```
+> Here we are using the `AND` operator to check if the `images` attribute is defined or not. If it is defined, we can access the `profile` image from the first object in the array. If it is not defined, we will get `undefined` and the `img` tag will not be rendered.
+
+This is a simple way to handle missing data in React but waaaay too messy. So, we can use the `optional chaining` operator to make it cleaner.
+
+```js {.line-numbers}
+// src/missing_data_handling/Item.jsx
+import React from "react";
+const Item = ({
+  id,
+  name,
+  nickname,
+  description,
+  images
+}) => {
+  const image = images?.[0]?.profile; // using optional chaining to access the profile image
+  return (
+    <div key={id} className="card">
+      <h2>{name.full}</h2>
+      <p>{nickname || "No nickname available"}</p>
+      <p>{description || "No description available"}</p>
+      <img
+        src={image} // using optional chaining to access the profile image
+        alt={name.full}
+        className="card-img-top"
+        style={{ width: "200px", height: "auto" }}
+      />
+    </div>
+  );
+};
+export default Item;
+```
+
+_We can use the "?" operator to check if the `images` attribute is defined or not and then we don't have to return anything like the `ternary operator` or the `logical OR` operator`. If the `images` attribute is not defined, it will return `undefined` and the `img` tag will not be rendered. But if the `images` attribute is defined we can go straight to the first item in the array but using the `.` operator and then we can use this as a chain to access the `profile` image from the first object in the array. This is called `optional chaining` and it is a very useful feature in JavaScript._
+
+This makes the `AND` operators verbose approach cleaner and easier to read. But it is not supported in all browsers, so you need to make sure that the browsers you are targeting support it. You can check the compatibility of the `optional chaining` operator on [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining).
+
+And finally we can use the `nullish coalescing` operator to set a default value for the `image` variable. This way, if the `images` attribute is not defined, we can set a default value for the `image` variable like an empty string or a placeholder image. Let's do that.
+
+```js {.line-numbers}
+import React from "react";
+import av from "../../../../PART_1_Fundamentals/landing_page/src/avaters/av.svg" // bringing a default image from the landing page project from the fundamentals section
+const Item = ({
+  id,
+  name,
+  nickname,
+  description,
+  images, // default value for images
+}) => {
+  const image = (images && images[0] && images[0].profile) ?? av; // Fallback to a default image if no profile image is available
+
+  // const image = (images && images[0] && images[0].profile) || av; 
+  return (
+    <div key={id} className="card">
+      <h2>{name.full}</h2>
+      <p>{nickname || "No nickname available"}</p>
+      <p>{description || "No description available"}</p>
+        <img
+          src={image}
+          alt={name.full}
+          className="card-img-top"
+          style={{ width: "200px", height: "auto" }}
+        />
+    </div>
+  );
+};
+export default Item;
+```
+
+> The "??" operator is refered to as the `nullish coalescing` operator and it is used to set a default value a variable if the variable is `null` or `undefined`. and also if you use this operator after the `optional chaining` operator u need to wrap the whole expression in parentheses. This is because the `??` operator has a lower precedence than the `?.` operator. So, if you don't wrap the expression in parentheses, it will not work as expected.
+
+> You can also use the `||` operator to set a default value for the `image` variable but it will return the default value if the `images` attribute is an empty string or `0`. So, it is better to use the `??` operator to set a default value for the `image` variable.
+
+Well this took me more time Than I expected to write. But I hope you understood how to handle missing data in React. There are other ways to handle missing data like using `try-catch` blocks or using `error boundaries` but those are more advanced topics and we will cover them in the future, these are some clever and fast ways to handle missing data in React.
+
+> PS: practice using the logical AND chaining and then after that try using the optional chaining operator. You will get the hang of it after a few tries. 
