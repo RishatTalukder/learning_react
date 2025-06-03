@@ -3827,3 +3827,406 @@ export default Item;
 Well this took me more time Than I expected to write. But I hope you understood how to handle missing data in React. There are other ways to handle missing data like using `try-catch` blocks or using `error boundaries` but those are more advanced topics and we will cover them in the future, these are some clever and fast ways to handle missing data in React.
 
 > PS: practice using the logical AND chaining and then after that try using the optional chaining operator. You will get the hang of it after a few tries. 
+
+# Form Handling
+
+We did a project in the adanced section where we made a `input` to take inputs of `tasks` we called `Todo` and we used the `useState` hook to manage the state of the input. This was the first time we have a the simplest form handling in React. But there are more complex forms that we need to handle in React. SO, let's just try to learn how to handle forms in React.
+
+In a normal `HTML` code, the input fields are usually inside a `form` tag and this `form` tag has some attributes like `action`, `method`, etc. We need to understand what these attributes are and how they work with react.
+
+## Controlled Inputs
+
+Let's make new folder in the `src` folder called `form_handling` and inside that folder, make a file called `Form.jsx`. In this file, we will make a simple form with two input fields, one for the name and one for the email. We will also make a submit button to submit the form. The code will look like this:
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  return (
+    <div>
+      <h1>Controlled Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            placeholder="Enter your name"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Form;
+```
+
+> Here we have a simple form with two input fields and a submit button. We can input something in the input fields and when we click on the submit button, the form will be submitted. But how will we get the values of the input fields when we submit the form? 
+
+As we know the that we have to get the values of the input fields to work with them, And what we are doing is typing something in the input fields and then clicking on the submit button. So, we need to keep track of the values of the input fields. This is where `controlled inputs` come in.
+
+> Everything is Hashmap.
+
+To get the values we ned to know the internal workings of HTML. 
+
+When we type something in the `input` field, an `event` is triggered. This event is called the `onChange` event and we get a `event` object that has everything we need to know about the event. SO, let's see the onChange event in action. We can add an `onChange` event to the input fields and log the event object to the console. 
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  return (
+    <div>
+      <h1>Controlled Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            placeholder="Enter your name"
+            onChange={(event) => console.log(event)} // logging the event object to the console
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            onChange={(event) => console.log(event)} // logging the event object to the console
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Form;
+```
+
+> I've added the `onChange` attribute to the input fields and we can add an arrow function that takes the `event(sometimes passed as `e`)` object as an argument and logs it to the console.
+
+Now, everytime we type something in the input fields, the `onChange` event will be triggered and we will get the `event` object in the console. If you look at the console, you will see that the `event` object has a lot of properties.
+
+But the one we are interested in is the `target` property. The `target` property is an object that represents the element that triggered the event. In our case, it will be the input field that we are typing in. And this `target` object has a `value` property that contains the value of the input field. So, we can use this to get the value of the input field. So, let's fix the code and let's see the input value in action.
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  return (
+    <div>
+      <h1>Controlled Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            placeholder="Enter your name"
+            onChange={(event) => console.log(event.target.value)} // logging the value of the input field to the console
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            onChange={(event) => console.log(event.target.value)} // logging the value of the input field to the console
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Form;
+```
+
+> Now I haved logged the value of the input field to the console. So, when we type something in the input field, we will see exactly what we typed in the console.
+
+Well, now we know where to get the value of the input field. But to use this of course we need to store the value of the input field somewhere and as we can see, that everytime we type something in the input field, the `onChange` event is triggered and we get a whole new `event` object. So, we need to store the value of the input field in something that can change over time. Can you guess what that is? Yes, you are right. It's the `useState` hook. W will create a `state` variable for each input field and then we will update the state variable with the value of the input field so that we can use it later. Let's do that.
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  const [name, setName] = useState(""); // creating a state variable for the name input field
+  const [email, setEmail] = useState(""); // creating a state variable for the email input field
+
+  return (
+    <div>
+      <h1>Controlled Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            placeholder="Enter your name"
+            onChange={(event) => setName(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Form;
+```
+> Here we have created two state variables `name` and `email` using the `useState` hook. And we have updated the state variable with the value of the input field using the `setName` and `setEmail` functions. So, now we can use these state variables to get the value of the input fields.
+
+Now, We have the values of the input fields stored in the state variables. But there is small issue. Yu can face one of the two issues.
+
+1. When you type something in the input field, the value of the input field is not updated.
+2. If we reset the state variable to an empty string, the input field will not be cleared.
+
+This is because of another attribute of the input field called `value`. The `value` attribute is used to set the value of the input field. Which also handles the state of the input field. So, if we set don't link the `value` attribute of the input field to the `state` variable, the input field might not update the value when we type something in it or if we update the state variable to something else, the input field will not update its value. So, we need to set the `value` attribute of the input field to the state variable. Let's do that.
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  const [name, setName] = useState(""); // creating a state variable for the name input field
+  const [email, setEmail] = useState(""); // creating a state variable for the email input field
+
+  return (
+    <div>
+      <h1>Controlled Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            placeholder="Enter your name"
+            value={name} // setting the value attribute to the state variable
+            onChange={(event) => setName(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            value={email} // setting the value attribute to the state variable
+            onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Form;
+```
+
+Now the input fields will update their values when we type something in them and if we reset the state variable to an empty string, the input field will also be cleared. This is called `controlled inputs` in React. We are controlling the value of the input field using the state variable.
+
+## Handling Form Submission
+
+Now that we know About Controlled Inputs, let's see how to handle form submission in React. When we submit a form, we usually want to do something with the data that we have entered in the input fields. For example, we might want to send the data to an API or display it on the screen.
+
+I want to display the data on the screen when we submit the form. A form has `onSubmit` event that is triggered when we click a button with type `submit` or press the `Enter` key while focusing on an input field. So, we can add an `onSubmit` function to the form and handle the form submission there. So, let's log the values of the input fields to the console when we submit the form. 
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  const [name, setName] = useState(""); // creating a state variable for the name input field
+  const [email, setEmail] = useState(""); // creating a state variable for the email input field
+
+  const handleSubmit = (event) => {
+    console.log("Form submitted");
+    console.log("Name:", name);
+    console.log("Email:", email);
+  }
+
+  return (
+    <div>
+      <h1>Controlled Inputs</h1>
+      <form onSubmit={handleSubmit}> {/* adding onSubmit event to the form */}
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            placeholder="Enter your name"
+            value={name} // setting the value attribute to the state variable
+            onChange={(event) => setName(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            value={email} // setting the value attribute to the state variable
+            onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Form;
+```
+> Here we have added an `onSubmit` event to the form and we have created a function called `handleSubmit` that will be called when we submit the form. In this function, we are logging the values of the input fields to the console.
+
+Now, when we submit the form, we will see the values of the input fields in the console. But for only a fraction of a second. Because when we submit the form, the page will reload by default. This is because the form is submitted to the server and the page is reloaded. But we don't want that. We want to handle the form submission in React and prevent the page from reloading. So, we need to prevent the default behavior of the form submission.
+
+So, what we can do is, we can call the `preventDefault` method on the `event` object that is passed to the `handleSubmit` function. This will prevent the default behavior of the form submission and the page will not reload. Let's do that.
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  const [name, setName] = useState(""); // creating a state variable for the name input field
+  const [email, setEmail] = useState(""); // creating a state variable for the email input field
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // preventing the default behavior of the form submission
+    console.log("Form submitted");
+    console.log("Name:", name);
+    console.log("Email:", email);
+  };
+
+  ... // rest of the code remains the same
+
+```
+
+> This should stop the page from reloading and we should be able to see the values of the input fields in the console when we submit the form.
+
+Now, the last part should be pretty straightforward. We can display the `name` as a welcome message in the UI.
+
+```js {.line-numbers}
+// src/form_handling/Form.jsx
+import React, { useState } from "react";
+const Form = () => {
+  const [name, setName] = useState(""); // creating a state variable for the name input field
+  const [email, setEmail] = useState(""); // creating a state variable for the email input field
+  const [submitted, setSubmitted] = useState(false); // creating a state variable to check if the form is submitted
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // preventing the default behavior of the form submission
+    console.log("Form submitted");
+    console.log("Name:", name);
+    console.log("Email:", email);
+    setSubmitted(true); // setting the submitted state to true
+  };
+
+  return (
+    <div>
+      <h1>Controlled Inputs</h1>
+      {submitted && <h2>Welcome, {name}!</h2>} {/* displaying the welcome message if the form is submitted */}
+      <form onSubmit={handleSubmit}> {/* adding onSubmit event to the form */}
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            placeholder="Enter your name"
+            value={name} // setting the value attribute to the state variable
+            onChange={(event) => setName(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            value={email} // setting the value attribute to the state variable
+            onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
+          />
+        </div>
+        
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Form;
+```
