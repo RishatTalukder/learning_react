@@ -4230,3 +4230,19 @@ const Form = () => {
 };
 export default Form;
 ```
+And that's it! Now when we submit the form, we will see a welcome message with the name that we entered in the input field.
+
+# Project-6: Form Practice Project (Users List)
+
+This is like a home task for you. I want you to make a simple form that takes the name only and list the names in a list below the form. 
+
+Basically the `To Do` app we made earlier but with a form that takes the name only and lists the names in a list below the form. 
+
+Some extra things you can do:
+
+- Find a way to add a new unique id to each name so that you can delete a name from the list.
+- Add a delete button next to each name in the list that will remove the name from the list when clicked.
+
+If you have followed this whole article, you should be able to do this project without any issues.
+
+In case, you are stuck, you look at the solution code in the [repository](https://github.com/RishatTalukder/learning_react).
