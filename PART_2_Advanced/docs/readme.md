@@ -4794,3 +4794,4 @@ export default MultipleInputs;
 ```
 
 This is how we handle multiple inputs in `React`. We create a single state variable that holds all the values of the input fields in an object. And then we use the `name` attribute of the input fields to update the correct property in the state variable. This way we can handle multiple input fields without having to create multiple state variables and `onChange` functions.
+
