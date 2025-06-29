@@ -9,6 +9,7 @@ import Destinations from "./projects/project_5/Destinations";
 import MissingData from "./missing_data_handling/MissingData";
 import Form from "./form_handling/Form";
 import UsersList from "./projects/project_6/UsersList";
+import MultipleInputs from "./form_handling/MultipleInputs";
 
 function App() {
   return (
@@ -23,7 +24,10 @@ function App() {
       {/* <Users /> */}
       {/* <Destinations /> */}
       {/* <Form /> */}
-      <UsersList />
+      {/* <UsersList /> */}
+
+      <MultipleInputs />    
+    
     </div>
   );
 }

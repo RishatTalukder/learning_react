@@ -4246,3 +4246,551 @@ Some extra things you can do:
 If you have followed this whole article, you should be able to do this project without any issues.
 
 In case, you are stuck, you look at the solution code in the [repository](https://github.com/RishatTalukder/learning_react).
+
+
+# Some More Form Handling
+
+## Multiple Inputs
+
+We have talked about `controlled inputs` where we had `2` input fields and we had to create a state variable for each input field. But some times we might have multiple input fields that are related to each other. For example, we might have a form that takes the first name, last name, email, password, etc. and there can be many more input fields. So, we need to create a state variable for each input field. But this can be tedious and really problematic in large scale applications. So, we need a more efficient way to handle multiple input fields.
+
+Let's make a new component inside the `form_handling` folder called `MultipleInputs.jsx`. In this component, we will create 4 input fields for the first name, last name, email, and password. We will also create a submit button to submit the form. The component will look like this:
+
+```js {.line-numbers}
+// src/form_handling/MultipleInputs.jsx
+import React, { useState } from "react";
+
+const MultipleInputs = () => {
+  return (
+    <div>
+      <h1>
+        Multiple Inputs Handling
+      </h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="Enter your password"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default MultipleInputs;
+```
+
+In traditional HTML, we would have to create a state variable for each input field and then update the state variable with the value of the input field. But as that is tedious and not efficient, what we can do is create a `single state variable` that will hold all the values of the input fields in an `object`. So, we can create a state variable called `formData` that will hold the values of the input fields. And then we can update the state variable with the value of the input field using the `name` attribute of the input field. Let's do that.
+
+```js {.line-numbers}
+// src/form_handling/MultipleInputs.jsx
+import React, { useState } from "react";
+
+const MultipleInputs = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  return (
+    .... // rest of the code remains the same
+  )
+};
+export default MultipleInputs;
+```
+
+> This is a single state variable that will hold all the values of the input fields in an object. Now that we have a state variable, we learned that we need to update the state variable with the value of the input field everytime the value of the input field changes. And as we have multiple input fields, we should need multiple `onChange` functions to update the state variable. But again this will be tedious and not efficient. 
+
+So, we need to figure out a way to update the state variable with the value of the input field without having to create multiple `onChange` functions.
+
+The restriction is `use only one onChange function` to update the state variable.
+
+Let's make that function and add it to the onchange attribute of the input fields. 
+
+```js {.line-numbers}
+// src/form_handling/MultipleInputs.jsx
+import React, { useState } from "react";
+
+const MultipleInputs = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    console.log(event.target.value); 
+  }
+
+  return (
+    <div>
+      <h1>Multiple Inputs Handling</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="Enter your password"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default MultipleInputs;
+```
+
+> I have created a function called `handleChange` that will be called when we type something in the input fields. And I have added the `onChange` event to the input fields and passed the `handleChange` function to it. So, when we type something in the input fields, the `handleChange` function will be called and we will get the value of the input field in the console.
+
+This should work fine. can you guess why this works?
+
+It works because when the `onChange` event is triggered, the `event` object is passed to the `handleChange` function. Even though the `onChange` event is triggered by different input fields, the `event` object will always have a `target` property that represents the input field that triggered the event. So, we can use the `event.target.value` to get the value of the input field that triggered the event.
+
+But it all falls apart when we try to update the state variable with the value of the input field. Because we need to know which input field triggered the event so that we can update the correct property in the `formData` object.
+
+Well, fear not my fellow React developer. remember when I said you will get everything you need to know about a input field in the `event` object? Well, matter of fact is that the `event` object has a `name` property that represents the name of the input field that triggered the event. So, we can use the `event.target.name` to get the name of the input field that triggered the event. Let's see if this works.
+
+```js {.line-numbers}
+// src/form_handling/MultipleInputs.jsx
+import React, { useState } from "react";
+
+const MultipleInputs = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    console.log(event.target.name); // logging the name of the input field that triggered the event
+    console.log(event.target.value); // logging the value of the input field that triggered the event
+  }
+
+  return (
+    <div>
+      <h1>Multiple Inputs Handling</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="Enter your password"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default MultipleInputs;
+```
+> Now type something in the input fields and check the console. What do you see? You should see nothing. This is because we have not set the `name` attribute of the input fields. 
+
+Yes! we can have to set a `name` attribute to the input fields so that we can get the name of the input field that triggered the event. 
+
+Are you seeing the pattern here? We are using the `name` attribute of the input field to get the name of the input field that triggered the event. So, we can use the name attribute to update the correct property in the `formData` object. So, if you specify the `name` attribute of the input fields according to the properties of the `formData` object, we can use the `name` attribute to update the correct property in the `formData` object. Let's do that.
+
+```js {.line-numbers}
+// src/form_handling/MultipleInputs.jsx
+import React, { useState } from "react";
+
+const MultipleInputs = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    console.log(event.target.name); // logging the name of the input field that triggered the event
+    console.log(event.target.value); // logging the value of the input field that triggered the event
+  }
+
+  return (
+    <div>
+      <h1>Multiple Inputs Handling</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            name="firstName" // setting the name attribute to firstName
+            placeholder="Enter your first name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            name="lastName" // setting the name attribute to lastName
+            placeholder="Enter your last name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            name="email" // setting the name attribute to email
+            placeholder="Enter your email"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password" // setting the name attribute to password
+            placeholder="Enter your password"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default MultipleInputs;
+```
+
+> Now everytime you update the input fields, you will see the name of the input field and the value of the input field in the console.
+
+And I hope you haven't forgotten how we can update a `javascript object`. Because we will use that to update the `formData` object with the value of the input field that triggered the event. Try it yourself to update the `formData` object with the value of the input field that triggered the event.
+
+If you are stuck, here is what we can do:
+
+- We cna make a copy of the `formData` object using the `spread operator` and then,
+- We add the property that we want to update with the value of the input field that triggered the event.
+
+```js {.line-numbers}
+// src/form_handling/MultipleInputs.jsx
+import React, { useState } from "react";
+const MultipleInputs = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target; // destructuring the name and value from the event target
+    setFormData({ ...formData, [name]: value }); // updating the formData object with the value of the input field that triggered the event
+  }
+
+  return (
+    <div>
+      <h1>Multiple Inputs Handling</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            name="firstName" // setting the name attribute to firstName
+            placeholder="Enter your first name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            name="lastName" // setting the name attribute to lastName
+            placeholder="Enter your last name"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            name="email" // setting the name attribute to email
+            placeholder="Enter your email"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password" // setting the name attribute to password
+            placeholder="Enter your password"
+            onChange={handleChange} // adding the onChange event to the input field
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default MultipleInputs;
+```
+
+> I have added added the `name` and `value` properties to the `event.target` object using destructuring. And then I have updated the `formData` object with the value of the input field that triggered the event using the spread operator. So, now when we type something in the input fields, the `formData` object will be updated with the value of the input field that triggered the event.
+
+Now, we are ready to dubmit the form. I hope you are not forgetting about the `controlled inputs` thing we learned earlier. I'll leave the rest to you to implement the form submission.
+
+Here's my version:
+
+```js {.line-numbers}
+// src/form_handling/MultipleInputs.jsx
+import React, { useState } from "react";
+const MultipleInputs = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Form submitted with data:", formData);
+  };
+
+  return (
+    <div>
+      <h1>Multiple Inputs Handling</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="Enter your first name"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            name="lastName"
+            placeholder="Enter your last name"
+            value={formData.lastName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default MultipleInputs;
+```
+
+This is how we handle multiple inputs in `React`. We create a single state variable that holds all the values of the input fields in an object. And then we use the `name` attribute of the input fields to update the correct property in the state variable. This way we can handle multiple input fields without having to create multiple state variables and `onChange` functions.
