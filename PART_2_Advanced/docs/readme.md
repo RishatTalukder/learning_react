@@ -4795,3 +4795,223 @@ export default MultipleInputs;
 
 This is how we handle multiple inputs in `React`. We create a single state variable that holds all the values of the input fields in an object. And then we use the `name` attribute of the input fields to update the correct property in the state variable. This way we can handle multiple input fields without having to create multiple state variables and `onChange` functions.
 
+## Checkbox and Select Inputs
+
+In addition to `text` inputs, we can also handle `checkbox` and `select` inputs in `React`. The process is similar to handling text inputs, but we need to handle the `checked` property for checkboxes and the `value` property for select inputs.
+
+Let's create a new component called `CheckboxAndSelect.jsx` inside the `form_handling` folder. In this component, we will create a checkbox input and a select input. We will also create a submit button to submit the form. The component will look like this:
+
+```js {.line-numbers}
+// src/form_handling/CheckboxAndSelect.jsx
+import React, { useState } from "react";
+
+const CheckboxAndSelect = () => {
+  return (
+    <div>
+      <h1>Checkbox and Select Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="subscribe" className="form-label">
+            Subscribe to Newsletter
+          </label>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="subscribe"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="country" className="form-label">
+            Select Country
+          </label>
+          <select className="form-select" id="country">
+            <option value="">Select a country</option>
+            <option value="usa">USA</option>
+            <option value="canada">Canada</option>
+            <option value="uk">UK</option>
+          </select>
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default CheckboxAndSelect;
+```
+
+Let's first handle the checkbox input. We need to create a state variable to hold the value of the checkbox input. We can use the `checked` property of the checkbox input to get the value of the checkbox input. So, let's create a state variable called `isSubscribed` and update it with the value of the checkbox input when it is checked or unchecked.
+
+```js {.line-numbers}
+// src/form_handling/CheckboxAndSelect.jsx
+import React, { useState } from "react";
+
+const CheckboxAndSelect = () => {
+  const [isSubscribed, setIsSubscribed] = useState(false); // creating a state variable to hold the value of the checkbox input
+
+  const handleCheckboxChange = (event) => {
+    setIsSubscribed(event.target.checked); // updating the state variable with the value of the checkbox input
+  };
+
+  return (
+    <div>
+      <h1>Checkbox and Select Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="subscribe" className="form-label">
+            Subscribe to Newsletter
+          </label>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="subscribe"
+            checked={isSubscribed} // setting the checked attribute to the state variable
+            onChange={handleCheckboxChange} // adding the onChange event to the checkbox input
+          />
+        </div>
+        {/* rest of the code remains the same */}
+      </form>
+    </div>
+  );
+};
+export default CheckboxAndSelect;
+```
+
+> Like we got the value of a text input using the `value` property, we can get the value of a checkbox input using the `checked` property. And we can update the state variable with the value of the checkbox input using the `onChange` event.
+> Instead of using the `value` attribute, we are using the `checked` attribute to set the value of the checkbox input. And we are using the `onChange` event to update the state variable with the value of the checkbox input.
+
+This is almost exactly like how we handled text inputs. The only difference is that we are using the `checked` property instead of the `value` property.
+
+Now, let's handle the select input. We need to create a state variable to hold the value of the select input. We can use the `value` property of the select input to get the value of the select input. So, let's create a state variable called `selectedCountry` and update it with the value of the select input when it is changed.
+
+```js {.line-numbers}
+// src/form_handling/CheckboxAndSelect.jsx
+import React, { useState } from "react";
+
+const CheckboxAndSelect = () => {
+  const [isSubscribed, setIsSubscribed] = useState(false); // creating a state variable to hold the value of the checkbox input
+  const [selectedCountry, setSelectedCountry] = useState(""); // creating a state variable to hold the value of the select input
+
+  const handleCheckboxChange = (event) => {
+    setIsSubscribed(event.target.checked); // updating the state variable with the value of the checkbox input
+  };
+
+  const handleSelectChange = (event) => {
+    setSelectedCountry(event.target.value); // updating the state variable with the value of the select input
+  };
+
+  return (
+    <div>
+      <h1>Checkbox and Select Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="subscribe" className="form-label">
+            Subscribe to Newsletter
+          </label>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="subscribe"
+            checked={isSubscribed} // setting the checked attribute to the state variable
+            onChange={handleCheckboxChange} // adding the onChange event to the checkbox input
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="country" className="form-label">
+            Select Country
+          </label>
+          <select
+            className="form-select"
+            id="country"
+            value={selectedCountry} // setting the value attribute to the state variable
+            onChange={handleSelectChange} // adding the onChange event to the select input
+          >
+            <option>Select a country</option>
+            <option>USA</option>
+            <option>Canada</option>
+            <option>UK</option>
+          </select>
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default CheckboxAndSelect;
+```
+> It's exactly like how we handled text inputs. For the select input, we are using the `value` property to get the value of the select input and the `onChange` event to update the state variable with the value of the select input. And we are setting the `value` attribute of the select input to the state variable.
+
+Now one thing I want to do is figure out a way to make it like the `FormData` object we created earlier for handling multiple inputs. So, we can create a single state variable that holds the values of both the checkbox and select inputs in an object.
+
+We can create a state variable called `formData` that holds the values of both the checkbox and select inputs in an object. And then we can update the state variable with the value of the checkbox and select inputs using the `name` attribute of the input fields. Let's do that.
+
+```js {.line-numbers}
+// src/form_handling/CheckboxAndSelect.jsx
+import React, { useState } from "react";
+
+const CheckboxAndSelect = () => {
+  const [formData, setFormData] = useState({
+    isSubscribed: false,
+    selectedCountry: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value, checked, type } = event.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value, // updating the formData object with the value of the input field that triggered the event
+    });
+  };
+
+  return (
+    <div>
+      <h1>Checkbox and Select Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="subscribe" className="form-label">
+            Subscribe to Newsletter
+          </label>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="subscribe"
+            name="isSubscribed" // setting the name attribute to isSubscribed
+            checked={formData.isSubscribed} // setting the checked attribute to the state variable
+            onChange={handleChange} // adding the onChange event to the checkbox input
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="country" className="form-label">
+            Select Country
+          </label>
+          <select
+            className="form-select"
+            id="country"
+            name="selectedCountry" // setting the name attribute to selectedCountry
+            value={formData.selectedCountry} // setting the value attribute to the state variable
+            onChange={handleChange} // adding the onChange event to the select input
+          >
+            <option>Select a country</option>
+            <option>USA</option>
+            <option>Canada</option>
+            <option>UK</option>
+          </select>
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default CheckboxAndSelect;
+```
+
+Normally we have a `value` and `name` attribute for text inputs which we can use to update the state variable. We use the `name` attribute to identify which input field triggered the event and the `value` attribute to get the value of the input field. But in this case we have a checkbox input which has a `checked` property instead of a `value` property. 
+
+So, we need a checking machanism to check if the input field is a checkbox or a select input. How can we do that?
+
+As shown in the code above, we also have a `type` property in the `event.target` object that tells us the type of the input field that triggered the event. So, we can use the `type` property to check if the input field is a checkbox or a select input. If it is a checkbox, we can use the `checked` property to get the value of the checkbox input. If it is a select input, we can use the `value` property to get the value of the select input.

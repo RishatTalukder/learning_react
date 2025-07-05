@@ -10,6 +10,7 @@ import MissingData from "./missing_data_handling/MissingData";
 import Form from "./form_handling/Form";
 import UsersList from "./projects/project_6/UsersList";
 import MultipleInputs from "./form_handling/MultipleInputs";
+import CheckboxAndSelect from "./form_handling/CheckboxAndSelect";
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
       {/* <Form /> */}
       {/* <UsersList /> */}
 
-      <MultipleInputs />    
+      {/* <MultipleInputs />     */}
+      <CheckboxAndSelect />
     
     </div>
   );
