@@ -1,17 +1,18 @@
+elect.jsx
 import React, { useState } from "react";
 
 const CheckboxAndSelect = () => {
-  const [isSubscribed, setIsSubscribed] = useState(false); // creating a state variable to hold the value of the checkbox input
-  const [selectedCountry, setSelectedCountry] = useState(""); // creating a state variable to hold the value of the select input
+  const [formData, setFormData] = useState({
+    isSubscribed: false,
+    selectedCountry: "",
+  });
 
-  const handleCheckboxChange = (event) => {
-    setIsSubscribed(event.target.checked); // updating the state variable with the value of the checkbox input
-    console.log(event);
-    
-  };
-
-  const handleSelectChange = (event) => {
-    setSelectedCountry(event.target.value); // updating the state variable with the value of the select input
+  const handleChange = (event) => {
+    const { name, value, checked, type } = event.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value, // updating the formData object with the value of the input field that triggered the event
+    });
   };
 
   return (
@@ -26,8 +27,9 @@ const CheckboxAndSelect = () => {
             type="checkbox"
             className="form-check-input"
             id="subscribe"
-            checked={isSubscribed} // setting the checked attribute to the state variable
-            onChange={handleCheckboxChange} // adding the onChange event to the checkbox input
+            name="isSubscribed" // setting the name attribute to isSubscribed
+            checked={formData.isSubscribed} // setting the checked attribute to the state variable
+            onChange={handleChange} // adding the onChange event to the checkbox input
           />
         </div>
         <div className="mb-3">
@@ -37,8 +39,9 @@ const CheckboxAndSelect = () => {
           <select
             className="form-select"
             id="country"
-            value={selectedCountry} // setting the value attribute to the state variable
-            onChange={handleSelectChange} // adding the onChange event to the select input
+            name="selectedCountry" // setting the name attribute to selectedCountry
+            value={formData.selectedCountry} // setting the value attribute to the state variable
+            onChange={handleChange} // adding the onChange event to the select input
           >
             <option>Select a country</option>
             <option>USA</option>
