@@ -11,6 +11,7 @@ import Form from "./form_handling/Form";
 import UsersList from "./projects/project_6/UsersList";
 import MultipleInputs from "./form_handling/MultipleInputs";
 import CheckboxAndSelect from "./form_handling/CheckboxAndSelect";
+import UncontrolledInputs from "./form_handling/UncontrolledInputs";
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
       {/* <UsersList /> */}
 
       {/* <MultipleInputs />     */}
-      <CheckboxAndSelect />
+      {/* <CheckboxAndSelect /> */}
+      <UncontrolledInputs />
     
     </div>
   );

@@ -3683,7 +3683,8 @@ const Item = ({ id, name, nickname, description, images }) => {
 };
 export default Item;
 ```
-> Here I commented out the `img` tag because we will get an error if the `images` attribute is not available in the object. 
+
+> Here I commented out the `img` tag because we will get an error if the `images` attribute is not available in the object.
 
 We, will find the `images` attribute in the `data.js` file and see that it is an array of objects. So, we can take the first object from the array and render the `profile` image. So, we can do `images[0].profile` to get the profile image. But as not every object in the data has the `images` attribute, this will break the code and we will get an error in the console saying that `images is not defined`. So, we need to handle this scenario too.
 
@@ -3717,41 +3718,37 @@ const Item = ({
 };
 export default Item;
 ```
+
 > Here I set a default value for the `images` attribute to be a text saying `No images available`. And then I checked if the `images` attribute is not the default value before rendering the `img` tag. This way, if the `images` attribute is not available in the object, we will not get an error and we can render the default value instead.
 
-Another way is to use `optional chaining` to check if the `images` attribute is available or not. 
+Another way is to use `optional chaining` to check if the `images` attribute is available or not.
 
-> This is the part where vanilla js syntax goes full coo-coo. 
+> This is the part where vanilla js syntax goes full coo-coo.
 
 Optional chaining is a feature in JavaScript that allows you to access the properties of an object without having to check if the object is defined or not. Normally we can check if the object is defined or not by using the `ternary operator` or the `logical AND/OR` operator. As we need a specific attribute from the object, we can use the `AND` operator to check if the object is defined or not and `if it is defined, we can access the attribute from the object`. So, in our case we can do this.
 
 ```js {.line-numbers}
 // src/missing_data_handling/Item.jsx
 import React from "react";
-const Item = ({
-  id,
-  name,
-  nickname,
-  description,
-  images
-}) => {
-  const image = images && images[0] && images[0].profile
+const Item = ({ id, name, nickname, description, images }) => {
+  const image = images && images[0] && images[0].profile;
   return (
     <div key={id} className="card">
       <h2>{name.full}</h2>
       <p>{nickname || "No nickname available"}</p>
       <p>{description || "No description available"}</p>
-        <img
-          src={image}
-          alt={name.full}
-          className="card-img-top"
-          style={{ width: "200px", height: "auto" }}
-        />
+      <img
+        src={image}
+        alt={name.full}
+        className="card-img-top"
+        style={{ width: "200px", height: "auto" }}
+      />
     </div>
   );
 };
 export default Item;
 ```
+
 > Here we are using the `AND` operator to check if the `images` attribute is defined or not. If it is defined, we can access the `profile` image from the first object in the array. If it is not defined, we will get `undefined` and the `img` tag will not be rendered.
 
 This is a simple way to handle missing data in React but waaaay too messy. So, we can use the `optional chaining` operator to make it cleaner.
@@ -3759,13 +3756,7 @@ This is a simple way to handle missing data in React but waaaay too messy. So, w
 ```js {.line-numbers}
 // src/missing_data_handling/Item.jsx
 import React from "react";
-const Item = ({
-  id,
-  name,
-  nickname,
-  description,
-  images
-}) => {
+const Item = ({ id, name, nickname, description, images }) => {
   const image = images?.[0]?.profile; // using optional chaining to access the profile image
   return (
     <div key={id} className="card">
@@ -3784,7 +3775,7 @@ const Item = ({
 export default Item;
 ```
 
-_We can use the "?" operator to check if the `images` attribute is defined or not and then we don't have to return anything like the `ternary operator` or the `logical OR` operator`. If the `images` attribute is not defined, it will return `undefined` and the `img` tag will not be rendered. But if the `images` attribute is defined we can go straight to the first item in the array but using the `.` operator and then we can use this as a chain to access the `profile` image from the first object in the array. This is called `optional chaining` and it is a very useful feature in JavaScript._
+_We can use the "?" operator to check if the `images` attribute is defined or not and then we don't have to return anything like the `ternary operator` or the `logical OR` operator`. If the `images`attribute is not defined, it will return`undefined`and the`img`tag will not be rendered. But if the`images`attribute is defined we can go straight to the first item in the array but using the`.`operator and then we can use this as a chain to access the`profile`image from the first object in the array. This is called`optional chaining` and it is a very useful feature in JavaScript._
 
 This makes the `AND` operators verbose approach cleaner and easier to read. But it is not supported in all browsers, so you need to make sure that the browsers you are targeting support it. You can check the compatibility of the `optional chaining` operator on [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining).
 
@@ -3792,7 +3783,7 @@ And finally we can use the `nullish coalescing` operator to set a default value 
 
 ```js {.line-numbers}
 import React from "react";
-import av from "../../../../PART_1_Fundamentals/landing_page/src/avaters/av.svg" // bringing a default image from the landing page project from the fundamentals section
+import av from "../../../../PART_1_Fundamentals/landing_page/src/avaters/av.svg"; // bringing a default image from the landing page project from the fundamentals section
 const Item = ({
   id,
   name,
@@ -3802,18 +3793,18 @@ const Item = ({
 }) => {
   const image = (images && images[0] && images[0].profile) ?? av; // Fallback to a default image if no profile image is available
 
-  // const image = (images && images[0] && images[0].profile) || av; 
+  // const image = (images && images[0] && images[0].profile) || av;
   return (
     <div key={id} className="card">
       <h2>{name.full}</h2>
       <p>{nickname || "No nickname available"}</p>
       <p>{description || "No description available"}</p>
-        <img
-          src={image}
-          alt={name.full}
-          className="card-img-top"
-          style={{ width: "200px", height: "auto" }}
-        />
+      <img
+        src={image}
+        alt={name.full}
+        className="card-img-top"
+        style={{ width: "200px", height: "auto" }}
+      />
     </div>
   );
 };
@@ -3826,7 +3817,7 @@ export default Item;
 
 Well this took me more time Than I expected to write. But I hope you understood how to handle missing data in React. There are other ways to handle missing data like using `try-catch` blocks or using `error boundaries` but those are more advanced topics and we will cover them in the future, these are some clever and fast ways to handle missing data in React.
 
-> PS: practice using the logical AND chaining and then after that try using the optional chaining operator. You will get the hang of it after a few tries. 
+> PS: practice using the logical AND chaining and then after that try using the optional chaining operator. You will get the hang of it after a few tries.
 
 # Form Handling
 
@@ -3878,15 +3869,15 @@ const Form = () => {
 export default Form;
 ```
 
-> Here we have a simple form with two input fields and a submit button. We can input something in the input fields and when we click on the submit button, the form will be submitted. But how will we get the values of the input fields when we submit the form? 
+> Here we have a simple form with two input fields and a submit button. We can input something in the input fields and when we click on the submit button, the form will be submitted. But how will we get the values of the input fields when we submit the form?
 
 As we know the that we have to get the values of the input fields to work with them, And what we are doing is typing something in the input fields and then clicking on the submit button. So, we need to keep track of the values of the input fields. This is where `controlled inputs` come in.
 
 > Everything is Hashmap.
 
-To get the values we ned to know the internal workings of HTML. 
+To get the values we ned to know the internal workings of HTML.
 
-When we type something in the `input` field, an `event` is triggered. This event is called the `onChange` event and we get a `event` object that has everything we need to know about the event. SO, let's see the onChange event in action. We can add an `onChange` event to the input fields and log the event object to the console. 
+When we type something in the `input` field, an `event` is triggered. This event is called the `onChange` event and we get a `event` object that has everything we need to know about the event. SO, let's see the onChange event in action. We can add an `onChange` event to the input fields and log the event object to the console.
 
 ```js {.line-numbers}
 // src/form_handling/Form.jsx
@@ -4017,7 +4008,7 @@ const Form = () => {
             onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
           />
         </div>
-        
+
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
@@ -4027,6 +4018,7 @@ const Form = () => {
 };
 export default Form;
 ```
+
 > Here we have created two state variables `name` and `email` using the `useState` hook. And we have updated the state variable with the value of the input field using the `setName` and `setEmail` functions. So, now we can use these state variables to get the value of the input fields.
 
 Now, We have the values of the input fields stored in the state variables. But there is small issue. Yu can face one of the two issues.
@@ -4073,7 +4065,7 @@ const Form = () => {
             onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
           />
         </div>
-        
+
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
@@ -4090,7 +4082,7 @@ Now the input fields will update their values when we type something in them and
 
 Now that we know About Controlled Inputs, let's see how to handle form submission in React. When we submit a form, we usually want to do something with the data that we have entered in the input fields. For example, we might want to send the data to an API or display it on the screen.
 
-I want to display the data on the screen when we submit the form. A form has `onSubmit` event that is triggered when we click a button with type `submit` or press the `Enter` key while focusing on an input field. So, we can add an `onSubmit` function to the form and handle the form submission there. So, let's log the values of the input fields to the console when we submit the form. 
+I want to display the data on the screen when we submit the form. A form has `onSubmit` event that is triggered when we click a button with type `submit` or press the `Enter` key while focusing on an input field. So, we can add an `onSubmit` function to the form and handle the form submission there. So, let's log the values of the input fields to the console when we submit the form.
 
 ```js {.line-numbers}
 // src/form_handling/Form.jsx
@@ -4103,12 +4095,14 @@ const Form = () => {
     console.log("Form submitted");
     console.log("Name:", name);
     console.log("Email:", email);
-  }
+  };
 
   return (
     <div>
       <h1>Controlled Inputs</h1>
-      <form onSubmit={handleSubmit}> {/* adding onSubmit event to the form */}
+      <form onSubmit={handleSubmit}>
+        {" "}
+        {/* adding onSubmit event to the form */}
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name
@@ -4135,7 +4129,6 @@ const Form = () => {
             onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
           />
         </div>
-        
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
@@ -4145,6 +4138,7 @@ const Form = () => {
 };
 export default Form;
 ```
+
 > Here we have added an `onSubmit` event to the form and we have created a function called `handleSubmit` that will be called when we submit the form. In this function, we are logging the values of the input fields to the console.
 
 Now, when we submit the form, we will see the values of the input fields in the console. But for only a fraction of a second. Because when we submit the form, the page will reload by default. This is because the form is submitted to the server and the page is reloaded. But we don't want that. We want to handle the form submission in React and prevent the page from reloading. So, we need to prevent the default behavior of the form submission.
@@ -4193,7 +4187,9 @@ const Form = () => {
     <div>
       <h1>Controlled Inputs</h1>
       {submitted && <h2>Welcome, {name}!</h2>} {/* displaying the welcome message if the form is submitted */}
-      <form onSubmit={handleSubmit}> {/* adding onSubmit event to the form */}
+      <form onSubmit={handleSubmit}>
+        {" "}
+        {/* adding onSubmit event to the form */}
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name
@@ -4220,7 +4216,6 @@ const Form = () => {
             onChange={(event) => setEmail(event.target.value)} // updating the state variable with the value of the input field
           />
         </div>
-        
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
@@ -4230,13 +4225,14 @@ const Form = () => {
 };
 export default Form;
 ```
+
 And that's it! Now when we submit the form, we will see a welcome message with the name that we entered in the input field.
 
 # Project-6: Form Practice Project (Users List)
 
-This is like a home task for you. I want you to make a simple form that takes the name only and list the names in a list below the form. 
+This is like a home task for you. I want you to make a simple form that takes the name only and list the names in a list below the form.
 
-Basically the `To Do` app we made earlier but with a form that takes the name only and lists the names in a list below the form. 
+Basically the `To Do` app we made earlier but with a form that takes the name only and lists the names in a list below the form.
 
 Some extra things you can do:
 
@@ -4246,7 +4242,6 @@ Some extra things you can do:
 If you have followed this whole article, you should be able to do this project without any issues.
 
 In case, you are stuck, you look at the solution code in the [repository](https://github.com/RishatTalukder/learning_react).
-
 
 # Some More Form Handling
 
@@ -4263,9 +4258,7 @@ import React, { useState } from "react";
 const MultipleInputs = () => {
   return (
     <div>
-      <h1>
-        Multiple Inputs Handling
-      </h1>
+      <h1>Multiple Inputs Handling</h1>
       <form>
         <div className="mb-3">
           <label htmlFor="firstName" className="form-label">
@@ -4342,13 +4335,13 @@ const MultipleInputs = () => {
 export default MultipleInputs;
 ```
 
-> This is a single state variable that will hold all the values of the input fields in an object. Now that we have a state variable, we learned that we need to update the state variable with the value of the input field everytime the value of the input field changes. And as we have multiple input fields, we should need multiple `onChange` functions to update the state variable. But again this will be tedious and not efficient. 
+> This is a single state variable that will hold all the values of the input fields in an object. Now that we have a state variable, we learned that we need to update the state variable with the value of the input field everytime the value of the input field changes. And as we have multiple input fields, we should need multiple `onChange` functions to update the state variable. But again this will be tedious and not efficient.
 
 So, we need to figure out a way to update the state variable with the value of the input field without having to create multiple `onChange` functions.
 
 The restriction is `use only one onChange function` to update the state variable.
 
-Let's make that function and add it to the onchange attribute of the input fields. 
+Let's make that function and add it to the onchange attribute of the input fields.
 
 ```js {.line-numbers}
 // src/form_handling/MultipleInputs.jsx
@@ -4363,8 +4356,8 @@ const MultipleInputs = () => {
   });
 
   const handleChange = (event) => {
-    console.log(event.target.value); 
-  }
+    console.log(event.target.value);
+  };
 
   return (
     <div>
@@ -4453,7 +4446,7 @@ const MultipleInputs = () => {
   const handleChange = (event) => {
     console.log(event.target.name); // logging the name of the input field that triggered the event
     console.log(event.target.value); // logging the value of the input field that triggered the event
-  }
+  };
 
   return (
     <div>
@@ -4516,9 +4509,10 @@ const MultipleInputs = () => {
 };
 export default MultipleInputs;
 ```
-> Now type something in the input fields and check the console. What do you see? You should see nothing. This is because we have not set the `name` attribute of the input fields. 
 
-Yes! we can have to set a `name` attribute to the input fields so that we can get the name of the input field that triggered the event. 
+> Now type something in the input fields and check the console. What do you see? You should see nothing. This is because we have not set the `name` attribute of the input fields.
+
+Yes! we can have to set a `name` attribute to the input fields so that we can get the name of the input field that triggered the event.
 
 Are you seeing the pattern here? We are using the `name` attribute of the input field to get the name of the input field that triggered the event. So, we can use the name attribute to update the correct property in the `formData` object. So, if you specify the `name` attribute of the input fields according to the properties of the `formData` object, we can use the `name` attribute to update the correct property in the `formData` object. Let's do that.
 
@@ -4537,7 +4531,7 @@ const MultipleInputs = () => {
   const handleChange = (event) => {
     console.log(event.target.name); // logging the name of the input field that triggered the event
     console.log(event.target.value); // logging the value of the input field that triggered the event
-  }
+  };
 
   return (
     <div>
@@ -4628,7 +4622,7 @@ const MultipleInputs = () => {
   const handleChange = (event) => {
     const { name, value } = event.target; // destructuring the name and value from the event target
     setFormData({ ...formData, [name]: value }); // updating the formData object with the value of the input field that triggered the event
-  }
+  };
 
   return (
     <div>
@@ -4814,11 +4808,7 @@ const CheckboxAndSelect = () => {
           <label htmlFor="subscribe" className="form-label">
             Subscribe to Newsletter
           </label>
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="subscribe"
-          />
+          <input type="checkbox" className="form-check-input" id="subscribe" />
         </div>
         <div className="mb-3">
           <label htmlFor="country" className="form-label">
@@ -4942,6 +4932,7 @@ const CheckboxAndSelect = () => {
 };
 export default CheckboxAndSelect;
 ```
+
 > It's exactly like how we handled text inputs. For the select input, we are using the `value` property to get the value of the select input and the `onChange` event to update the state variable with the value of the select input. And we are setting the `value` attribute of the select input to the state variable.
 
 Now one thing I want to do is figure out a way to make it like the `FormData` object we created earlier for handling multiple inputs. So, we can create a single state variable that holds the values of both the checkbox and select inputs in an object.
@@ -5010,8 +5001,208 @@ const CheckboxAndSelect = () => {
 export default CheckboxAndSelect;
 ```
 
-Normally we have a `value` and `name` attribute for text inputs which we can use to update the state variable. We use the `name` attribute to identify which input field triggered the event and the `value` attribute to get the value of the input field. But in this case we have a checkbox input which has a `checked` property instead of a `value` property. 
+Normally we have a `value` and `name` attribute for text inputs which we can use to update the state variable. We use the `name` attribute to identify which input field triggered the event and the `value` attribute to get the value of the input field. But in this case we have a checkbox input which has a `checked` property instead of a `value` property.
 
 So, we need a checking machanism to check if the input field is a checkbox or a select input. How can we do that?
 
 As shown in the code above, we also have a `type` property in the `event.target` object that tells us the type of the input field that triggered the event. So, we can use the `type` property to check if the input field is a checkbox or a select input. If it is a checkbox, we can use the `checked` property to get the value of the checkbox input. If it is a select input, we can use the `value` property to get the value of the select input.
+
+## Uncontrolled Inputs
+
+We saw earlier how we can handle `multiple inputs` in a `controlled way` using the `value` and `onChange` attributes. But this can become very repetitive and tedious when we have a lot of input fields. This might also cause performance issues in large scale applications. Think about it, we are updating the state variable every time we type something in the input fields and when we update the state variable, the component re-renders every time. This can cause performance issues in large scale applications where we have a lot of input fields.
+
+So, we have a way to handle input fields in an `uncontrolled way`. In this case, we don't need to update the state variable every time we type something in the input fields. We can directly get the value of the input fields when we `submit` the form. There are two ways to handle uncontrolled inputs in React:
+
+- `THE VANNILLA WAY`: Using the `event.currentTarget` property to get the value of the input fields.
+- `THE REACT WAY`: Using the `ref` attribute to get the value of the input fields.
+
+Let's first see how we can handle uncontrolled inputs using the `event.currentTarget` property. We will create a new component called `UncontrolledInputs.jsx` inside the `form_handling` folder. In this component, we will create a form with multiple input fields and a submit button. The component will look like this:
+
+```js {.line-numbers}
+// src/form_handling/UncontrolledInputs.jsx
+import React from "react";
+
+const UncontrolledInputs = () => {
+  return (
+    <div>
+      <h1>Uncontrolled Inputs</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+            name="firstName" // adding the name attribute to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+            name="lastName" // adding the name attribute to the input field
+          />
+        </div>
+        <div>
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter your email"
+            name="email" // adding the name attribute to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            placeholder="Enter your password"
+            name="password" // adding the name attribute to the input field
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default UncontrolledInputs;
+```
+
+> Note: Be sure to add the name attribute to the input fields so that we can get the value of the input fields using the `event.currentTarget` property.
+
+Now let's make a `onSubmit` function that will be called when we submit the form. In this function, we will get the value of the input fields using the `event.currentTarget` property. Let's see what we get when we log the `event.currentTarget` property in the console.
+
+```js {.line-numbers}
+// src/form_handling/UncontrolledInputs.jsx
+import React from "react";
+
+const UncontrolledInputs = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    console.log(event.currentTarget); // logging the current target of the event
+  };
+
+  return (
+    <div>
+      <h1>Uncontrolled Inputs</h1>
+      <form onSubmit={handleSubmit}>
+        ... {/* rest of the code remains the same */}
+      </form>
+    </div>
+  );
+};
+
+export default UncontrolledInputs;
+```
+
+> Now, when you submit the form, you will see the `event.currentTarget` object in the console. This object represents the form element that triggered the event. It will log the `form` element and all its child elements.
+
+Now, what we can do is to create a `FormData` object from the `event.currentTarget` object. The `FormData` object will contain all the input fields and their values. We can then use the `get` method of the `FormData` object to get the value of each input field. Let's do that.
+
+```js {.line-numbers}
+// src/form_handling/UncontrolledInputs.jsx
+import React from "react";
+
+const UncontrolledInputs = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const formData = new FormData(event.currentTarget); // create a FormData object from the form
+    console.log(formData.get("firstName")); // get the value of the firstName input field
+    console.log(formData.get("lastName")); // get the value of the lastName input field
+    console.log(formData.get("email")); // get the value of the email input field
+    console.log(formData.get("password")); // get the value of the password input field
+  };
+
+  ... // rest of the code remains the same
+}
+
+export default UncontrolledInputs;
+```
+
+> Now, when you submit the form, you will see the values of the input fields in the console. We are using the `get` method of the `FormData` object to get the value of each input field.
+
+Now that we can get the values of the input fields, we can do whatever we want with them. We can store them in a state variable, send them to an API, or do anything else we want. Let's store them in a state variable called `formValues` and log it in the console.
+
+```js {.line-numbers}
+// src/form_handling/UncontrolledInputs.jsx
+import React, { useState } from "react";
+
+const UncontrolledInputs = () => {
+  const [formValues, setFormValues] = useState({}); // creating a state variable to hold the form values
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const formData = new FormData(event.currentTarget); // create a FormData object from the form
+    const values = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+    setFormValues(values); // updating the state variable with the form values
+    console.log(values); // logging the form values in the console
+  };
+
+  return (
+    <div>
+      <h1>Uncontrolled Inputs</h1>
+      <form onSubmit={handleSubmit}>
+        ... {/* rest of the code remains the same */}
+      </form>
+    </div>
+  );
+};
+export default UncontrolledInputs;
+```
+
+> There you go! Now we have a state variable called `formValues` that holds the values of the input fields. We can use this state variable to do whatever we want with the form values.
+
+BUUUUUUUT! Is this the best way? I have to write all the input field names manually in the `handleSubmit` function. What if I have a lot of input fields? This can become very repetitive.
+
+Well good news for you, there is another object that can convert the `FormData` object to a regular JavaScript object. This object is called `Object.fromEntries()`. It takes an iterable object (like `FormData`) and converts it to a regular JavaScript object. So, let's try it out.
+
+```js {.line-numbers}
+// src/form_handling/UncontrolledInputs.jsx
+import React, { useState } from "react";
+
+const UncontrolledInputs = () => {
+  const [formValues, setFormValues] = useState({}); // creating a state variable to hold the form values
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const formData = new FormData(event.currentTarget); // create a FormData object from the form
+    const values = Object.fromEntries(formData.entries()); // convert the FormData object to a regular JavaScript object
+
+    console.log(values); // logging the form values in the console
+    setFormValues(values); // updating the state variable with the form values
+  };
+
+  return (
+    <div>
+      <h1>Uncontrolled Inputs</h1>
+      <form onSubmit={handleSubmit}>
+        ... {/* rest of the code remains the same */}
+      </form>
+    </div>
+  );
+};
+export default UncontrolledInputs;
+```

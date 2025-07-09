@@ -1,4 +1,3 @@
-elect.jsx
 import React, { useState } from "react";
 
 const CheckboxAndSelect = () => {
