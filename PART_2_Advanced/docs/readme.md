@@ -5206,3 +5206,237 @@ const UncontrolledInputs = () => {
 };
 export default UncontrolledInputs;
 ```
+> Now, when you submit the form, you will see an object in the console that contains all the input fields and their values. We are using the `Object.fromEntries()` method to convert the `FormData` object to a regular JavaScript object.
+
+Now, we know how to handle uncontrolled inputs using the `event.currentTarget` property. But there is another way to handle uncontrolled inputs in React, which is using the `ref` attribute. This is a more React way of handling uncontrolled inputs.
+
+## Using the `ref` Attribute
+
+The `ref` attribute in React allows us to directly access a DOM element or a class component instance. We can use the `ref` attribute to get the value of an input field without having to update the state variable every time we type something in the input field.
+
+Let's create a new component called `InputRef.jsx` inside the `form_handling` folder. In this component, we will create a form with multiple input fields and a submit button. We will use the `ref` attribute to get the value of the input fields when we submit the form. The component will look like this:
+
+```js {.line-numbers}
+// src/form_handling/InputRef.jsx
+import React, { useRef } from "react";
+
+const InputRef = () => {
+  
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    console.log(event); // logging the current target of the event
+  };
+
+  return (
+    <div>
+      <h1>Input Ref</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default InputRef;
+```
+
+Here have a small form with two input fields and a submit button. Now, let's use the `ref` attribute to get the value of the input fields when we submit the form. `React` provides a `useRef` hook that we can use to create a ref. First let's add a `useRef` hook for the `firstName` input field and log the value of the `firstNameRef` in the console when we submit the form.
+
+```js {.line-numbers}
+// src/form_handling/InputRef.jsx
+import React, { useRef } from "react";
+
+const InputRef = () => {
+  const firstNameRef = useRef(null); // creating a ref for the firstName input field
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    console.log(firstNameRef); // logging the value of the firstName input field
+  };
+
+  return (
+    <div>
+      <h1>Input Ref</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+            ref={firstNameRef} // adding the ref attribute to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default InputRef;
+```
+
+> It's an `Object` that contains the `current` property which holds the reference to the DOM element and if we go inside the `current` property, we will find the `value` property that holds the value of the input field. So, we can access the value of the input field using `firstNameRef.current.value`.
+
+This is pretty straightforward. We create a ref using the `useRef` hook and then we attach the ref to the input field using the `ref` attribute. When we submit the form, we can access the value of the input field using the `current` property of the ref.
+
+So, let's update the `handleSubmit` function to log the value of the `firstNameRef` and also add a ref for the `lastName` input field and log its value as well.
+
+```js {.line-numbers}
+// src/form_handling/InputRef.jsx
+import React, { useRef } from "react";
+
+const InputRef = () => {
+  const firstNameRef = useRef(null); // creating a ref for the firstName input field
+  const lastNameRef = useRef(null); // creating a ref for the lastName input field
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    console.log(firstNameRef.current.value); // logging the value of the firstName input field
+    console.log(lastNameRef.current.value); // logging the value of the lastName input field
+  };
+
+  return (
+    <div>
+      <h1>Input Ref</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+            ref={firstNameRef} // adding the ref attribute to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+            ref={lastNameRef} // adding the ref attribute to the input field
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default InputRef;
+```
+
+> Now, when you submit the form, you will see the values of the input fields in the console. We are using the `current` property of the ref to get the value of the input field.
+
+This way we can easily get the value of the input fields without having to update the state variable every time we type something in the input fields. 
+
+Now, the rest is up to you. You can create a state variable to hold the values of the input fields and update it with the values of the input fields when we submit the form. Or you can just log the values in the console like we did above.
+
+Cleaning up the input fields after submission is also a good practice. You can do that by setting the `value` of the input fields to an empty string after submission. Here's how you can do that:
+
+```js {.line-numbers}
+// src/form_handling/InputRef.jsx
+import React, { useRef, useState } from "react";
+
+const InputRef = () => {
+  const firstNameRef = useRef(null); // creating a ref for the firstName input field
+  const lastNameRef = useRef(null); // creating a ref for the lastName input field
+  const [formValues, setFormValues] = useState({}); // creating a state variable to hold the form values
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const values = {
+      firstName: firstNameRef.current.value,
+      lastName: lastNameRef.current.value,
+    };
+    setFormValues(values); // updating the state variable with the form values
+    console.log(values); // logging the form values in the console
+
+    // Clearing the input fields after submission
+    firstNameRef.current.value = "";
+    lastNameRef.current.value = "";
+  };
+
+  return (
+    <div>
+      <h1>Input Ref</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="firstName"
+            placeholder="Enter your first name"
+            ref={firstNameRef} // adding the ref attribute to the input field
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            placeholder="Enter your last name"
+            ref={lastNameRef} // adding the ref attribute to the input field
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+export default InputRef;
+```
