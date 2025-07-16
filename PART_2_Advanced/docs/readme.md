@@ -5206,6 +5206,7 @@ const UncontrolledInputs = () => {
 };
 export default UncontrolledInputs;
 ```
+
 > Now, when you submit the form, you will see an object in the console that contains all the input fields and their values. We are using the `Object.fromEntries()` method to convert the `FormData` object to a regular JavaScript object.
 
 Now, we know how to handle uncontrolled inputs using the `event.currentTarget` property. But there is another way to handle uncontrolled inputs in React, which is using the `ref` attribute. This is a more React way of handling uncontrolled inputs.
@@ -5221,7 +5222,6 @@ Let's create a new component called `InputRef.jsx` inside the `form_handling` fo
 import React, { useRef } from "react";
 
 const InputRef = () => {
-  
   const handleSubmit = (event) => {
     event.preventDefault(); // prevent the default form submission behavior
     console.log(event); // logging the current target of the event
@@ -5374,7 +5374,7 @@ export default InputRef;
 
 > Now, when you submit the form, you will see the values of the input fields in the console. We are using the `current` property of the ref to get the value of the input field.
 
-This way we can easily get the value of the input fields without having to update the state variable every time we type something in the input fields. 
+This way we can easily get the value of the input fields without having to update the state variable every time we type something in the input fields.
 
 Now, the rest is up to you. You can create a state variable to hold the values of the input fields and update it with the values of the input fields when we submit the form. Or you can just log the values in the console like we did above.
 
@@ -5440,3 +5440,423 @@ const InputRef = () => {
 };
 export default InputRef;
 ```
+
+OOOOOKKAAAY!!!
+
+Now that we are done with the form handling in React, let's summarize what we learned:
+
+- **Controlled Inputs**: We learned how to handle form inputs in a controlled way using the `value` and `onChange` attributes. This allows us to keep the input values in sync with the component state.
+- **Multiple Inputs**: We learned how to handle multiple inputs using a single state variable that holds all the input values in an object. We used the `name` attribute of the input fields to update the correct property in the state variable.
+- **Checkbox and Select Inputs**: We learned how to handle checkbox and select inputs in a controlled way using the `checked` and `value` attributes. We also learned how to create a single state variable that holds the values of both checkbox and select inputs in an object.
+- **Uncontrolled Inputs**: We learned how to handle uncontrolled inputs using the `event.currentTarget` property and the `FormData` object. We also learned how to handle uncontrolled inputs using the `ref` attribute in React. This allows us to directly access the DOM elements and get their values without having to update the state variable every time we type something in the input fields.
+- **Cleaning Up Inputs**: We learned how to clear the input fields after submission by setting their values to an empty string.
+
+That's it for the form handling in React! Now we can do some hands-on practice to solidify our understanding. So, let's make some projects that involve form handling in React and Some other fun things.
+
+# Project 7 : Dummy Text Generator
+
+Let's make a simple `Dummy Text Generator` app using React. This app will allow users to generate dummy text based on the `number of paragraphs` and `words` they want. We will use the `useState` hook to manage the state of the input fields and the generated text.
+
+Let's create a new folder named `project_7` inside the `src/projects` folder. Inside this folder, create a new file named `DummyTextGenerator.jsx`. In this file, we will create the `Dummy Text Generator` app. The component will look like this:
+
+```js {.line-numbers}
+// src/projects/project_7/DummyTextGenerator.jsx
+import React from "react";
+
+const DummyTextGenerator = () => {
+  return (
+    <div>
+      <h1>Dummy Text Generator</h1>
+    </div>
+  );
+};
+export default DummyTextGenerator;
+```
+
+Now, let's create a form with two input fields: one for the number of paragraphs and one for the number of words. We will also add a button to generate the dummy text. The component will look like this:
+
+```js {.line-numbers}
+// src/projects/project_7/DummyTextGenerator.jsx
+import React, { useState } from "react";
+
+const DummyTextGenerator = () => {
+  const [formData, setFormData] = useState({}); // creating a state variable to hold the form data
+  const [dummyText, setDummyText] = useState(""); // creating a state variable to hold the generated dummy text
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const formValues = FormData(event.currentTarget); // create a FormData object from the form
+    const rawData = Object.fromEntries(formValues.entries()); // convert the FormData object to a regular JavaScript object
+    setFormData(rawData); // updating the state variable with the form values
+
+    setDummyText(
+      `Generated ${rawData.paragraphs} paragraphs with ${rawData.words} words each.`
+    ); // setting the dummy text based on the form values
+  };
+
+  return (
+    <div>
+      <h1>Dummy Text Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="paragraphs" className="form-label">
+            Number of Paragraphs
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="paragraphs"
+            name="paragraphs"
+            placeholder="Enter number of paragraphs"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="words" className="form-label">
+            Number of Words
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="words"
+            name="words"
+            placeholder="Enter number of words per paragraph"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Generate Text
+        </button>
+      </form>
+      {dummyText && (
+        <div className="mt-4">
+          <h2>Generated Dummy Text:</h2>
+          <p>{dummyText}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+export default DummyTextGenerator;
+```
+
+> In this component, we have a form with two input fields: one for the number of paragraphs and one for the number of words. When the user submits the form, we create a `FormData` object from the form and convert it to a regular JavaScript object using `Object.fromEntries()`. We then update the state variable with the form values and generate the dummy text based on the input values.
+
+We handled the form submission in uncontrolled way using the `FormData` object just like we learned earlier. Ad now that we can get the values of the input fields, we can generate the dummy text based on the input values.
+
+But first here is a small question for you. What is the type of the `number` input field? Is it a `string` or a `number`? If you guessed `number`, you are wrong. The `number` input field is actually restricted to only accept numbers, but the value of the input field is still a `string`. So, to use that value as a number, we need to convert it to a number using the `parseInt()` or `parseFloat()` function.
+
+So, let's update the `handleSubmit` function to convert the input values to numbers before generating the dummy text.
+
+```js {.line-numbers}
+// src/projects/project_7/DummyTextGenerator.jsx
+import React, { useState } from "react";
+
+const DummyTextGenerator = () => {
+  const [formData, setFormData] = useState({}); // creating a state variable to hold the form data
+  const [dummyText, setDummyText] = useState(""); // creating a state variable to hold the generated dummy text
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const formValues = new FormData(event.currentTarget); // create a FormData object from the form
+    const rawData = Object.fromEntries(formValues.entries()); // convert the FormData object to a regular JavaScript object
+
+    const newData = {};
+    Object.keys(rawData).forEach((key) => {
+      newData[key] = parseInt(rawData[key], 10); // converting the input values to numbers
+    });
+    setFormData(newData); // updating the state variable with the form values
+    setDummyText(
+      `Generated ${newData.paragraphs} paragraphs with ${newData.words} words each.`
+    ); // setting the dummy text based on the form values
+  };
+
+  ... // rest of the code remains the same
+};
+export default DummyTextGenerator;
+```
+
+> I used the `parseInt()` function to convert the input values to numbers before generating the dummy text.
+
+This might be a little confusing but let me break it down.
+
+I used `Object.keys(rawData)` to which will give us an array of the keys in the `rawData` object. Which is `["paragraphs", "words"]`. Then I used the `forEach()` method to iterate over each key in the array. Inside the `forEach()` method, I created a new object called `newData` and set the value of each key to the parsed value of the input field using `parseInt(rawData[key], 10)`. This will convert the string value of the input field to a number.
+
+I could've done this manually because we only have two input fields, but this is a good practice to follow when you have a lot of input fields. This way, you can easily convert all the input values to numbers without having to write repetitive code.
+
+Now, we have the `dummyText` state variable that holds the generated dummy text based on the input values. We can display this text in the component after the form.
+
+But where do we get the actual dummy text from? For this, we can use a library called `lorem ipsum`. This library provides a function that generates dummy text based on the number of paragraphs and words.
+
+To use this library, we need to install it first. Open your terminal and run the following command:
+
+```bash
+npm install lorem-ipsum
+```
+
+Now, we can import the `loremIpsum` function from the `lorem-ipsum` library and use it to generate the dummy text based on the input values. But what's the fun in that? (not me trying to hide the fact that I don't know how to use this library, so, I'm going to brute force it)
+
+Here's the process:
+
+- I'll use the `loremIpsum` function to generate random words (5 word if there is no input).
+- Join them to make a sentence. I think 3 to 5 sentences should be enough for a paragraph.
+- Then I'll repeat this process for the number of paragraphs specified by the user.
+
+Let's get started with that. The `HandleSubmit` function Looks kinda messy already so I'll make a new file named `generateDummyText.js` inside the `project_7` folder. In this file, I'll create a function called `generateDummyText` that takes the number of paragraphs and words as arguments and returns the generated dummy text.
+
+```js {.line-numbers}
+// src/projects/project_7/generateDummyText.js
+import { loremIpsum } from "lorem-ipsum";
+
+const generateDummyText = (paragraphs, words) => {
+  return loremIpsum({ count: 1, units: "words" });
+};
+
+export default generateDummyText;
+```
+
+Let's break down what happend here. I made a new function called `generateDummyText` that takes two arguments: `paragraphs` and `words`. Inside this function, I used the `loremIpsum` function from the `lorem-ipsum` library to generate a `single random word` and returned it.
+
+> I made this for a small tryout.
+
+Let's see a single random word generated by the `loremIpsum` function.
+
+```js {.line-numbers}
+// src/projects/project_7/DummyTextGenerator.jsx
+import React, { useState } from "react";
+import generateDummyText from "./generateDummyText"; // importing the generateDummyText function
+
+const DummyTextGenerator = () => {
+  const [formData, setFormData] = useState({}); // creating a state variable to hold the form data
+  const [dummyText, setDummyText] = useState(""); // creating a state variable to hold the generated dummy text
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const formValues = new FormData(event.currentTarget); // create a FormData object from the form
+    const rawData = Object.fromEntries(formValues.entries()); // convert the FormData object to a regular JavaScript object
+
+    const newData = {};
+    Object.keys(rawData).forEach((key) => {
+      newData[key] = parseInt(rawData[key], 10); // converting the input values to numbers
+    });
+    setFormData(newData); // updating the state variable with the form values
+
+    const paragraphs = newData.paragraphs || 1; // default to 1 paragraph if not specified
+    const words = newData.words || 5; // default to 5 words if not specified
+
+    setDummyText(
+      generateDummyText(paragraphs, words) // generating the dummy text based on the input values
+    ); // setting the dummy text based on the form values
+  };
+
+  ... // rest of the code remains the same
+};
+export default DummyTextGenerator;
+```
+
+You should see a single random word rendered in the component when you submit the form without any input values.
+
+Now, that's working fine, but we need to generate a paragraph with multiple sentences. So, let's update the `generateDummyText` function to generate a paragraph with multiple sentences based on the number of paragraphs and words specified by the user.
+
+```js {.line-numbers}
+// src/projects/project_7/generateDummyText.js
+import { loremIpsum } from "lorem-ipsum";
+
+const generateDummyText = (paragraphs, words) => {
+  const sentencePerParagraph = Math.floor(Math.random() * (5 - 3 + 1)) + 3; // generating a random number of sentences per paragraph (between 3 and 7)
+
+  const getRandomWords = () => loremIpsum({ count: 1, units: "words" }); // generating a single random word
+
+  const getRandomSentence = () =>
+    Array.from(
+      {
+        length: words < 5 ? 5 : words, // ensuring at least 5 words in a sentence
+      },
+      getRandomWords
+    ).join(" ") + "."; // generating a random sentence with the specified number of words
+
+  const getRandomParagraph = () =>
+    Array.from({ length: sentencePerParagraph }, getRandomSentence).join(" "); // generating a random paragraph with the specified number of sentences
+
+  return Array.from({ length: paragraphs }, getRandomParagraph); // generating the final dummy text with the specified number of paragraphs
+};
+
+export default generateDummyText;
+```
+
+> `Array.from()` is a method that creates a new array from an array-like or iterable object. It takes two arguments: the first argument is an object with a `length` property that specifies the length of the array, and the second argument is a function that generates the values for each element in the array.
+
+> `Math.floor(Math.random() * (5-3+1)) + 3` generates a random number between 3 and 5 (inclusive) for the number of sentences per paragraph. The main formula is `Math.floor(Math.random() * (max - min + 1)) + min`, where `max` is the maximum value and `min` is the minimum value.
+
+> For the `getRandomWords` function, I used the `loremIpsum` function to generate a single random word.
+
+> The `getRandomSentence` function generates a random sentence with the specified number of words, in this case at least 5 words. Here I check the input value of `words` and if it is less than 5, I set it to 5. This ensures that we always have at least 5 words in a sentence and after the `getRandomWords` function, I used the `join(" ")` method to join the words with a space and added a period at the end of the sentence.
+
+> The `getRandomParagraph` function generates a random paragraph with the specified number of sentences. It uses the `Array.from()` method to create an array of sentences and then joins them with a space.
+
+> Finally, the `generateDummyText` function generates the final dummy text with the specified number of paragraphs. It uses the `Array.from()` method to create an array of paragraphs and returns it.
+
+Now, that we have an array of paragraphs, we can render them in the component. Let's update the `DummyTextGenerator` component to render the generated dummy text as paragraphs.
+
+```js {.line-numbers}
+// src/projects/project_7/DummyTextGenerator.jsx
+import React, { useState } from "react";
+import generateDummyText from "./generateDummyText"; // importing the generateDummyText function
+
+const DummyTextGenerator = () => {
+  const [formData, setFormData] = useState({}); // creating a state variable to hold the form data
+  const [dummyText, setDummyText] = useState([]); // creating a state variable to hold the generated dummy text
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // prevent the default form submission behavior
+    const formValues = new FormData(event.currentTarget); // create a FormData object from the form
+    const rawData = Object.fromEntries(formValues.entries()); // convert the FormData object to a regular JavaScript object
+
+    const newData = {};
+    Object.keys(rawData).forEach((key) => {
+      newData[key] = parseInt(rawData[key], 10); // converting the input values to numbers
+    });
+    setFormData(newData); // updating the state variable with the form values
+
+    const paragraphs = newData.paragraphs || 1; // default to 1 paragraph if not specified
+    const words = newData.words || 5; // default to 5 words if not specified
+
+    setDummyText(generateDummyText(paragraphs, words)); // generating the dummy text based on the input values
+  };
+
+  return (
+    <div>
+      <h1>Dummy Text Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="paragraphs" className="form-label">
+            Number of Paragraphs
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="paragraphs"
+            name="paragraphs"
+            placeholder="Enter number of paragraphs"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="words" className="form-label">
+            Number of Words
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="words"
+            name="words"
+            placeholder="Enter number of words per paragraph"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Generate Text
+        </button>
+      </form>
+      {dummyText && (
+        <div className="mt-4">
+          <h2>Generated Dummy Text:</h2>
+          {dummyText.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))} {/* rendering the generated dummy text as paragraphs */}
+        </div>
+      )}
+    </div>
+  );
+};
+export default DummyTextGenerator;
+```
+
+> AAAAAANNNNNDDD We have a working `Dummy Text Generator` app! Now, when you submit the form with the number of paragraphs and words, it will generate the dummy text and display it as paragraphs in the component.
+
+We can now add a little finishing touch to our app. Some edge cases like entering negative numbers or zero in the input fields. We can add some validation to the input fields to ensure that the user enters valid values. And also we actually don't need the `formData` state variable since we are not using it anywhere in the component. So, let's remove it and make the component look cleaner.
+
+```js {.line-numbers}
+// src/projects/project_7/DummyTextGenerator.jsx
+import React, { useState } from "react";
+import generateDummyText from "./generateDummyText"; // importing the generateDummyText function
+
+const DummyTextGenerator = () => {
+  const [dummyText, setDummyText] = useState([]);
+  const [isInvalid, setIsInvalid] = useState(false); // creating a state variable to hold the invalid state
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formValues = new FormData(event.currentTarget);
+    const rawData = Object.fromEntries(formValues.entries());
+
+    const newData = {};
+    Object.keys(rawData).forEach((key) => {
+      newData[key] = parseInt(rawData[key], 10);
+    });
+
+    if (newData.paragraphs <= 0 || newData.words <= 0) {
+      setIsInvalid(true); // setting the invalid state to true if the input values are invalid
+      return;
+    }
+
+    setIsInvalid(false); // setting the invalid state to false if the input values are valid
+
+    const paragraphs = newData.paragraphs || 1;
+    const words = newData.words || 5;
+
+    setDummyText(generateDummyText(paragraphs, words)); // generating the dummy text based on the input values
+  };
+
+  return (
+    <div>
+      <h1>Dummy Text Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="paragraphs" className="form-label">
+            Number of Paragraphs
+          </label>
+          <input
+            type="number"
+            className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+            id="paragraphs"
+            name="paragraphs"
+            placeholder="Enter number of paragraphs"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="words" className="form-label">
+            Number of Words
+          </label>
+          <input
+            type="number"
+            className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+            id="words"
+            name="words"
+            placeholder="Enter number of words per paragraph"
+          />
+          {isInvalid && (
+            <div className="invalid-feedback">Please enter valid numbers.</div>
+          )}
+        </div>
+
+        <button type="submit" className="btn btn-primary">
+          Generate Text
+        </button>
+      </form>
+      {dummyText.length > 0 && (
+        <div className="mt-4">
+          <h2>Generated Dummy Text:</h2>
+          {dummyText.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+export default DummyTextGenerator;
+```
+
+> We can directly check if the input values are less than or equal to zero and set the `isInvalid` state variable accordingly. If the input values are invalid, we display an error message below the input fields using the `invalid-feedback` class from Bootstrap.
+
+
+> You can add default values for the input fields if you want, but I think it's better to leave them empty so that the user can enter their own values. But you can add a default value of 1 for the number of paragraphs and 5 for the number of words if you want Like I did in the `handleSubmit` function using the `||` operator.
+
+That't it! We did it. We made a custom text generator app using React. This app allows users to generate dummy text based on the number of paragraphs and words they want. We used the `useState` hook to manage the state of the input fields and the generated text. We also used the `lorem-ipsum` library to generate random words and sentences and we used the `FormData` object to handle the form submission in an uncontrolled way.
+

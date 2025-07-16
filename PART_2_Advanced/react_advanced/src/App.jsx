@@ -13,6 +13,7 @@ import MultipleInputs from "./form_handling/MultipleInputs";
 import CheckboxAndSelect from "./form_handling/CheckboxAndSelect";
 import UncontrolledInputs from "./form_handling/UncontrolledInputs";
 import InputRef from "./form_handling/InputRef";
+import DummyTextGenerator from "./projects/project_7/DummyTextGenerator";
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
       {/* <MultipleInputs />     */}
       {/* <CheckboxAndSelect /> */}
       {/* <UncontrolledInputs /> */}
-      <InputRef />
+      {/* <InputRef /> */}
+      <DummyTextGenerator />
       
     </div>
   );

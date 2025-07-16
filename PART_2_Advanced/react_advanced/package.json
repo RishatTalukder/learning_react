@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.9.0",
     "bootstrap": "^5.3.3",
+    "lorem-ipsum": "^2.0.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
