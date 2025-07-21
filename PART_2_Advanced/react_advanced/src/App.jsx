@@ -14,6 +14,7 @@ import CheckboxAndSelect from "./form_handling/CheckboxAndSelect";
 import UncontrolledInputs from "./form_handling/UncontrolledInputs";
 import InputRef from "./form_handling/InputRef";
 import DummyTextGenerator from "./projects/project_7/DummyTextGenerator";
+import ColorGenerator from "./projects/project_8/ColorGenerator";
 
 function App() {
   return (
@@ -34,7 +35,8 @@ function App() {
       {/* <CheckboxAndSelect /> */}
       {/* <UncontrolledInputs /> */}
       {/* <InputRef /> */}
-      <DummyTextGenerator />
+      {/* <DummyTextGenerator /> */}
+      <ColorGenerator />
       
     </div>
   );

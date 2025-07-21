@@ -5855,8 +5855,553 @@ export default DummyTextGenerator;
 
 > We can directly check if the input values are less than or equal to zero and set the `isInvalid` state variable accordingly. If the input values are invalid, we display an error message below the input fields using the `invalid-feedback` class from Bootstrap.
 
-
 > You can add default values for the input fields if you want, but I think it's better to leave them empty so that the user can enter their own values. But you can add a default value of 1 for the number of paragraphs and 5 for the number of words if you want Like I did in the `handleSubmit` function using the `||` operator.
 
 That't it! We did it. We made a custom text generator app using React. This app allows users to generate dummy text based on the number of paragraphs and words they want. We used the `useState` hook to manage the state of the input fields and the generated text. We also used the `lorem-ipsum` library to generate random words and sentences and we used the `FormData` object to handle the form submission in an uncontrolled way.
 
+Now, Let's make a `Color Generator`
+
+# Project 8 : Color Generator
+
+You know the drill.. Make a new folder named `project_8` inside the `src/projects` folder. Inside this folder, create a new file named `ColorGenerator.jsx`. In this file, we will create the `Color Generator` app. The component will look like this:
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React from "react";
+
+const ColorGenerator = () => {
+  return (
+    <div>
+      <h1>Color Generator</h1>
+    </div>
+  );
+};
+export default ColorGenerator;
+```
+
+Now, we render the `Color Generator` component in the `App.jsx` file.
+
+Now, let's talk about the features of the `Color Generator` app.
+
+- The app will allow users to generate Shades of a color based on the `Hexadecimal color code` they enter. example: `#ff5733`.
+- The app will display the generated colors as a list of color boxes.
+- Also I want the user to be able to copy the color code to the clipboard by clicking on the color box.
+
+So, Let's make the app step by step. First, let's create a form with an input field for the color name and a button to generate the colors. The component will look like this:
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React, { useState } from "react";
+
+const ColorGenerator = () => {
+  const [color, setColor] = useState(""); // creating a state variable to hold the color code
+  const [colors, setColors] = useState([]); // creating a state variable to hold the generated colors
+  const [isInvalid, setIsInvalid] = useState(false); // creating a state variable to hold the invalid state
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
+
+  return (
+    <div>
+      <h1>Color Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="d-flex align-items-end mb-3">
+          <div className="me-2" style={{ width: "250px" }}>
+            <label htmlFor="color" className="form-label">
+              Enter Hexadecimal Color Code
+            </label>
+            <input
+              type="text"
+              className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+              id="color"
+              name="color"
+              placeholder="#ff5733"
+              value={color}
+              onChange={(e) => setColor(e.target.value)} // controlled input
+            />
+            {isInvalid && (
+              <div className="invalid-feedback">
+                Please enter a valid color code.
+              </div>
+            )}
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Generate Colors
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+export default ColorGenerator;
+```
+
+> As there is only 1 input field, I used the `useState` hook to create a state variable called `color` to hold the value of the input field.
+
+Now, how do we generate the colors based on the input value? We can do it manually like we did for the `Dummy Text Generator` app or we can use a library called `values.js` that will generate the colors for us based on the input value and most probably do everything for us.
+
+And you know what I'm going to do? I will absolutely not implement the color generation logic myself.(It was soooo much painful to do it for the `Dummy Text Generator` app, so, I won't do it again) Instead, I will use the `values.js` library to generate the colors for us.
+
+You can find the `values.js` documentation [here](https://www.npmjs.com/package/values.js)
+
+To use this library, we need to install it first. Open your terminal and run the following command:
+
+```bash
+npm install values.js
+```
+
+Now we are ready to use this library. Let's import the `Values` class from the `values.js` library and if you look at the documentation, you will see all the things we can do with this library. The most important thing is that we can create an instance of the `Values` class with the color code and then we can use the `all()` method to get an array of colors based on the input value. Let's see how we can do that.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React, { useState } from "react";
+import Values from "values.js"; // importing the Values class from the values.js library
+
+const ColorGenerator = () => {
+  const [color, setColor] = useState(""); // creating a state variable to hold the color code
+  const [colors, setColors] = useState([]); // creating a state variable to hold the generated colors
+  const [isInvalid, setIsInvalid] = useState(false); // creating a state variable to hold the invalid state
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      const values = new Values(color).all(); // generating colors based on the input value
+      setColors(values); // updating the state variable with the generated colors
+      setIsInvalid(false); // setting the invalid state to false if the input value is valid
+      console.log(values); // logging the generated colors in the console
+    } catch (error) {
+      setIsInvalid(true); // setting the invalid state to true if the input value is invalid
+      setColors([]); // clearing the colors array if the input value is invalid
+    }
+  };
+
+  return (
+    <div>
+      <h1>Color Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="d-flex align-items-end mb-3">
+          <div className="me-2" style={{ width: "250px" }}>
+            <label htmlFor="color" className="form-label">
+              Enter Hexadecimal Color Code
+            </label>
+            <input
+              type="text"
+              className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+              id="color"
+              name="color"
+              placeholder="#ff5733"
+              value={color}
+              onChange={(e) => setColor(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Generate Colors
+          </button>
+        </div>
+      </form>
+      {isInvalid && (
+        <div className="invalid-feedback d-block">
+          Please enter a valid color code.
+        </div>
+      )}
+    </div>
+  );
+};
+export default ColorGenerator;
+```
+
+> If you take a look in the console after submitting the form with a valid color code like `#ff5733`, you will see an array of colors generated by the `Values` class. The `all()` method takes a number as an argument which specifies how many shades of the color you want to generate. If you don't pass any argument, it will generate 21 shades of the color by default. You can also pass a number to the `all()` method to generate a specific number of shades.
+
+In the console you will see an array of objects, each object representing a color with the following properties:
+
+- `rgb`: An array of RGB values for the color.
+- `hex`: The hexadecimal representation of the color.
+- `weight`: The weight of the color in the array (0 to 100).
+- `type`: The type of the color (e.g., "shade", "tint", "color").
+- `alpha`: The alpha value of the color (0 to 1).
+
+Now, let's render the generated colors in the component. We can use the `map()` method to iterate over the array of colors and render each color in a box with the color code displayed inside it. We will just render the `hex` property of each color object inside the box will look like this:
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React, { useState } from "react";
+import Values from "values.js"; // importing the Values class from the values.js library
+
+const ColorGenerator = () => {
+  const [color, setColor] = useState(""); // creating a state variable to hold the color code
+  const [colors, setColors] = useState([]); // creating a state variable to hold the generated colors
+  const [isInvalid, setIsInvalid] = useState(false); // creating a state variable to hold the invalid state
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      const values = new Values(color).all(); // generating colors based on the input value
+      setColors(values); // updating the state variable with the generated colors
+      setIsInvalid(false); // setting the invalid state to false if the input value is valid
+    } catch (error) {
+      setIsInvalid(true); // setting the invalid state to true if the input value is invalid
+      setColors([]); // clearing the colors array if the input value is invalid
+    }
+  };
+
+  return (
+    <div>
+      <h1>Color Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="d-flex align-items-end mb-3">
+          <div className="me-2" style={{ width: "250px" }}>
+            <label htmlFor="color" className="form-label">
+              Enter Hexadecimal Color Code
+            </label>
+            <input
+              type="text"
+              className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+              id="color"
+              name="color"
+              placeholder="#ff5733"
+              value={color}
+              onChange={(e) => setColor(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Generate Colors
+          </button>
+        </div>
+      </form>
+      {isInvalid && (
+        <div className="invalid-feedback d-block">
+          Please enter a valid color code.
+        </div>
+      )}
+
+      {colors.length > 0 && (
+        <div className="row">
+          {colors.map((colorObj, index) => (
+            <div key={index} className="col-3">
+              <p className="text-center mb-0">#{colorObj.hex}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+export default ColorGenerator;
+```
+
+> In this code, I used the `map()` method to iterate over the `colors` array and render each color in a box. I used the `col-3` class from Bootstrap to create a grid of color boxes. Each box displays the hexadecimal color code inside it.
+
+This works! Now time for the next step. We need to display the color in the background of the box so that we can see the color. Also we need to add a click event to the box that will copy the color code to the clipboard when the user clicks on it. Which can be messy so, I will create a new component called `ColorBox.jsx` that will handle the rendering of the color box and the click event to copy the color code to the clipboard.
+
+Let's create a new file named `ColorBox.jsx` inside the `project_8` folder. In this file, we will create the `ColorBox` component. The component will look like this:
+
+```js {.line-numbers}
+// src/projects/project_8/ColorBox.jsx
+import React from "react";
+
+const ColorBox = ({ hex, weight, rgb }) => {
+  return (
+    <div className="col-3">
+      <p className="text-center mb-0">#{hex}</p>
+    </div>
+  );
+};
+export default ColorBox;
+
+```
+> In this component, we are receiving the `hex`, `weight`, and `rgb` properties from the parent component and rendering the color box with the color code inside it. Now we can connect this component to the `ColorGenerator` component and pass the color properties to it.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React, { useState } from "react";
+import Values from "values.js"; // importing the Values class from the values.js library
+import ColorBox from "./ColorBox";
+
+const ColorGenerator = () => {
+  const [color, setColor] = useState(""); // creating a state variable to hold the color code
+  const [colors, setColors] = useState([]); // creating a state variable to hold the generated colors
+  const [isInvalid, setIsInvalid] = useState(false); // creating a state variable to hold the invalid state
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      const values = new Values(color).all(); // generating colors based on the input value
+      setColors(values); // updating the state variable with the generated colors
+      setIsInvalid(false); // setting the invalid state to false if the input value is valid
+    } catch (error) {
+      setIsInvalid(true); // setting the invalid state to true if the input value is invalid
+      setColors([]); // clearing the colors array if the input value is invalid
+    }
+  };
+
+  return (
+    <div>
+      <h1>Color Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="d-flex align-items-end mb-3">
+          <div className="me-2" style={{ width: "250px" }}>
+            <label htmlFor="color" className="form-label">
+              Enter Hexadecimal Color Code
+            </label>
+            <input
+              type="text"
+              className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+              id="color"
+              name="color"
+              placeholder="#ff5733"
+              value={color}
+              onChange={(e) => setColor(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Generate Colors
+          </button>
+        </div>
+      </form>
+      {isInvalid && (
+        <div className="invalid-feedback d-block">
+          Please enter a valid color code.
+        </div>
+      )}
+
+      {colors.length > 0 && (
+        <div className="row">
+          {colors.map((colorObj, index) => (
+            <ColorBox
+              key={index}
+              {...colorObj}
+              />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+export default ColorGenerator;
+```
+
+> I imported the `ColorBox` component and used it inside the `map()` method to render each color box. I passed the `hex`, `weight`, and `rgb` properties to the `ColorBox` component using the spread operator `{...colorObj}`.
+
+Buuuuuut, you might see something unusual in the console. The `ColorBox` component is not rendering the `hex` property correctly. Actually it's not rendering anything at all. This is because the hex property is a `getter` method in the `Values` class and it returns a string representation of the color. It is not enumerable. To prove my hypothesis, remember we installed a extenstion called `React Developer Tools`? If you go to your app in the browser and open the console and in that section the should be a option called `Components`, click on it and then select the `ColorGenerator` component. You should see the `colors` state variable and if you expand it, you will see that the `hex` property is not there. This is because it is a getter method and it is not enumerable. 
+
+So, what do we do now? We pass the `hex` property separately to the `ColorBox` component instead of using the spread operator. Let's update the `ColorGenerator` component to pass the `hex` property separately.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React, { useState } from "react";
+import Values from "values.js"; // importing the Values class from the values.js library
+import ColorBox from "./ColorBox"; 
+
+const ColorGenerator = () => {
+  const [color, setColor] = useState(""); 
+  const [colors, setColors] = useState([]);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      const values = new Values(color).all(); 
+      setColors(values); 
+      setIsInvalid(false); 
+    } catch (error) {
+      setIsInvalid(true); 
+      setColors([]); 
+    }
+  };
+
+  return (
+    <div>
+      <h1>Color Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="d-flex align-items-end mb-3">
+          <div className="me-2" style={{ width: "250px" }}>
+            <label htmlFor="color" className="form-label">
+              Enter Hexadecimal Color Code
+            </label>
+            <input
+              type="text"
+              className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+              id="color"
+              name="color"
+              placeholder="#ff5733"
+              value={color}
+              onChange={(e) => setColor(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Generate Colors
+          </button>
+        </div>
+      </form>
+      {isInvalid && (
+        <div className="invalid-feedback d-block">
+          Please enter a valid color code.
+        </div>
+      )}
+
+      {colors.length > 0 && (
+        <div className="row">
+          {colors.map((colorObj, index) => (
+            <ColorBox
+              key={index}
+              hex={colorObj.hex} // passing the hex property separately
+              {...colorObj} // passing the rest of the properties
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+export default ColorGenerator;
+```
+
+AAAAAND it's working now.
+
+Now, we can do All the work inside the `ColorBox` component. First we will render the color box with the background color set to the `hex` property.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorBox.jsx
+import React from "react";
+
+const ColorBox = ({ hex, weight, rgb }) => {
+  return (
+    <div className="col-3">
+      <div
+        className="color-box"
+        style={{ backgroundColor: `#${hex}` }} // setting the background color to the hex value
+      >
+        <p className="text-center mb-0">#{hex}</p>
+      </div>
+    </div>
+  );
+};
+export default ColorBox;
+```
+
+This looks BAD! right? I want a nice looking color palette. So, let's add some styles to the color box so that we have nice boxs with the color displayed inside them and also the weight of the color displayed below the color code. We can do this by adding some CSS styles to the `ColorBox` component.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorBox.jsx
+import React from "react";
+
+const ColorBox = ({ hex, weight }) => {
+  return (
+    <div className="col-2 p-0">
+      <div
+        className="position-relative w-100"
+        style={{
+          backgroundColor: `#${hex}`,
+          paddingTop: "100%", // Square box
+        }}
+      >
+        {/* Hex Code: Top Left */}
+        <div
+          className="position-absolute top-0 start-0 text-white fw-semibold px-1"
+          style={{
+            fontSize: "10px",
+            textShadow: "1px 1px rgb(0,0,0)",
+          }}
+        >
+          #{hex}
+        </div>
+
+        {/* Weight: Center */}
+        <div
+          className="position-absolute top-50 start-50 translate-middle text-white fw-bold"
+          style={{
+            fontSize: "14px",
+            textShadow: "1px 1px rgb(0,0,0)",
+          }}
+        >
+          {weight}%
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ColorBox;
+
+```
+
+This should give us a nice looking color palette with the color code displayed in the top left corner and the weight of the color displayed in the center of the box. The box will also have a square shape with the background color set to the `hex` value.
+
+One thing that still pokes my eye is that the weight of the color is displayed but the font color matches the background color. So, what we can do is send the index of the color as prop and check if the index is higher than 10, then we can set the font color to white, otherwise we can set it to black. This way, we can ensure that the text is always readable against the background color.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorBox.jsx
+import React from "react";
+
+const ColorBox = ({ hex, weight, index}) => {
+  const textColor = index > 10 ? "text-white" : "text-dark"; // setting the text color based on the index
+  return (
+    <div className="col-2 p-0">
+      <div
+        className="position-relative w-100"
+        style={{
+          backgroundColor: `#${hex}`,
+          paddingTop: "100%", // Square box
+        }}
+      >
+        {/* Hex Code: Top Left */}
+        <div
+          className="position-absolute top-0 start-0 text-white fw-semibold px-1"
+          style={{
+            fontSize: "10px",
+            textShadow: "rgba(0,0,0,0.6)",
+          }}
+        >
+          #{hex}
+        </div>
+
+        <div
+          className={`position-absolute top-50 start-50 translate-middle fw-bold ${textColor}`}
+          style={{
+            fontSize: "14px",
+            textShadow: "rgba(0,0,0,0.6)",
+          }}
+        >
+          {weight}%
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ColorBox;
+
+```
+
+also,
+
+we need to pass the `index` prop to the `ColorBox` component from the `ColorGenerator` component. We can do this by passing the `index` as a second argument to the `map()` method.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React, { useState } from "react";
+import Values from "values.js"; // importing the Values class from the values.js library
+import ColorBox from "./ColorBox";  
+
+const ColorGenerator = () => {
+  ... // rest of the code remains the same
+  return (
+    <div>
+      ... {// rest of the code remains the same}
+      {colors.length > 0 && (
+        <div className="row">
+          {colors.map((colorObj, index) => (
+            <ColorBox
+              key={index}
+              hex={colorObj.hex} // passing the hex property separately
+              weight={colorObj.weight} // passing the weight property
+              index={index} // passing the index as a prop
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );  
+};
+export default ColorGenerator;
+```
