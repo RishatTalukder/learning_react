@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Values from "values.js"; // importing the Values class from the values.js library
 import ColorBox from "./ColorBox";
 
 const ColorGenerator = () => {
-  const [color, setColor] = useState(""); // creating a state variable to hold the color code
-  const [colors, setColors] = useState([]); // creating a state variable to hold the generated colors
-  const [isInvalid, setIsInvalid] = useState(false); // creating a state variable to hold the invalid state
-
+  const [color, setColor] = useState("");
+  const [colors, setColors] = useState(
+    new Values("#ff5733").all()
+  ); // initializing with a default color
+  const [isInvalid, setIsInvalid] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     try {
-      const values = new Values(color).all(); // generating colors based on the input value
-      setColors(values); // updating the state variable with the generated colors
-      setIsInvalid(false); // setting the invalid state to false if the input value is valid
+      const values = new Values(color).all();
+      setColors(values);
+      setIsInvalid(false);
     } catch (error) {
-      setIsInvalid(true); // setting the invalid state to true if the input value is invalid
-      setColors([]); // clearing the colors array if the input value is invalid
+      setIsInvalid(true);
+      setColors([]);
     }
   };
-
   return (
     <div>
       <h1>Color Generator</h1>
@@ -54,9 +54,9 @@ const ColorGenerator = () => {
           {colors.map((colorObj, index) => (
             <ColorBox
               key={index}
-              hex={colorObj.hex} // passing the hex property separately
-              {...colorObj} // passing the rest of the properties
-              index={index} // passing the index for key prop
+              hex={colorObj.hex}
+              weight={colorObj.weight}
+              index={index}
             />
           ))}
         </div>

@@ -6349,7 +6349,7 @@ const ColorBox = ({ hex, weight, index}) => {
           className="position-absolute top-0 start-0 text-white fw-semibold px-1"
           style={{
             fontSize: "10px",
-            textShadow: "rgba(0,0,0,0.6)",
+            textShadow: "1px 1px rgb(0,0,0)",
           }}
         >
           #{hex}
@@ -6359,7 +6359,6 @@ const ColorBox = ({ hex, weight, index}) => {
           className={`position-absolute top-50 start-50 translate-middle fw-bold ${textColor}`}
           style={{
             fontSize: "14px",
-            textShadow: "rgba(0,0,0,0.6)",
           }}
         >
           {weight}%
@@ -6403,5 +6402,304 @@ const ColorGenerator = () => {
     </div>
   );  
 };
+
 export default ColorGenerator;
 ```
+> Now, the text color will change based on the index of the color in the array. If the index is greater than 10, the text color will be white, otherwise it will be black.
+
+That's it! We have a working `Color Generator` app that allows users to generate shades of a color based on the hexadecimal color code they enter. The app displays the generated colors as a list of color boxes with the color code and weight displayed inside them. The text color changes based on the background color to ensure readability.
+
+The only thing left to do is to add the click event to the color box that will copy the color code to the clipboard when the user clicks on it. We can do this by using the `navigator.clipboard.writeText()` method. This method allows us to write text to the clipboard.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorBox.jsx
+import React from "react";
+const ColorBox = ({ hex, weight, index }) => {
+  const textColor = index > 10 ? "text-white" : "text-dark"; // setting the text color based on the index
+
+  const handleClick = () => {
+    navigator.clipboard.writeText(`#${hex}`); // copying the color code to the clipboard
+    alert(`Copied #${hex} to clipboard!`); // showing an alert message
+  };
+
+  return (
+    <div className="col-2 p-0">
+      <div
+        className="position-relative w-100"
+        style={{
+          backgroundColor: `#${hex}`,
+          paddingTop: "100%", // Square box
+        }}
+        onClick={handleClick} // adding the click event handler
+      >
+        {/* Hex Code: Top Left */}
+        <div
+          className="position-absolute top-0 start-0 text-white fw-semibold px-1"
+          style={{
+            fontSize: "10px",
+            textShadow: "1px 1px rgb(0,0,0)",
+          }}
+        >
+          #{hex}
+        </div>
+
+        <div
+          className={`position-absolute top-50 start-50 translate-middle fw-bold ${textColor}`}
+          style={{
+            fontSize: "14px",
+          }}
+        >
+          {weight}%
+        </div>
+      </div>
+    </div>
+  );
+};
+export default ColorBox;
+```
+
+Oeh I never told you that we can add `onClick` event handlers to any HTML element in React. In this case, I added the `onClick` event handler to the `div` that represents the color box. When the user clicks on the color box, it will call the `handleClick` function which will copy the color code to the clipboard and show an alert message.
+
+`Navigator` is a global object that provides information about the browser and the user's environment. The `clipboard` property of the `navigator` object provides access to the clipboard API which allows us to read and write text to the clipboard.
+
+That's it, But the alert message is kinda lackluster. Why don't we make it a little more fancy? I want the alert message to be inside the color box itself and it should disappear after a few seconds. We can do this by using the `useState` hook to manage the state of the alert message and the `setTimeout` function to hide the alert message after a few seconds.
+
+Let's update the `ColorBox` component to include the alert message.
+
+```js {.line-numbers}
+// src/projects/project_8/ColorBox.jsx
+import React, { useState, useEffect } from "react";
+
+const ColorBox = ({ hex, weight, index }) => {
+  const textColor = index > 10 ? "text-white" : "text-dark"; // setting the text color based on the index
+
+  const [isCopied, setIsCopied] = useState(false); // creating a state variable to hold the copied state
+
+  const handleClick = () => {
+    navigator.clipboard.writeText(`#${hex}`);
+    setIsCopied(true); // setting the copied state to true
+  }
+
+  useEffect(() => {
+    let timer;
+    if (isCopied) {
+      timer = setTimeout(() => {
+        setIsCopied(false); // resetting the copied state after 2 seconds
+      }, 2000);
+    }
+    return () => clearTimeout(timer); // clearing the timer on unmount
+  }, [isCopied]);
+
+  return (
+    <div className="col-2 p-0">
+      <div
+        className="position-relative w-100"
+        style={{
+          backgroundColor: `#${hex}`,
+          paddingTop: "100%", // Square box
+        }}
+        onClick={handleClick} // adding the click event handler
+      >
+        {/* Hex Code: Top Left */}
+        <div
+          className="position-absolute top-0 start-0 text-white fw-semibold px-1"
+          style={{
+            fontSize: "10px",
+            textShadow: "1px 1px rgb(0,0,0)",
+          }}
+        >
+          #{hex}
+        </div>
+
+        <div
+          className={`position-absolute top-50 start-50 translate-middle fw-bold ${textColor}`}
+          style={{
+            fontSize: "14px",
+          }}
+        >
+          {weight}%
+        </div>
+
+        {isCopied && (
+          <div className={`position-absolute bottom-0 start-50 translate-middle-x ${textColor} p-1 rounded fw-semibold`}>
+            Copied to clipboard!
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+export default ColorBox;
+```
+> In this code, I created a state variable called `isCopied` to hold the copied state. When the user clicks on the color box, it will set the `isCopied` state to true and show the alert message inside the color box. The alert message will disappear after 2 seconds using the `setTimeout` function. I also used the `useEffect` hook to clear the timer when the component unmounts or when the `isCopied` state changes.
+
+Now you might think what is happening inside the `useEffect` hook. The `useEffect` hook is used to perform side effects in functional components. In this case, we are using it to set up a timer that will reset the `isCopied` state after 2 seconds and then I'm `returning` a `function` that will clear the timer when the component unmounts or when the `isCopied` state changes. 
+
+This is called a `cleanup function`. Here is a nice example for you
+
+## Cleanup Function Example
+
+Make a new folder named `cleanup_example` inside the `src` folder. Inside this folder, create a new file named `CleanupExample.jsx`. In this file, we will create a simple component that demonstrates the use of the cleanup function in the `useEffect` hook.
+
+```js {.line-numbers} 
+// src/cleanup_example/CleanupExample.jsx
+import React, { useState, useEffect } from "react";
+
+const CleanupExample = () => {
+  const [toggle, setToggle] = useState(false);
+
+  return (
+    <div>
+      <h1>Cleanup Example</h1>
+      <p>Toggle: {toggle && <Hello />}</p>
+    </div>
+  );
+};
+
+  const Hello = () => {
+    useEffect(() => {
+      console.log("Hello component mounted");
+      setInterval(() => {
+        console.log("Hello component is still mounted");
+      }, 1000);
+    }, []);
+
+    return <h2>Hello</h2>;
+  };
+export default CleanupExample;
+```
+
+> In this code, we have a `CleanupExample` component that has a state variable called `toggle`. When the `toggle` state is true, it renders the `Hello` component. The `Hello` component uses the `useEffect` hook to log a message to the console when it is mounted and sets up an interval that logs a message every second.
+
+Now, you will see a message in the console when the `Hello` component is mounted and it will keep logging the message every second as long as the `Hello` component is mounted.
+
+And when you toggle the `toggle` state to false, the `Hello` component will unmount and you will see that the interval is still running and logging messages to the console. This is because we didn't clean up the interval when the `Hello` component unmounted.
+
+This can cause massive memory leaks and performance issues in your application. To fix this, we can use the cleanup function in the `useEffect` hook to clear the interval when the `Hello` component unmounts.
+
+```js {.line-numbers}
+// src/cleanup_example/CleanupExample.jsx
+import React, { useState, useEffect } from "react";
+
+const CleanupExample = () => {
+  const [toggle, setToggle] = useState(false);
+
+  return (
+    <div>
+      <h1>Cleanup Example</h1>
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => setToggle(!toggle)} // toggling the state
+      >
+        Toggle
+      </button>
+      <p>Toggle: {toggle && <Hello />}</p>
+    </div>
+  );
+};
+
+const Hello = () => {
+  useEffect(() => {
+    console.log("Hello component mounted");
+    const intervalId = setInterval(() => {
+      console.log("Hello component is still mounted");
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
+      console.log("Hello component unmounted");
+    }; // cleanup function to clear the interval
+  }, []);
+
+  return <h2>Hello</h2>;
+};
+export default CleanupExample;
+```
+> In this code, I added a cleanup function to the `useEffect` hook that clears the interval when the `Hello` component unmounts. Now, when you toggle the `toggle` state to false, the interval will be cleared and you will not see any more messages in the console.
+
+
+And we did it! we have a functional `Color Generator` app that allows users to generate shades of a color based on the hexadecimal color code they enter. The app displays the generated colors as a list of color boxes with the color code and weight displayed inside them. The text color changes based on the background color to ensure `readability`. The user can also copy the color code to the clipboard by clicking on the color box and an alert message is displayed inside the color box for a few seconds.
+
+And we can stop right here with this project... 
+
+BUUUUUUUUT! I just want to add one last touch to the UI to make it more user-friendly.
+
+When the app start there is nothing on the screen, accept the input field and the button. I want to render default colors when the app starts so that the user can see some colors on the screen and get an idea of how the app works. 
+
+We can just do that by creating a default colors array and rendering it in the component. 
+
+```js {.line-numbers}
+// src/projects/project_8/ColorGenerator.jsx
+import React, { useState } from "react";
+import Values from "values.js"; // importing the Values class from the values.js library
+import ColorBox from "./ColorBox";
+
+const ColorGenerator = () => {
+  const [color, setColor] = useState("");
+  const [colors, setColors] = useState(
+    new Values("#ff5733").all()
+  ); // initializing with a default color
+  const [isInvalid, setIsInvalid] = useState(false);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      const values = new Values(color).all();
+      setColors(values);
+      setIsInvalid(false);
+    } catch (error) {
+      setIsInvalid(true);
+      setColors([]);
+    }
+  };
+  return (
+    <div>
+      <h1>Color Generator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="d-flex align-items-end mb-3">
+          <div className="me-2" style={{ width: "250px" }}>
+            <label htmlFor="color" className="form-label">
+              Enter Hexadecimal Color Code
+            </label>
+            <input
+              type="text"
+              className={`form-control ${isInvalid ? "is-invalid" : ""}`}
+              id="color"
+              name="color"
+              placeholder="#ff5733"
+              value={color}
+              onChange={(e) => setColor(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-4">
+            Generate Colors
+          </button>
+        </div>
+      </form>
+      {isInvalid && (
+        <div className="invalid-feedback d-block">
+          Please enter a valid color code.
+        </div>
+      )}
+
+      {colors.length > 0 && (
+        <div className="row">
+          {colors.map((colorObj, index) => (
+            <ColorBox
+              key={index}
+              hex={colorObj.hex}
+              weight={colorObj.weight}
+              index={index}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+export default ColorGenerator;
+```
+
+And there you have it! Now when the app starts, it will render a default color palette based on the color `#ff5733`. You can change this default color to any other color you like by changing the value passed to the `Values` constructor in the `useState` hook.
+
+This was fun! I hope you enjoyed building this project as much as I did. The `Color Generator` app is a great way to learn about React, state management, and working with external libraries. You can further enhance this app by adding features like saving favorite colors, generating random colors, or even creating a color scheme based on the generated colors.
+
+Now we can do another one!

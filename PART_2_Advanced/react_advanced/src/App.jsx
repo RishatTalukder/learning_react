@@ -15,6 +15,7 @@ import UncontrolledInputs from "./form_handling/UncontrolledInputs";
 import InputRef from "./form_handling/InputRef";
 import DummyTextGenerator from "./projects/project_7/DummyTextGenerator";
 import ColorGenerator from "./projects/project_8/ColorGenerator";
+import CleanupExample from "./cleanup_example/CleanupExample";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
       {/* <InputRef /> */}
       {/* <DummyTextGenerator /> */}
       <ColorGenerator />
+      {/* <CleanupExample /> */}
       
     </div>
   );
