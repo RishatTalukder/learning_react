@@ -6393,7 +6393,7 @@ const ColorGenerator = () => {
             <ColorBox
               key={index}
               hex={colorObj.hex} // passing the hex property separately
-              weight={colorObj.weight} // passing the weight property
+              {...colorObj} // passing the rest of the properties
               index={index} // passing the index as a prop
             />
           ))}

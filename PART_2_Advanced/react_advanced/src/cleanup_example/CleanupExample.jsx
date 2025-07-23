@@ -12,7 +12,10 @@ const CleanupExample = () => {
       >
         Toggle
       </button>
-      <p>Toggle: {toggle && <Hello />}</p>
+      <div>
+      Toggle: {toggle && <Hello />}
+
+      </div>
     </div>
   );
 };
