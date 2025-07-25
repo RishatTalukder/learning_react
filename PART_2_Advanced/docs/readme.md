@@ -6703,3 +6703,873 @@ And there you have it! Now when the app starts, it will render a default color p
 This was fun! I hope you enjoyed building this project as much as I did. The `Color Generator` app is a great way to learn about React, state management, and working with external libraries. You can further enhance this app by adding features like saving favorite colors, generating random colors, or even creating a color scheme based on the generated colors.
 
 Now we can do another one!
+
+# Project 9: Task Keeper
+
+This project is the `To-Do List` app in steriods. We will build `task keeping app` that allows users to create, edit, and delete tasks. The app will have a simple and intuitive user interface that allows users to manage their tasks easily.
+
+The app will have the following features:
+- Add new tasks.
+- Edit existing tasks.
+- Delete tasks.
+- Some other small features to enhance the user experience.
+
+To build this app, we will use React and some of the concepts we have learned so far. 
+
+Let's get started!
+
+## Project Structure
+
+- Make a new folder named `project_9` inside the `src/projects` folder.
+- Inside the `project_9` folder, create a new file named `TaskKeeper.jsx`.
+- Create a new folder named `Components` inside the `project_9` folder because we might need to create some Components for this project.
+
+Now, let's make the `TaskKeeper.jsx` file the main component of our app. This component will be responsible for rendering the UI and managing the state of the app.
+
+```js {.line-numbers}
+import React from 'react'
+
+const TaskKeeper = () => {
+  return (
+    <div
+    className='d-flex justify-content-center align-items-center mt-5'
+    >
+      <div
+      className='bg-light p-3 rounded shadow'
+        style={{ width: '100%', maxWidth: '500px' }}
+      >
+        <div style={{ height: '20px' }} className="mb-2 text-danger text-center">
+          Alert goes here
+        </div>
+        <h1
+        className='text-center text-primary mb-2'
+        >
+            Task Keeper
+        </h1>
+      </div>
+    </div>
+  )
+}
+
+export default TaskKeeper
+```
+
+Here I made a small component that renders a centered box with a title and an alert message. This will be the main component of our app. 
+
+We can show different types of alerts in this box, like success, error, or info messages. For now, I just added a placeholder for the alert message.
+
+Now, let's render this component in the `App.jsx` file.
+
+```js {.line-numbers}
+// src/App.jsx
+import React from 'react';
+import TaskKeeper from './projects/project_9/TaskKeeper';   
+
+const App = () => {
+  return (
+    <div>
+      <TaskKeeper />
+    </div>
+  );
+};
+export default App;
+```
+
+You should see something like this in the browser:
+![alt text](image-3.png)
+
+Now, let's setup al the things we are going to need to do.
+
+- We will need a state variable to hold the tasks.
+- We will need a state variable to hold the input value for the new task.
+- We will also need a state variable to hold the alert message and its type (success, error, info).
+- Need a state variable to hold the editing task id and also if we are in editing mode or not.
+
+So, let's start with the state variables. We will use the `useState` hook to create these state variables.
+
+```js {.line-numbers}
+// src/projects/project_9/TaskKeeper.jsx
+import React, { useState } from 'react';
+const TaskKeeper = () => {
+  const [tasks, setTasks] = useState([]); // state variable to hold the tasks
+  const [inputValue, setInputValue] = useState(""); // state variable to hold the input value for the new task
+  const [alert, setAlert] = useState({show:false, message: "", type: "" }); // state variable to hold the alert message and its type
+  const [editingTaskId, setEditingTaskId] = useState(null); // state variable to hold the editing task id
+  const [isEditing, setIsEditing] = useState(false); // state variable to hold if we are in editing mode or not
+
+  return (
+    <div
+      className='d-flex justify-content-center align-items-center mt-5'
+    >
+      <div
+        className='bg-light p-3 rounded shadow'
+        style={{ width: '100%', maxWidth: '500px' }}
+      >
+        <div style={{ height: '20px' }} className="mb-2 text-danger text-center">
+          {alert.message}
+        </div>
+        <h1
+          className='text-center text-primary mb-2'
+        >
+          Task Keeper
+        </h1>
+      </div>
+    </div>
+  );
+};
+export default TaskKeeper;
+```
+
+Now that we have the state variables set up, let's create a form to add new tasks. The form will have an input field for the task name and a button to submit the form. We will also need a function to handle the form submission.
+
+```js {.line-numbers}
+// src/projects/project_9/TaskKeeper.jsx
+import React, { useState } from 'react';
+const TaskKeeper = () => {
+  const [tasks, setTasks] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [alert, setAlert] = useState({show:false, message: "", type: "" });
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (inputValue.trim() === "") {
+      setAlert({ show: true, message: "Task cannot be empty", type: "error" });
+      return;
+    }
+    const newTask = {
+      id: Date.now(), // using timestamp as a unique id
+      name: inputValue.trim(),
+    };
+    setTasks([...tasks, newTask]); // adding the new task to the tasks array
+    setInputValue(""); // clearing the input field
+    setAlert({ show: true, message: "Task added successfully", type: "success" });
+  };  
+
+  return (
+    <div
+      className='d-flex justify-content-center align-items-center mt-5'
+    >
+      <div
+        className='bg-light p-3 rounded shadow'
+        style={{ width: '100%', maxWidth: '500px' }}
+      >
+        <div style={{ height: '30px' }} className="mb-2 text-center">
+          {
+            alert.show && (
+              <div className={`bg-${alert.type === "error" ? "danger" : "success"} text-white p-1 rounded`}>
+                {alert.message}
+              </div>
+            )
+          }
+        </div>
+        <h1
+          className='text-center text-primary mb-2'
+        >
+          Task Keeper
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter task name"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            Add Task
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+export default TaskKeeper;
+```
+
+Well, I think you all know by now how to handle form submission and controlled inputs in React and also how to add task to an array. For the tasks, I used the `Date.now()` method to generate a unique id for each task. This is a simple way to generate unique ids, but you can also use libraries like `uuid` or `nanoid` for more complex scenarios.
+
+Then if a task is added successfully, we set the alert message to "Task added successfully" and the type to "success". If the input value is empty, we set the alert message to "Task cannot be empty" and the type to "error".
+
+Now, let's render the list of tasks below the form. We will use the `map()` method to iterate over the `tasks` array and render each task in a list item. We will also add buttons to edit and delete each task.
+
+As we can see that we might need to do a lot of things with the tasks, like editing and deleting them. So, let's create a new component called `TaskItem.jsx` that will handle the rendering of each task item.
+
+```js {.line-numbers}
+// src/projects/project_9/Components/TaskItem.jsx
+import React from "react";
+
+const TaskItem = ({ task }) => {
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {task.name}
+    </li>
+  );
+};
+export default TaskItem;
+
+```
+
+Now, we add this component to the `TaskKeeper.jsx` file and use it to render each task in the list. We will also pass the task object as a prop to the `TaskItem` component.
+
+```js {.line-numbers}
+// src/projects/project_9/TaskKeeper.jsx
+import React, { useState } from 'react';
+import TaskItem from './Components/TaskItem'; // importing the TaskItem component
+
+const TaskKeeper = () => {
+
+  const [tasks, setTasks] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (inputValue.trim() === "") {
+      setAlert({ show: true, message: "Task cannot be empty", type: "error" });
+      return;
+    }
+    const newTask = {
+      id: Date.now(), // using timestamp as a unique id
+      name: inputValue.trim(),
+    };
+    setTasks([...tasks, newTask]); // adding the new task to the tasks array
+    setInputValue(""); // clearing the input field
+    setAlert({
+      show: true,
+      message: "Task added successfully",
+      type: "success",
+    });
+  };
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-5">
+      <div
+        className="bg-light p-3 rounded shadow"
+        style={{ width: "100%", maxWidth: "500px" }}
+      >
+        <div style={{ height: "30px" }} className="mb-2 text-center">
+          {alert.show && (
+            <div
+              className={`bg-${
+                alert.type === "error" ? "danger" : "success"
+              } text-white p-1 rounded`}
+            >
+              {alert.message}
+            </div>
+          )}
+        </div>
+        <h1 className="text-center text-primary mb-2">Task Keeper</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter task name"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            Add Task
+          </button>
+        </form>
+
+        {/* Render the list of tasks */}
+        <div
+          className={`mt-3 border rounded ${
+            tasks.length === 0
+              ? "d-flex justify-content-center align-items-center"
+              : ""
+          }`}
+          style={{
+            minHeight: "300px",
+            padding: "10px",
+            backgroundColor: "#f8f9fa",
+          }}
+        >
+          {tasks.length === 0 ? (
+            <p className="text-muted m-0">No tasks added...</p>
+          ) : (
+            <ul className="list-group w-100">
+              {tasks.map((task) => (
+                <TaskItem key={task.id} task={task} />
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+export default TaskKeeper;
+
+```
+
+> In this code, I added a new section below the form to render the list of tasks. If there are no tasks, it will show a message "No tasks added...". If there are tasks, it will render them using the `TaskItem` component. Each task is passed as a prop to the `TaskItem` component.
+
+Before going to the next part there is one thing I want to fix. When we add a task, the alert message is shown and it never disappears. We can fix this by using the `setTimeout` function to hide the alert message after a few seconds.
+
+```js {.line-numbers}
+// src/projects/project_9/TaskKeeper.jsx
+import React, { useState, useEffect } from 'react';
+import TaskItem from './Components/TaskItem';
+
+const TaskKeeper = () => {
+  const [tasks, setTasks] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = (event) => {
+    ... // rest of the code remains the same
+  }
+
+  useEffect(() => {
+    if (alert.show) {
+      const timer = setTimeout(() => {
+        setAlert({ show: false, message: "", type: "" }); // hiding the alert after 3 seconds
+      }, 3000);
+      return () => clearTimeout(timer); // cleanup function to clear the timer
+    }
+  }, [alert.show]);
+
+  ... // rest of the code remains the same
+  
+}
+export default TaskKeeper;
+
+```
+
+Now that we have the alert message disappearing after a few seconds, let's move on to the next part.
+
+Let's deal with the editing and deleting tasks. We will add buttons to each task item to edit and delete the task and a button at the very bottom to clear all tasks.
+
+Now, we can either just write `delete` and `edit` as buttons or we can use icons for the buttons. I prefer using icons because they look better and are more intuitive. We can use the `react-icons` library to add icons to our buttons.
+
+First, we need to install the `react-icons` library. You can do this by running the following command in your terminal:
+
+```bash
+npm install react-icons
+```
+
+Now, we can import the icons we want to use in the `TaskItem.jsx` file. We will use the `FaTrash` icon for the delete button and the `FaEdit` icon for the edit button.
+
+```js {.line-numbers}
+// src/projects/project_9/Components/TaskItem.jsx
+import React from "react";
+import { FaTrash, FaEdit } from "react-icons/fa"; // importing the icons  
+
+const TaskItem = ({ task }) => {
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {task.name}
+      <div>
+        <button className="btn btn-sm btn-warning me-2">
+          <FaEdit />
+        </button>
+        <button className="btn btn-sm btn-danger">
+          <FaTrash />
+        </button>
+      </div>
+    </li>
+  );
+};
+export default TaskItem;
+```
+
+> In this code, I imported the `FaTrash` and `FaEdit` icons from the `react-icons/fa` package and used them in the buttons. The buttons are styled with Bootstrap classes to make them look better.
+
+Now, we need to add the functionality to edit and delete tasks. Let's handle the delete functionality first. We will pass a `deleteTask` function as a prop to the `TaskItem` component and call it when the delete button is clicked.
+
+```js {.line-numbers} 
+// src/projects/project_9/TaskKeeper.jsx
+import React, { useState, useEffect } from 'react';
+import TaskItem from './Components/TaskItem';
+
+const TaskKeeper = () => {
+  const [tasks, setTasks] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = (event) => {
+    ... // rest of the code remains the same
+  };
+
+  useEffect(() => {
+    ... // rest of the code remains the same
+  }, [alert.show]);
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id)); // filtering out the task with the given id
+    setAlert({ show: true, message: "Task deleted successfully", type: "success" });
+  };
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-5">
+      <div
+        className="bg-light p-3 rounded shadow"
+        style={{ width: "100%", maxWidth: "500px" }}
+      >
+        <div style={{ height: "30px" }} className="mb-2 text-center">
+          {alert.show && (
+            <div
+              className={`bg-${
+                alert.type === "error" ? "danger" : "success"
+              } text-white p-1 rounded`}
+            >
+              {alert.message}
+            </div>
+          )}
+        </div>
+        <h1 className="text-center text-primary mb-2">Task Keeper</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter task name"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            Add Task
+          </button>
+        </form>
+
+        {/* Render the list of tasks */}
+        <div
+          className={`mt-3 border rounded ${
+            tasks.length === 0
+              ? "d-flex justify-content-center align-items-center"
+              : ""
+          }`}
+          style={{
+            minHeight: "300px",
+            padding: "10px",
+            backgroundColor: "#f8f9fa",
+          }}
+        >
+          {tasks.length === 0 ? (
+            <p className="text-muted m-0">No tasks added...</p>
+          ) : (
+            <ul className="list-group w-100">
+              {tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  deleteTask={deleteTask} // passing the deleteTask function as a prop
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+        <button
+          className="btn btn-danger w-100 mt-3"
+          onClick={() => {
+            setTasks([]); // clearing all tasks
+            if(tasks.length > 0){
+            setAlert({ show: true, message: "All tasks cleared", type: "success" });
+            }
+          }}
+        >
+          Clear All Tasks
+        </button>
+      </div>
+    </div>
+  );
+};
+export default TaskKeeper;
+```
+
+I added a `deleteTask` function that takes an `id` as an argument and filters out the task with the given id from the `tasks` array. Then, I passed this function as a prop to the `TaskItem` component.
+
+Now, we need to update the `TaskItem` component to call the `deleteTask` function when the delete button is clicked.
+
+```js {.line-numbers}
+// src/projects/project_9/Components/TaskItem.jsx
+import React from "react";
+import { FaTrash, FaEdit } from "react-icons/fa"; // importing the icons
+
+const TaskItem = ({ task, deleteTask }) => {
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {task.name}
+      <div>
+        <button className="btn btn-sm btn-warning me-2">
+          <FaEdit />
+        </button>
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={() => deleteTask(task.id)} // calling the deleteTask function with the task id
+        >
+          <FaTrash />
+        </button>
+      </div>
+    </li>
+  );
+};
+export default TaskItem;
+```
+
+We just add a onClick event to the delete button that calls the `deleteTask` function with the task id.
+
+We are done.
+
+Now, let's handle the edit functionality. We will add a function to handle the edit button click and set the input value to the task name when the edit button is clicked. We will also change the button text to "Update Task" when we are in editing mode.
+
+```js {.line-numbers}
+// src/projects/project_9/TaskKeeper.jsx
+import React, { useState, useEffect } from 'react';
+import TaskItem from './Components/TaskItem';
+
+const TaskKeeper = () => {
+  const [tasks, setTasks] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const input = inputValue.trim();
+    if (input === "") {
+      setAlert({ show: true, message: "Task cannot be empty", type: "error" });
+      return;
+    }
+    if (isEditing) {
+      const updatedTasks = tasks.map((task) =>
+        task.id === editingTaskId ? { ...task, name: input } : task
+      );
+      setTasks(updatedTasks);
+      setAlert({ show: true, message: "Task updated successfully", type: "success" });
+      setIsEditing(false);
+      setEditingTaskId(null);
+    } else {
+      const newTask = {
+        id: Date.now(), // using timestamp as a unique id  
+        name: input,
+      };
+      setTasks([...tasks, newTask]); // adding the new task to the tasks array
+      setAlert({ show: true, message: "Task added successfully", type: "success" });
+    } 
+    setInputValue(""); // clearing the input field
+  };
+
+
+  //useEffect to hide the alert message after a few seconds
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id)); // filtering out the task with the given id
+    setAlert({ show: true, message: "Task deleted successfully", type: "success" });
+  };
+
+  const editTask = (task) => {
+    setInputValue(task.name); // setting the input value to the task name
+    setEditingTaskId(task.id); // setting the editing task id
+    setIsEditing(true); // setting the editing mode to true
+  };  
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-5">
+      <div
+        className="bg-light p-3 rounded shadow"
+        style={{ width: "100%", maxWidth: "500px" }}
+      >
+        <div style={{ height: "30px" }} className="mb-2 text-center">
+          {alert.show && (
+            <div
+              className={`bg-${
+                alert.type === "error" ? "danger" : "success"
+              } text-white p-1 rounded`}
+            >
+              {alert.message}
+            </div>
+          )}
+        </div>
+        <h1 className="text-center text-primary mb-2">Task Keeper</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter task name"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            {isEditing ? "Update Task" : "Add Task"} {/* changing button text based on editing mode */}
+          </button>
+        </form>
+
+        {/* Render the list of tasks */}
+        <div
+          className={`mt-3 border rounded ${
+            tasks.length === 0
+              ? "d-flex justify-content-center align-items-center"
+              : ""
+          }`}
+          style={{
+            minHeight: "300px",
+            padding: "10px",
+            backgroundColor: "#f8f9fa",
+          }}
+        >
+          {tasks.length === 0 ? (
+            <p className="text-muted m-0">No tasks added...</p>
+          ) : (
+            <ul className="list-group w-100">
+              {tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  deleteTask={deleteTask} // passing the deleteTask function as a prop
+                  editTask={editTask} // passing the editTask function as a prop
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+        <button
+          className="btn btn-danger w-100 mt-3"
+          onClick={() => {
+            setTasks([]); // clearing all tasks
+            if (tasks.length > 0) {
+              setAlert({ show: true, message: "All tasks cleared", type: "success" });
+            }
+          }}
+        >
+          Clear All Tasks
+        </button>
+      </div>
+    </div>
+  );
+};
+export default TaskKeeper;
+```
+
+Now, like we did for the delete button, we will add an edit button to the `TaskItem` component that calls the `editTask` function when clicked.
+
+```js {.line-numbers}
+// src/projects/project_9/Components/TaskItem.jsx
+import React from "react";
+import { FaTrash, FaEdit } from "react-icons/fa"; // importing the icons
+
+const TaskItem = ({ task, deleteTask, editTask }) => {
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {task.name}
+      <div>
+        <button
+          className="btn btn-sm btn-warning me-2"
+          onClick={() => editTask(task)} // calling the editTask function with the task object
+        >
+          <FaEdit />
+        </button>
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={() => deleteTask(task.id)} // calling the deleteTask function with the task id
+        >
+          <FaTrash />
+        </button>
+      </div>
+    </li>
+  );
+};
+export default TaskItem;
+```
+
+Now, what happend is first we see if the edit button is clicked, We call the `editTask` function with the task object. We took a state variable for the `editingTaskId` and `isEditing` remember? So, when the edit button is clicked, we set the input value to the task name which will be shown in the input field, and we set the `editingTaskId` to the task id and `isEditing` to true. 
+
+In the handleSubmit function we check if the `isEditing` state is true, then we update the task with the given id and set the alert message to "Task updated successfully". If `isEditing` is false, we add a new task as we did before.
+
+
+And that's how we can edit and delete tasks in our Task Keeper app. It's kinda confusing and straightforward at the same time. But the tricky part is. so many things are happening at the same time. We are updating the state, setting the alert message, and clearing the input field all in one function.
+
+But this is how we can build a simple task keeping app in React. And If I wanted to I could end this project right here. But As we learned some extra things in the previous projects, I want to add something new to this project as well.
+
+When we click The refresh button or close the browser, all the tasks will be lost. This is not ideal for a task keeping app right? So, we can store the tasks in the local storage so that they persist even after the page is refreshed or the browser is closed.
+
+To do this, we can use the `useEffect` hook to save the tasks to the local storage whenever the `tasks` state changes. But there is a catche here, even after saving the tasks to the local storage, when we refresh the page, the tasks will be lost because we are not loading the tasks from the local storage when the component mounts.
+
+So, we need to both get and save the tasks to the local storage. We can do this by using the `useEffect` hook and the `localStorage` API. 
+
+
+What is the local storage API? It is a web storage API that allows us to store data in the browser. If you open the inspect tool in your browser and go to the Application tab, you will see a section called Local Storage. This is where we can store our data.
+
+This local storage works and `hashmap` or `dictionary` or `object` in JavaScript. It stores data in key-value pairs. We can set a value for a key using the `localStorage.setItem(key, value)` method and get the value for a key using the `localStorage.getItem(key)` method.
+
+So, let's get started with the implementation.
+
+```js {.line-numbers}
+// src/projects/project_9/TaskKeeper.jsx
+import React, { useState, useEffect } from 'react';
+import TaskItem from './Components/TaskItem';
+
+const getTasksFromLocalStorage = () => {
+  const tasks = localStorage.getItem("tasks");
+  return tasks ? JSON.parse(tasks) : []; // parsing the tasks from local storage or returning an empty array
+};
+
+const TaskKeeper = () => {
+  const [tasks, setTasks] = useState(getTasksFromLocalStorage()); // getting tasks from local storage
+  const [inputValue, setInputValue] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const input = inputValue.trim();
+    if (input === "") {
+      setAlert({ show: true, message: "Task cannot be empty", type: "error" });
+      return;
+    }
+    if (isEditing) {
+      const updatedTasks = tasks.map((task) =>
+        task.id === editingTaskId ? { ...task, name: input } : task
+      );
+      setTasks(updatedTasks);
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks)); // saving the updated tasks to local storage
+      setAlert({ show: true, message: "Task updated successfully", type: "success" });
+      setIsEditing(false);
+      setEditingTaskId(null);
+    } else {
+      const newTask = {
+        id: Date.now(), // using timestamp as a unique id  
+        name: input,
+      };
+      const newTasks = [...tasks, newTask];
+      setTasks(newTasks); // adding the new task to the tasks array
+      localStorage.setItem("tasks", JSON.stringify(newTasks)); // saving the new tasks to local storage
+      setAlert({ show: true, message: "Task added successfully", type: "success" });
+    } 
+    setInputValue(""); // clearing the input field
+  };
+
+  useEffect(() => {
+    if (alert.show) {
+      const timer = setTimeout(() => {
+        setAlert({ show: false, message: "", type: "" }); // hiding the alert after 3 seconds
+      }, 3000);
+      return () => clearTimeout(timer); // cleanup function to clear the timer
+    }
+  }, [alert.show]);
+
+  const deleteTask = (id) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id); // filtering out the task with the given id
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks)); // saving the updated tasks to local storage
+    setAlert({ show: true, message: "Task deleted successfully", type: "success" });
+  };
+
+  const editTask = (task) => {
+    setInputValue(task.name); // setting the input value to the task name
+    setEditingTaskId(task.id); // setting the editing task id
+    setIsEditing(true); // setting the editing mode to true
+  };
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // saving the tasks to local storage whenever the tasks state changes
+  }, [tasks]);
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-5">
+      <div
+        className="bg-light p-3 rounded shadow"
+        style={{ width: "100%", maxWidth: "500px" }}
+      >
+        <div style={{ height: "30px" }} className="mb-2 text-center">
+          {alert.show && (
+            <div
+              className={`bg-${
+                alert.type === "error" ? "danger" : "success"
+              } text-white p-1 rounded`}
+            >
+              {alert.message}
+            </div>
+          )}
+        </div>
+        <h1 className="text-center text-primary mb-2">Task Keeper</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter task name"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)} // controlled input
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            {isEditing ? "Update Task" : "Add Task"} {/* changing button text based on editing mode */}
+          </button>
+        </form>
+
+        {/* Render the list of tasks */}
+        <div
+          className={`mt-3 border rounded ${
+            tasks.length === 0
+              ? "d-flex justify-content-center align-items-center"
+              : ""
+          }`}
+          style={{
+            minHeight: "300px",
+            padding: "10px",
+            backgroundColor: "#f8f9fa",
+          }}
+        >
+          {tasks.length === 0 ? (
+            <p className="text-muted m-0">No tasks added...</p>
+          ) : (
+            <ul className="list-group w-100">
+              {tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  deleteTask={deleteTask} // passing the deleteTask function as a prop
+                  editTask={editTask} // passing the editTask function as a prop
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+        <button
+          className="btn btn-danger w-100 mt-3"
+          onClick={() => {
+            setTasks([]);
+            if (tasks.length > 0) {
+              setAlert({ show: true, message: "All tasks cleared", type: "success" });
+            }
+          }}
+        >
+          Clear All Tasks
+        </button> 
+      </div>
+    </div>  
+  );
+};
+export default TaskKeeper;
+```
+
+I made a function called `getTasksFromLocalStorage` that gets the tasks from the local storage and returns them as an array. If there are no tasks in the local storage, it returns an empty array.
+
+Then, I used this function to initialize the `tasks` state variable. This way, when the component mounts, it will get the tasks from the local storage and set them to the `tasks` state variable.
+
+I also added a `useEffect` hook that saves the tasks to the local storage whenever the `tasks` state changes. This way, we can keep the tasks in sync with the local storage.
+
+And that's it! Now, when you add, edit, or delete tasks, they will be saved to the local storage and will persist even after the page is refreshed or the browser is closed.
+
+If you want to add some more better stylling but the functionality is done. You can add some CSS to make it look better. You can also add some animations when the tasks are added, edited, or deleted.
+
+ANNNNNND There you have it! You have built a simple Task Keeper app in React that allows you to add, edit, delete, and persist tasks using local storage.

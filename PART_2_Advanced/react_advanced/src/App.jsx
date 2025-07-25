@@ -1,5 +1,7 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+import "bootswatch/dist/darkly/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 import Counter from "./projects/project_1/Counter";
 import Todo from "./projects/project_2/Todo";
 import AccidentalLoopsExample from "./projects/project_3/Accidental_loops_example";
@@ -16,6 +18,7 @@ import InputRef from "./form_handling/InputRef";
 import DummyTextGenerator from "./projects/project_7/DummyTextGenerator";
 import ColorGenerator from "./projects/project_8/ColorGenerator";
 import CleanupExample from "./cleanup_example/CleanupExample";
+import TaskKeeper from "./projects/project_9/TaskKeeper";
 
 function App() {
   return (
@@ -37,8 +40,9 @@ function App() {
       {/* <UncontrolledInputs /> */}
       {/* <InputRef /> */}
       {/* <DummyTextGenerator /> */}
-      <ColorGenerator />
+      {/* <ColorGenerator /> */}
       {/* <CleanupExample /> */}
+      <TaskKeeper />
       
     </div>
   );
