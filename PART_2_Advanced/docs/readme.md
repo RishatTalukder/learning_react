@@ -7573,3 +7573,26 @@ And that's it! Now, when you add, edit, or delete tasks, they will be saved to t
 If you want to add some more better stylling but the functionality is done. You can add some CSS to make it look better. You can also add some animations when the tasks are added, edited, or deleted.
 
 ANNNNNND There you have it! You have built a simple Task Keeper app in React that allows you to add, edit, delete, and persist tasks using local storage.
+
+# Extra 
+
+When I was Adding a theme from bootswatch I noticed that on refreshing the page, the normal Bootstrap theme is applied instead of the selected theme. This is because the vite has some issues with bootswatch themes.
+
+But a quick work around is to take the `theme` and `js` imports from `app.jsx` and put them in the `main.jsx` file. 
+
+```js {.line-numbers}
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+// import "bootstrap/dist/css/bootstrap.min.css";
+import "bootswatch/dist/lux/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+```
+This way, the theme will be applied correctly when the page is refreshed.
+
