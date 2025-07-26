@@ -1,6 +1,4 @@
-// import "bootstrap/dist/css/bootstrap.min.css";
-import "bootswatch/dist/darkly/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 
 import Counter from "./projects/project_1/Counter";
 import Todo from "./projects/project_2/Todo";
