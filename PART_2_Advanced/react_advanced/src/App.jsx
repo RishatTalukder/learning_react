@@ -17,6 +17,8 @@ import DummyTextGenerator from "./projects/project_7/DummyTextGenerator";
 import ColorGenerator from "./projects/project_8/ColorGenerator";
 import CleanupExample from "./cleanup_example/CleanupExample";
 import TaskKeeper from "./projects/project_9/TaskKeeper";
+import ToggleExample from "./Custom_Hooks/ToggleExample";
+import FetchExample from "./Custom_Hooks/FetchExample";
 
 function App() {
   return (
@@ -40,8 +42,9 @@ function App() {
       {/* <DummyTextGenerator /> */}
       {/* <ColorGenerator /> */}
       {/* <CleanupExample /> */}
-      <TaskKeeper />
-      
+      {/* <TaskKeeper /> */}
+      <ToggleExample />
+      <FetchExample />
     </div>
   );
 }

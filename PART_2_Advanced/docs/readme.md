@@ -7596,3 +7596,223 @@ createRoot(document.getElementById("root")).render(
 ```
 This way, the theme will be applied correctly when the page is refreshed.
 
+# Custom Hooks
+
+Whne we were doing the previous project, we saw that the code was getting a bit messy with all the state variables and functions. This issue was we can make functions of other components but we cannot pass state variables to other components. 
+
+So, this is where custom hooks come in handy. Custom hooks are a way to extract logic from a component and reuse it in other components. They are just like regular functions but they can use React hooks inside them.
+
+Let's create a custom hook to see how we can use it to manage the state and logic in multiple components. 
+
+The most common 2 use of hooks are maybe the `toggle` and `fetch` hooks. So, let's create a custom hook for the `toggle` functionality. 
+
+
+## UseToggle Hook
+
+There are some rules to follow when creating custom hooks. 
+
+- The name of the custom hook should start with the word `use`.
+- The custom hook should return an array or an object that contains the state and the function to update the state.
+
+```js {.line-numbers}
+// src/Custom_Hooks/hooks/useToggle.js
+import { useState } from "react";
+
+const useToggle = (initialValue = false) => {
+  const [value, setValue] = useState(initialValue);
+
+  const toggle = () => {
+    setValue((prevValue) => !prevValue); // toggling the value
+  };
+
+  return [value, toggle]; // returning the value and the toggle function
+};
+export default useToggle;
+```
+
+Now, we can use this custom hook in any component to manage the toggle state. For example, let's create a new folder named `Custom_Hooks` inside the `src` folder and put the `useToggle.js` file inside it and also make a new component named `ToggleExample.jsx` to demonstrate how to use the custom hook.
+
+```js {.line-numbers}
+// src/Custom_Hooks/ToggleExample.jsx
+import React from "react";
+import { useState } from "react";
+
+import useToggle from "./hooks/useToggle"; // importing the custom hook
+
+const ToggleExample = () => {
+  const [toggle, setToggle] = useState(false); // using the useState hook
+
+  const handleToggle = () => {
+    setToggle((prevToggle) => !prevToggle); // toggling the value
+  };
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-5">
+      <div className="bg-light p-3 rounded shadow" style={{ width: "300px" }}>
+        <h2 className="text-center">Toggle Example</h2>
+        <button className="btn btn-primary w-100" onClick={handleToggle}>
+          {toggle ? "ON" : "OFF"}
+        </button>
+      </div>
+    </div>
+  );
+};
+export default ToggleExample;
+```
+
+This is the normal way of using the `useState` hook to manage the toggle state. Now, let's use the custom hook we created earlier to manage the toggle state.
+
+```js {.line-numbers}
+// src/Custom_Hooks/ToggleExample.jsx
+import React from "react";
+import useToggle from "./hooks/useToggle"; // importing the custom hook
+
+const ToggleExample = () => {
+  const [toggle, toggleValue] = useToggle(false); // using the custom hook
+
+  return (
+    <div className="d-flex justify-content-center align-items-center mt-5">
+      <div className="bg-light p-3 rounded shadow" style={{ width: "300px" }}>
+        <h2 className="text-center">Toggle Example</h2>
+        <button className="btn btn-primary w-100" onClick={toggleValue}>
+          {toggle ? "ON" : "OFF"}
+        </button>
+      </div>
+    </div>
+  );
+};
+export default ToggleExample;
+```
+
+We can skip the `useState` hook and directly use the custom hook to manage the toggle state. Because we are returning the `value` and the `toggle` function from the custom hook. 
+
+The toggle function will toggle the value of the `toggle` state variable. So, we don't need to write the toggle logic again in the component. We can just call the `toggleValue` function to toggle the value.
+
+This is how we can create a custom hook to manage the toggle state. We can use this custom hook in any component to manage the toggle state without repeating the code.
+
+## UseFetchData Hook
+
+We will have to fetch data from an API in many projects. And everytime the process is the same. We will have to use the `useState` and `useEffect` hooks to fetch the data and manage the loading and error states.
+
+Let's make a generic component that fetches data from an API and returns the data, loading, and error states. 
+
+```js {.line-numbers}
+// src/Custom_Hooks/FetchExample.jsx
+import React, { useState, useEffect } from "react";
+
+const FetchExample = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <div>
+      <h2 className="text-center">Fetched Data</h2>
+      <ul className="list-group">
+        {data.map((item) => (
+          <li key={item.id} className="list-group-item">
+            {item.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+export default FetchExample;
+```
+
+Here we can see that we are fetching data from an API and managing the loading and error states. We can use this code in any component to fetch data from an API.
+
+Now, let's create a custom hook that will do the same thing. We will create a new file named `useFetchData.js` inside the `Custom_Hooks/hooks` folder and move the fetching logic to that file.
+
+```js {.line-numbers} 
+// src/Custom_Hooks/hooks/useFetchData.js
+import { useState, useEffect } from "react";
+
+const useFetchData = (url) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error }; // returning the data, loading, and error states
+};
+export default useFetchData;
+```
+
+Now, we can use this custom hook in the `FetchExample.jsx` component to fetch data from an API.
+
+```js {.line-numbers}
+// src/Custom_Hooks/FetchExample.jsx
+import React from "react";
+import useFetchData from "./hooks/useFetchData"; // importing the custom hook
+
+const FetchExample = () => {
+  const { data, loading, error } = useFetchData("https://jsonplaceholder.typicode.com/posts"); // using the custom hook
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <div>
+      <h2 className="text-center">Fetched Data</h2>
+      <ul className="list-group">
+        {data.map((item) => (
+          <li key={item.id} className="list-group-item">
+            {item.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+export default FetchExample;
+```
+
+Now, instead of a cluttered component with all the state variables and functions, we have a clean component that uses the custom hook to fetch data from an API.
+
+ps: I just copied and pasted the code from the `FetchExample.jsx` component to the `useFetchData.js` file. 
+
+It's easier to implement the custom hooks in the project if you have a clear understanding of the logic and the state management in the component.
+
+Or you these tricks, first all the state variables and functions that are related to a specific functionality in the component. Then, create a custom hook that uses those state variables and functions. Extract the logic in that custom hook and return the state variables(You must return the state variables) and functions that are needed in the component.
+
+And it should work like a charm.
