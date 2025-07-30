@@ -19,6 +19,7 @@ import CleanupExample from "./cleanup_example/CleanupExample";
 import TaskKeeper from "./projects/project_9/TaskKeeper";
 import ToggleExample from "./Custom_Hooks/ToggleExample";
 import FetchExample from "./Custom_Hooks/FetchExample";
+import Start from "./Context_API/Start";
 
 function App() {
   return (
@@ -43,8 +44,9 @@ function App() {
       {/* <ColorGenerator /> */}
       {/* <CleanupExample /> */}
       {/* <TaskKeeper /> */}
-      <ToggleExample />
-      <FetchExample />
+      {/* <ToggleExample /> */}
+      {/* <FetchExample /> */}
+      <Start />
     </div>
   );
 }

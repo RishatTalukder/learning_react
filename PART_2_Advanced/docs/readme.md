@@ -7816,3 +7816,234 @@ It's easier to implement the custom hooks in the project if you have a clear und
 Or you these tricks, first all the state variables and functions that are related to a specific functionality in the component. Then, create a custom hook that uses those state variables and functions. Extract the logic in that custom hook and return the state variables(You must return the state variables) and functions that are needed in the component.
 
 And it should work like a charm.
+
+# Context API
+
+> Boys, We have officially reached the land of magic. SO, brace yourselves because necause from now on, many things might not make sense to you. But don't worry, I will try my best to explain everything in a simple way.
+
+The `Context API` is a way to `share` data between components without having to pass props down manually at every level. It is a way to create a global state that can be accessed by any component in the application.
+
+But first let'e experiment.
+
+Let's create a simple example to understand why & how we can use the Context API.
+
+I want you to make a new folder named `Context_API` inside the `src` folder and create `3` files inside it. `Start.jsx`, `Nav.jsx`, and `UserContainer.jsx`.
+
+In the Start component we will have a `Nav` component and inside the `Nav` component, we will have a `UserContainer` component. The `UserContainer` component will display the user name and a logout button. When we click the logout button, the user name will be removed from the `UserContainer` component.
+
+You can try to create this yourself and If you can't, then you can follow along with the code below.
+
+```js {.line-numbers}
+// src/Context_API/Start.jsx
+import React, { useState } from "react";
+import Nav from "./Nav";
+
+const Main = () => {
+  const [user, setUser] = useState("John Doe"); // state variable to hold the user name
+
+  const handleLogout = () => {
+    setUser(""); // setting the user name to empty string on logout
+  };
+
+  return (
+    <div className="d-flex flex-column align-items-center mt-5">
+      <Nav user={user} handleLogout={handleLogout} /> {/* passing the user and handleLogout function as props */}
+      <h1 className="mt-3">Welcome to the Context API Example</h1>
+    </div>
+  );
+};
+export default Main;
+```
+
+```js {.line-numbers}
+// src/Context_API/Nav.jsx
+import React from "react";
+import UserContainer from "./UserContainer";
+
+const Nav = ({ user, handleLogout }) => {
+  return (
+    <nav className="navbar navbar-light bg-light w-100">
+      <div className="container-fluid">
+        <span className="navbar-brand mb-0 h1">Context API Example</span>
+        <UserContainer user={user} handleLogout={handleLogout} /> {/* passing the user and handleLogout function as props */}
+      </div>
+    </nav>
+  );
+};
+export default Nav;
+```
+
+```js {.line-numbers}
+// src/Context_API/UserContainer.jsx
+import React from "react";
+
+const UserContainer = ({ user, handleLogout }) => {
+  return (
+    <div className="d-flex align-items-center">
+      {user ? ( // checking if the user is logged in
+        <>
+          <span className="me-3">{user}</span>
+          <button className="btn btn-danger" onClick={handleLogout}>
+            Logout
+          </button>
+        </>
+      ) : (
+        <span className="text-muted">No user logged in</span> // showing a message if no user is logged in
+      )}
+    </div>
+  );
+};
+export default UserContainer;
+```
+
+What I'm doing here is creating a state variable named `user` in the `Start` component and passing it down to the `Nav` component as a prop. Then, I pass the `user` prop to the `UserContainer` component and display the user name. 
+
+When we click the logout button, we call the `handleLogout` function which sets the user name to an empty string.
+
+We know what this is because I explained it in the fundamentals section. But the problem is, what if we have multiple components that need to access the user name? We will have to pass the user name down through multiple levels of components which can be tedious and error-prone.
+
+And for larger scale applications, this can become a nightmare.
+
+So, this is where the `Context API` comes in handy. It allows us to create a global state that can be accessed by any component in the application without having to pass props down manually at every level.
+
+
+As we knew from the virtual DOM, the `HTML/JSX` is just a representation of the UI and has a tree-like structure. The `Context API` is a way to create a global state in this tree-like structure that can be accessed by any component in the application.
+
+So, how can we create a global state using the `Context API`?
+
+First, we need to create a context using the `createContext` method from the `react` package. This will create a context object that we can use to provide and consume the global state.
+
+This context object will have two components: `Provider` and `Consumer`. The `Provider` component is used to provide the global state to the components that need it, and the `Consumer` component is used to consume the global state in the components.
+
+Let's import and create a context object in the `Start.jsx` file.
+
+```js {.line-numbers}
+// src/Context_API/Start.jsx
+import React, { useState, createContext } from "react";
+import Nav from "./Nav";
+
+export const UserContext = createContext(); // creating a context object
+
+const Main = () => {
+  const [user, setUser] = useState("John Doe"); // state variable to hold the user name
+
+  const handleLogout = () => {
+    setUser(""); // setting the user name to empty string on logout
+  };
+
+  return (
+    <UserContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+      <div className="d-flex flex-column align-items-center mt-5">
+        <Nav /> {/* Nav component will consume the context value */}
+        <h1 className="mt-3">Welcome to the Context API Example</h1>
+      </div>
+    </UserContext.Provider>
+  );
+};
+export default Main;
+```
+
+> We also need to export the `UserContext` so that we can import it in other components to consume the context value.
+
+Now, we have created a context object named `UserContext` and provided the `user` and `handleLogout` function as the context value using the `UserContext.Provider` component and also wrapped the `Nav` component with the `UserContext.Provider` component.
+
+Next, we need to consume the context value in the `userContainer` component. We can do this by using the `useContext` hook from the `react` package.
+
+```js {.line-numbers}
+// src/Context_API/UserContainer.jsx
+import React, { useContext } from "react";
+import { UserContext } from "./Start"; // importing the UserContext
+
+const UserContainer = () => {
+  const { user, handleLogout } = useContext(UserContext); // consuming the context value using useContext hook
+
+  return (
+    <div className="d-flex align-items-center">
+      {user ? ( // checking if the user is logged in
+        <>
+          <span className="me-3">{user}</span>
+          <button className="btn btn-danger" onClick={handleLogout}>
+            Logout
+          </button>
+        </>
+      ) : (
+        <span className="text-muted">No user logged in</span> // showing a message if no user is logged in
+      )}
+    </div>
+  );
+};
+export default UserContainer;
+```
+
+And we can clear the `props` that we passed to the `UserContainer` component in the `Nav` component since we are now consuming the context value directly in the `UserContainer` component.
+
+```js {.line-numbers} 
+// src/Context_API/Nav.jsx
+import React from "react";
+import UserContainer from "./UserContainer";
+
+const Nav = () => {
+  return (
+    <nav className="navbar navbar-light bg-light w-100">
+      <div className="container-fluid">
+        <span className="navbar-brand mb-0 h1">Context API Example</span>
+        <UserContainer /> {/* UserContainer will consume the context value */}
+      </div>
+    </nav>
+  );
+};
+export default Nav;
+```
+
+Now, we have successfully consumed the context value in the `UserContainer` component using the `useContext` hook.
+
+And as you can see we don't have to pass the `user` and `handleLogout` function as props to the `Nav` and `UserContainer` components. We can access the context value directly in the `UserContainer` component using the `useContext` hook.
+
+It is a useful way to share data between components without having to pass props down manually at every level.
+
+One thing I also want to implement is a `custom hook` that will provide the context value to the components. This way, we can avoid importing `too many things` in the components that need to consume the context value.
+
+This is a good practice to keep the components clean and organized.
+
+So, let's create a custom hook named `useUserContext.js` inside the `hooks` folder in the `Context_API` folder.
+
+```js {.line-numbers}
+// src/Context_API/hooks/useUserContext.js
+import { useContext } from "react";
+import { UserContext } from "../Start"; // importing the UserContext
+
+const useUserContext = () => {
+  return useContext(UserContext); // returning the context value using useContext hook
+};
+export default useUserContext;
+```
+
+Now, we can use this custom hook in the `UserContainer` component to consume the context value.
+
+```js {.line-numbers}
+// src/Context_API/UserContainer.jsx
+import React from "react";
+import useUserContext from "./hooks/useUserContext"; // importing the custom hook 
+
+const UserContainer = () => {
+  const { user, handleLogout } = useUserContext(); // consuming the context value using the custom hook
+
+  return (
+    <div className="d-flex align-items-center">
+      {user ? ( // checking if the user is logged in
+        <>
+          <span className="me-3">{user}</span>
+          <button className="btn btn-danger" onClick={handleLogout}>
+            Logout
+          </button>
+        </>
+      ) : (
+        <span className="text-muted">No user logged in</span> // showing a message if no user is logged in
+      )}
+    </div>
+  );
+};
+export default UserContainer;
+```
+
+Now, we have successfully created a custom hook that provides the context value to the components that need it. We can use this custom hook in any component that needs to consume the context value.
