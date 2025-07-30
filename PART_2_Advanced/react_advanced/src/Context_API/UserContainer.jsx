@@ -1,8 +1,9 @@
 import React from "react";
 import useUserContext from "./hooks/useUserContext"; // importing the custom hook 
+import { useGlobalContext } from "../GlobalContextProvider";
 
 const UserContainer = () => {
-  const { user, handleLogout } = useUserContext(); // consuming the context value using the custom hook
+  const { user, handleLogout } = useGlobalContext()
 
   return (
     <div className="d-flex align-items-center">

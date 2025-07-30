@@ -8047,3 +8047,140 @@ export default UserContainer;
 ```
 
 Now, we have successfully created a custom hook that provides the context value to the components that need it. We can use this custom hook in any component that needs to consume the context value.
+
+Well it was like sunshine and rainbows, but there is a catch here.
+
+The `Context API` is not a replacement for `props`. It is a way to share data between components without having to pass props down manually at every level. But it is not a good idea to use the `Context API` for every piece of data in the application.
+
+It is best suited for global state that needs to be accessed by multiple components in the application. For example, user authentication, theme, language, etc.
+
+If we use the `Context API` for every piece of data in the application, it can lead to performance issues and make the code harder to maintain.
+
+So, it is a good practice to use the `Context API` for global state that needs to be accessed by multiple components in the application and use `props` for local state that is only needed in a specific component.
+
+Another thing we can do is to create a `global context` that can be used to provide the global state to the entire application. This way, we can avoid wrapping every component with the `UserContext.Provider` component.
+
+This is going to be confusing so brace yourselves.
+
+I need you guys to do the following steps to create a global context:
+
+- Create a Component named `GlobalContextProvider.jsx` in the `src` folder.
+  - Do the normal setup like we did in the `Start.jsx` file.
+  - import the `createContext` method from the `react` package and create a context object named `GlobalContext`.
+  - Create a Component function named `GlobalContextProvider` that will provide the global state to the entire application.
+  - Inside the `GlobalContextProvider` component, create a state variable named `user` and a function named `handleLogout` that will set the user name to an empty string on logout.  
+- Return the `GlobalContext.Provider` component with the `value` prop set to an object containing the `user` and `handleLogout` function.
+- Finally export the `GlobalContext` and `GlobalContextProvider` components.
+
+```js {.line-numbers}
+// src/GlobalContextProvider.jsx
+import React, { createContext, useState } from "react";
+
+export const GlobalContext = createContext(); // creating a global context object
+
+const GlobalContextProvider = ()=>{
+  const [user, setUser] = useState("John Doe"); // state variable to hold the user name
+
+  const handleLogout = () => {
+    setUser(""); // setting the user name to empty string on logout
+  };
+
+  return (
+    <GlobalContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+      {/* children components will go here */}
+    </GlobalContext.Provider>
+  );  
+}
+
+export default GlobalContextProvider;
+```
+
+Now, How do we proceed with this?
+
+As we know we need to wrap the whole application with the `context.provider` component to provide the global state to the entire application. But we here we have a Component named `GlobalContextProvider` that will provide the global state to the entire application. It's Conflicting right?
+
+I want you to think long and hard about this. How can we use the `GlobalContextProvider` component to provide the global state to the entire application?
+
+If you remember in the fundamentals section, You know that we can use a Component as simple `html` element. That's how we actually render them. So, what we can do is to wrap the `main` component with the `GlobalContextProvider` component in the `main.jsx` file.
+
+```js {.line-numbers}
+// src/main.jsx
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import GlobalContextProvider from "./GlobalContextProvider.jsx"; // importing the GlobalContextProvider component 
+// import "bootstrap/dist/css/bootstrap.min.css";
+import "bootswatch/dist/lux/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <GlobalContextProvider> {/* wrapping the App component with the GlobalContextProvider component */}
+      <App />
+    </GlobalContextProvider>
+  </StrictMode>
+);
+```
+
+> This should work like a charm. Now, you should see absolutely nothing in the screen.
+
+Because When you wrap something with a component, Everything inside that component will be passed as a prop named `children`, remember? Where the props are passed to the `GlobalContextProvider` component. So, now what we can do is destructure the `children` prop from the `props` object in the `GlobalContextProvider` component and render it inside the `GlobalContext.Provider` component.
+
+```js {.line-numbers}
+// src/GlobalContextProvider.jsx
+import React, { createContext, useState } from "react";
+
+export const GlobalContext = createContext(); // creating a global context object
+
+const GlobalContextProvider = ({ children }) => { // destructuring the children prop
+  const [user, setUser] = useState("John Doe"); // state variable to hold the user name
+
+  const handleLogout = () => {
+    setUser(""); // setting the user name to empty string on logout
+  };
+
+  return (
+    <GlobalContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+      {children} {/* rendering the children components */}
+    </GlobalContext.Provider>
+  );
+};
+export default GlobalContextProvider;
+```
+
+Now, we have successfully created a global context that can be used to provide the global state to the entire application.
+
+Now, the whole app has those `user` and `handleLogout` function as the context value. So, we can consume this context value in any component in the application.
+
+And now if we need some other state variable or function, we can just add it to the `GlobalContext.Provider` component and it will be available to all the components in the application.
+
+And as we have a single global context provider we can screate a custom hook that will provide the global context value to the components that need it with a single import.
+
+```js {.line-numbers}
+// src/GlobalContextProvider.jsx
+import React, { createContext, useState, useContext} from "react"; 
+
+const GlobalContext = createContext(); // creating a global context object
+
+export const useGlobalContext = () => {
+  return useContext(GlobalContext); // returning the context value using useContext hook
+};
+
+
+const GlobalContextProvider = ({ children }) => { // destructuring the children prop
+  const [user, setUser] = useState("John Doe"); // state variable to hold the user name
+
+  const handleLogout = () => {
+    setUser(""); // setting the user name to empty string on logout
+  };
+
+  return (
+    <GlobalContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+      {children} {/* rendering the children components */}
+    </GlobalContext.Provider>
+  );
+};
+export default GlobalContextProvider;
+```
+
+And we can use this custom hook in any component to consume the global context value.
