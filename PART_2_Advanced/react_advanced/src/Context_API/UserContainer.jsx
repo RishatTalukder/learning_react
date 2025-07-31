@@ -1,5 +1,4 @@
 import React from "react";
-import useUserContext from "./hooks/useUserContext"; // importing the custom hook 
 import { useGlobalContext } from "../GlobalContextProvider";
 
 const UserContainer = () => {
