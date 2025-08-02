@@ -8184,3 +8184,410 @@ export default GlobalContextProvider;
 ```
 
 And we can use this custom hook in any component to consume the global context value.
+
+Now let's do some Practice Projects to solidify our understanding of the Context API.
+
+# Project 9 : SideBar & Modal
+
+For this project, I'll break the traditional rule of this repo. 
+
+I want set up the projects from the very beginning. So, Make a whole new folder named `PART_2.5_ PROJECTS` outside the `react_advanced` folder.
+
+Inside that folder, we will create a new react project using `Vite`. 
+
+```bash
+cd PART_2.5_PROJECTS
+
+npm create vite@latest
+```
+
+Then, follow the prompts to set up the project. I want you to use the `react` template and name the project `project_10`
+
+```bash
+cd project_10
+npm install
+```
+
+And you'll have a clean project setup with `Vite` and `React`.
+
+I'll also install the essential dependencies that we will need for this project. 
+
+```bash
+npm install bootstrap bootswatch react-icons
+```
+
+And we can a bootstrap theme from `bootswatch` to make the project look better. You can choose any theme you like, but I will use the `Lux` theme for this project.
+
+The main.jsx and app.jsx should look like this:
+
+```js {.line-numbers}
+// src/main.jsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import "bootswatch/dist/lux/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+```
+
+```js {.line-numbers}
+// src/App.jsx
+function App() {
+  return (
+    <>
+      <main>Home</main>
+    </>
+  );
+}
+
+export default App;
+```
+
+Adn we don't need any of the `css` files because we are using bootstrap and bootswatch for styling. So, you can delete the `index.css` and the `app.css` files.
+
+
+Now we can start making the project.
+
+## Structure
+
+What am I going to do in this project is to create two buttons to open a sidebar and a modal and my main goal is to create different components independently instead of nesting them inside each other.
+
+Then show you how the global context can help us to manage the state of the sidebar and modal components.
+
+So, I'll create 3 component `Home`, `SideBar`, and `Modal` inside the `src/components` folder. 
+
+Home, SideBar, and Modal components should look like this:
+
+```js {.line-numbers}
+// src/components/Home.jsx
+import React from "react";
+
+const Home = () => {
+  return (
+    <div>
+     home
+    </div>
+  );
+};
+export default Home;
+```
+
+```js {.line-numbers}
+// src/components/SideBar.jsx
+import React from "react";
+
+const SideBar = () => {
+  return (
+    <div>
+      sidebar
+    </div>
+  );
+};
+export default SideBar;
+```
+
+```js {.line-numbers}
+// src/components/Modal.jsx
+import React from "react";
+const Modal = () => {
+  return (
+    <div>
+      modal
+    </div>
+  );
+};
+export default Modal; 
+```
+
+Now, we render `Home`, `SideBar`, and `Modal` components in the `App.jsx` file.
+
+```js {.line-numbers}
+// src/App.jsx
+import Home from "./components/Home";
+import SideBar from "./components/SideBar";
+import Modal from "./components/Modal";
+
+function App() {
+  return (
+    <>
+      <main>
+        <Home />
+        <SideBar />
+        <Modal />
+      </main>
+    </>
+  );
+}
+
+export default App;
+```
+
+Now, we have the basic structure of the project set up.
+
+We can talk about what we are going to do in this project.
+
+I want two buttons one in the middle of the screen to open the modal and one in the top left corner to open the sidebar. 
+
+When we click on the modal button, it should open a modal with some content inside it. And when we click on the sidebar button, it should open a sidebar with some content inside it.
+
+We can use the `react-icons` package to add icons to the buttons.
+
+Let's add the buttons to the `Home` component. 
+
+```js {.line-numbers}
+// src/components/Home.jsx
+import React from "react";
+import { FaBars, FaRegWindowMaximize } from "react-icons/fa";
+
+const Home = () => {
+  return (
+    <div className="position-relative vh-100">
+      {/* Top-right Sidebar Button */}
+      <button
+        className="btn btn-secondary position-absolute top-0 start-0 m-3"
+        onClick={() => console.log("Open Sidebar")}
+      >
+        <FaBars /> Open Sidebar
+      </button>
+
+      {/* Centered Modal Button */}
+      <div className="d-flex justify-content-center align-items-center h-100">
+        <button
+          className="btn btn-primary"
+          onClick={() => console.log("Open Modal")}
+        >
+          <FaRegWindowMaximize /> Open Modal
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
+
+```
+
+Now, we have two buttons in the `Home` component. One button is in the top right corner to open the sidebar and the other button is in the center of the screen to open the modal.
+
+Next, we need to implement the functionality to open the sidebar and modal when we click on the buttons.
+
+We can copy both `modal` and `sidebar` components from the `bootstrap` `examples` and paste them in the `SideBar.jsx` and `Modal.jsx` files respectively.
+
+```js {.line-numbers}
+// src/components/SideBar.jsx
+import React from "react";
+import { FaTimes } from "react-icons/fa";
+
+const SideBar = () => {
+  return (
+    <div
+      className={`offcanvas offcanvas-start show`}
+      tabIndex="-1"
+      style={{ visibility: "visible" }}
+    >
+      <div className="offcanvas-header
+        d-flex justify-content-between align-items-center">
+        <h5 className="offcanvas-title">Sidebar</h5>
+        <button
+          type="button"
+          className="btn"
+        >
+          <FaTimes />
+        </button>
+      </div>
+      <div className="offcanvas-body">
+        <p>Sidebar content goes here.</p>
+      </div>
+    </div>
+  );
+};
+export default SideBar;
+```
+
+This is a very basic sidebar component that uses the `offcanvas` component from Bootstrap. It has a title and a close button to close the sidebar.
+
+The `show` class is used to show the sidebar and the `offcanvas-start` class is used to position the sidebar on the left side of the screen.
+
+We can add this class to the `div` element logically when we click on the sidebar button in the `Home` component.
+
+But we know that we cannot manage the state of the sidebar in the `Home` component because it is a separate component. What do we do? 
+
+We can use the `Context API` to manage the state of the sidebar and modal components.
+
+So, we setup a global context to manage the state of the sidebar and modal components.
+
+So, we create a new file named `GlobalContextProvider.jsx` in the `src` folder and set up the global context.
+
+```js {.line-numbers}
+// src/GlobalContextProvider.jsx
+import React, { createContext, useState, useContext } from "react";
+
+export const GlobalContext = createContext(); // creating a global context object
+
+export const useGlobalContext = () => {
+  return useContext(GlobalContext); // returning the context value using useContext hook
+};
+
+const GlobalContextProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // state variable to manage the sidebar state
+  const [isModalOpen, setIsModalOpen] = useState(false); // state variable to manage the modal state
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev); // toggling the sidebar state
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev); // toggling the modal state
+  };
+
+  return (
+    <GlobalContext.Provider
+      value={{ isSidebarOpen, toggleSidebar, isModalOpen, toggleModal }}
+    >
+      {children} {/* rendering the children components */}
+    </GlobalContext.Provider>
+  );
+};
+export default GlobalContextProvider;
+```
+
+Now, we wrap the `App` component with the `GlobalContextProvider` component in the `main.jsx` file to provide the global context to the entire application.
+
+```js {.line-numbers}
+// src/main.jsx
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "bootswatch/dist/lux/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import App from "./App.jsx";
+import GlobalContextProvider from "./GlobalContextProvider.jsx"; // importing the GlobalContextProvider component
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <GlobalContextProvider> {/* wrapping the App component with the GlobalContextProvider component */}
+      <App />
+    </GlobalContextProvider>
+  </StrictMode>
+);
+```
+
+Now, we can use the `useGlobalContext` hook to consume the global context value in the `Home`, `SideBar`, and `Modal` components.
+
+```js {.line-numbers}
+// src/components/Home.jsx
+import React from "react";
+import { FaBars, FaRegWindowMaximize } from "react-icons/fa";
+import { useGlobalContext } from "../GlobalContextProvider"; // importing the useGlobalContext hook
+
+const Home = () => {
+  const { toggleSidebar, toggleModal } = useGlobalContext(); // consuming the global context value
+
+  return (
+    <div className="position-relative vh-100">
+      {/* Top-right Sidebar Button */}
+      <button
+        className="btn btn-secondary position-absolute top-0 start-0 m-3"
+        onClick={toggleSidebar} // calling the toggleSidebar function to open the sidebar
+      >
+        <FaBars /> Open Sidebar
+      </button>
+
+      {/* Centered Modal Button */}
+      <div className="d-flex justify-content-center align-items-center h-100">
+        <button
+          className="btn btn-primary"
+          onClick={toggleModal} // calling the toggleModal function to open the modal
+        >
+          <FaRegWindowMaximize /> Open Modal
+        </button>
+      </div>
+    </div>
+  );
+};
+export default Home;
+```
+
+```js {.line-numbers}
+// src/components/SideBar.jsx
+import React from "react";
+import { FaTimes } from "react-icons/fa";
+import { useGlobalContext } from "../GlobalContextProvider"; // importing the useGlobalContext hook
+
+const SideBar = () => {
+  const { isSidebarOpen, toggleSidebar } = useGlobalContext(); // consuming the global context value
+
+  return (
+    <div
+      className={`offcanvas offcanvas-start ${isSidebarOpen ? "show" : ""}`}
+      tabIndex="-1"
+      style={{ visibility: isSidebarOpen ? "visible" : "hidden" }} // toggling the visibility of the sidebar
+    >
+      <div className="offcanvas-header d-flex justify-content-between align-items-center">
+        <h5 className="offcanvas-title">Sidebar</h5>
+        <button
+          type="button"
+          className="btn"
+          onClick={toggleSidebar} // calling the toggleSidebar function to close the sidebar
+        >
+          <FaTimes />
+        </button>
+      </div>
+      <div className="offcanvas-body">
+        <p>Sidebar content goes here.</p>
+      </div>
+    </div>
+  );
+};
+
+export default SideBar;
+```
+
+Now that we know, the sidebar works well. We can implement the modal in the same way.
+
+```js {.line-numbers}
+// src/components/Modal.jsx
+import React from "react";
+import { FaTimes } from "react-icons/fa";
+import { useGlobalContext } from "../GlobalContextProvider"; // importing the useGlobalContext hook
+
+const Modal = () => {
+  const { isModalOpen, toggleModal } = useGlobalContext(); // consuming the global context value
+
+  return (
+    <div
+      className={`modal fade ${isModalOpen ? "show" : ""}`}
+      style={{ display: isModalOpen ? "block" : "none" }} // toggling the display of the modal
+      tabIndex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden={!isModalOpen}
+    >
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">Modal Title</h5>
+          </div>
+          <div className="modal-body">
+            Modal content goes here.
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={toggleModal}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+export default Modal;
+```
+
+And there you go, we have successfully implemented the sidebar and modal components using the `Context API` to manage the state of the components.
+
+And this works like a charm.
+
