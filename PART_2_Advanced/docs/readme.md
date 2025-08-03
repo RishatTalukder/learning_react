@@ -8591,3 +8591,182 @@ And there you go, we have successfully implemented the sidebar and modal compone
 
 And this works like a charm.
 
+And there you have it, a simple project that demonstrates how to use the `Context API` to manage the state of components in a React application.
+
+But before going to the next advanced topic. I want to do another project to really solidify our understanding of the `Context API` and how to use it effectively in a React application.
+
+# Project 10 : E-COM LANDING PAGE
+
+This will be a landing page for an e-commerce website. Not too fancy just what the client will see after visiting the website.
+
+The folder structure of the project will be like this:
+
+```
+src/
+├── App.jsx
+├── index.js
+├── data/
+│   └── navbarData.js
+├── context/
+│   └── AppContext.jsx
+├── components/
+│   ├── Navbar.jsx
+│   ├── Submenu.jsx
+│   ├── Sidebar.jsx
+│   └── Hero.jsx
+└── styles/
+    └── submenu.css
+```
+
+> We will need some custom stylling for the submenu component, so we will create a `submenu.css` file inside the `styles` folder.
+
+So, let's make the project step by step.
+
+First make a new `vite` project named `project_11` inside the `PART_2.5_PROJECTS` folder.
+
+```bash
+cd PART_2.5_PROJECTS
+npm create vite@latest
+```
+
+Fill the promts and you will have a new clean project, Now we clean the src folder by removing the `App.css`, `index.css`, the assets folder, and the `logo.svg` file.
+
+Then we can install the `bootstrap` and `bootswatch` packages to use the bootstrap styles in our project.
+
+```bash
+npm install bootstrap bootswatch react-icons
+```
+
+Now, let's set up the `main.jsx` and `App.jsx` files.
+
+```js {.line-numbers}
+// src/main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import "bootswatch/dist/lux/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import App from './App.jsx'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+```
+
+```js {.line-numbers}
+// src/App.jsx
+import React from "react";
+
+const App = () => {
+  return (
+    <div>
+      <h1 className="text-center mt-5">E-Commerce Landing Page</h1>
+    </div>
+  );
+};
+export default App;
+```
+
+Now, we make The components one by one.
+
+Let's make a Simple `Hero` component that will be the first thing the user sees when they visit the website.
+
+```js {.line-numbers}
+// src/components/Hero.jsx
+import React from "react";
+
+const Hero = () => {
+  return (
+    <div className="bg-dark text-secondary px-4 py-5 text-center">
+      <div className="py-5">
+        <h1 className="display-5 fw-bold text-white">Explore the Best Deals</h1>
+        <div className="col-lg-6 mx-auto">
+          <p className="fs-5 mb-4">
+            Dive into a wide range of products from top brands and popular categories.
+            Experience seamless shopping with our intuitive and responsive interface.
+          </p>
+          <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <button type="button" className="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">
+              Browse Categories
+            </button>
+            <button type="button" className="btn btn-outline-light btn-lg px-4">
+              View Brands
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;
+```
+
+Nothing fancy just copy and Paste from the bootstrap examples.
+
+Now, we can import the `Hero` component in the `App.jsx` file and render it.
+
+```js {.line-numbers}
+// src/App.jsx
+import React from "react";
+import Hero from "./components/Hero";
+
+const App = () => {
+  return (
+    <main>
+      <Hero />
+    </main>
+  );
+};
+export default App;
+```
+
+Now, let's make a `Navbar` component that will be the navigation bar of the website.
+
+Before Coding it, let's think what should be in the navbar.
+
+We need The `TITLE` or a `LOGO` of the website, some links to navigate to different pages.
+
+One thing I want to so is add sub links to the navbar that will be shown when the user hovers over a link. This is a common practice in e-commerce websites to show more options to the user.
+
+So, just let's copy a simple navbar from the bootstrap examples and modify it to our needs.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React, { useState } from "react";
+import { FaBars } from "react-icons/fa";
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false); // state variable to manage the sidebar state
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen); // toggling the sidebar state
+  };
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="#">E-Commerce</a>
+        <button className="navbar-toggler" type="button" onClick={toggleSidebar}>
+          <span className="navbar-toggler-icon"><FaBars /></span>
+        </button>
+        <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}>
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <a className="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Products</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+```
