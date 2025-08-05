@@ -8745,11 +8745,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <a className="navbar-brand" href="#">E-Commerce</a>
         <button className="navbar-toggler" type="button" onClick={toggleSidebar}>
-          <span className="navbar-toggler-icon"><FaBars /></span>
+          <span><FaBars /></span>
         </button>
         <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}>
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -8770,3 +8770,1114 @@ const Navbar = () => {
 };
 export default Navbar;
 ```
+
+As you can see, we are using the `useState` hook to manage the state of the sidebar. When the user clicks on the hamburger icon, it will toggle the sidebar state and show or hide the sidebar links.
+
+
+I don't want the states in the `Navbar` component to be managed by the `Navbar` component itself. Instead, I want to manage the state of the sidebar in a global context so that we can use it in other components as well.
+
+
+So, let's setup a global context to manage the state of the sidebar.
+
+We will create a new file named `AppContext.jsx` inside the `context` folder and set up the global context.
+
+```js {.line-numbers}
+// src/context/AppContext.jsx
+import React, { createContext, useState, useContext } from "react"; 
+
+export const AppContext = createContext(); // creating a global context object
+
+export const useAppContext = () => {
+  return useContext(AppContext); // returning the context value using useContext hook
+};
+
+const AppContextProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // state variable to manage the sidebar state
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev); // toggling the sidebar state
+  };
+
+  return (
+    <AppContext.Provider value={{ isSidebarOpen, toggleSidebar }}>
+      {children} {/* rendering the children components */}
+    </AppContext.Provider>
+  );
+};
+export default AppContextProvider;
+```
+
+Now, we can wrap the `App` component with the `AppContextProvider` component in the `main.jsx` file to provide the global context to the entire application.
+
+```js {.line-numbers}
+// src/main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import "bootswatch/dist/lux/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import App from './App.jsx'
+import AppContextProvider from './context/AppContext.jsx'; // importing the AppContextProvider component
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <AppContextProvider> {/* wrapping the App component with the AppContextProvider component */}
+      <App />
+    </AppContextProvider>
+  </React.StrictMode>,
+)
+```
+
+Now, we can use the `useAppContext` hook to consume the global context value in the `Navbar` component.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+
+const Navbar = () => {
+  const { isSidebarOpen, toggleSidebar } = useAppContext(); // consuming the global context value
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="#">E-Commerce</a>
+        <button className="navbar-toggler" type="button" onClick={toggleSidebar}>
+          <span><FaBars /></span>
+        </button>
+        <div className={`collapse navbar-collapse ${isSidebarOpen ? "show" : ""}`}>
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <a className="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Products</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+```
+
+This looks good, now for the real problem. I dont want the sidebar to be a drop down menu. I want it to be a full-screen sidebar with sections for different categories and brands and with their links. 
+
+So, let's make a side bar component that will be a full-screen sidebar with sections for different categories and brands.
+
+```js {.line-numbers}
+// src/components/Sidebar.jsx
+import React from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+
+const Sidebar = () => {
+  const { isSidebarOpen, toggleSidebar } = useAppContext(); // consuming the global context value
+
+  return (
+    <div
+      className={`offcanvas offcanvas-end ${isSidebarOpen ? "show" : ""}`}
+      tabIndex="-1"
+      style={{ visibility: isSidebarOpen ? "visible" : "hidden" }} // toggling the visibility of the sidebar
+    >
+      <div className="offcanvas-header d-flex justify-content-between align-items-center">
+        <h5 className="offcanvas-title">Categories</h5>
+        <button
+          type="button"
+          className="btn"
+          onClick={toggleSidebar} // calling the toggleSidebar function to close the sidebar
+        >
+          &times;
+        </button>
+      </div>
+      <div className="offcanvas-body">
+        <ul className="list-group">
+          <li className="list-group-item">Electronics</li>
+          <li className="list-group-item">Fashion</li>
+          <li className="list-group-item">Home & Kitchen</li>
+          <li className="list-group-item">Sports & Outdoors</li>
+          <li className="list-group-item">Health & Beauty</li>
+        </ul>
+        <h5 className="mt-4">Brands</h5>
+        <ul className="list-group">
+          <li className="list-group-item">Brand A</li>
+          <li className="list-group-item">Brand B</li>
+          <li className="list-group-item">Brand C</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
+```
+> Here is a sidebar I copied again. I'll make that dynamic later with data from a file later. But a place holder and for testing It looks nice.
+
+Now, we can import the `Sidebar` component in the `App.jsx` file and render it.
+
+```js {.line-numbers}
+// src/App.jsx
+import React from "react";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Hero from "./components/Hero";
+
+const App = () => {
+  return (
+    <main>
+      <Navbar />
+      <Sidebar />
+      <Hero />
+    </main>
+  );
+};
+export default App;
+```
+
+I works, when I reduce the screen size, the `bars` icon appears and when I click on it, the sidebar opens up with the categories and brands.
+
+There is one problem though, The navbars sidebar is still there when I click the button.
+
+What do we do about that?
+
+We need do some heavy lifting here. We need to make the sidebar and the navbar work together.
+
+So, first we need to remove the `collapse` class from the navbar's sidebar toggle button. But the problem is that we need to toggle the sidebar state in both the `Navbar` and `Sidebar` components.
+
+The sidebar is independent so, we dont do any stylling edits there, but for the `Navbar` component, we need to logically remove the `collapse` class from the navbar's sidebar toggle button and then put the `button` inside the `Navbar` component when the screen is half the size of the sidebar.
+
+So, let's make that happen.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext";
+
+const Navbar = () => {
+  const { toggleSidebar } = useAppContext();
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        {/* Left section: logo + desktop links */}
+        <div className="d-flex align-items-center">
+          <h4 className="text-white fw-bold mb-0 me-4">E-COMMERCE</h4>
+
+          {/* Desktop nav links - visible on lg+ screens */}
+          <div className="d-none d-lg-block">
+            <ul className="navbar-nav flex-row">
+              <li className="nav-item mx-2">
+                <a className="nav-link text-white" href="#">
+                  HOME
+                </a>
+              </li>
+              <li className="nav-item mx-2">
+                <a className="nav-link text-white" href="#">
+                  PRODUCTS
+                </a>
+              </li>
+              <li className="nav-item mx-2">
+                <a className="nav-link text-white" href="#">
+                  CONTACT US
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar toggle (visible on small screens) */}
+        <button className="btn btn-dark d-lg-none" onClick={toggleSidebar}>
+          <FaBars />
+        </button>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
+```
+
+> Here, I have removed the `collapse` class from the navbar's sidebar toggle button and added a `d-lg-none` class to it so that it is only visible on small screens.
+
+> Also for the desktop links, I have added a `d-none d-lg-block` class to the `div` element so that it is only visible on large screens and above.
+
+With that we have a fully functional navbar and sidebar that works together.
+
+Now, I want to go one step further and make the sidebar and the nav links dynamic.
+
+So, I made a small data file named `navbarData.js` inside the `data` folder that contains the data for the navbar links and sidebar categories and brands.
+
+```js {.line-numbers}
+// src/data/navbarData.js
+import {
+  FaApple,
+  FaAmazon,
+  FaLaptop,
+  FaShoePrints,
+  FaCouch,
+  FaPercent,
+  FaTags,
+  FaGraduationCap,
+} from "react-icons/fa";
+
+export const navbarData = [
+  {
+    title: "Brands",
+    links: [
+      { label: "Apple", icon: FaApple, url: "/brands/apple" },
+      { label: "Adidas", icon: FaShoePrints, url: "/brands/adidas" },
+      { label: "Amazon Basics", icon: FaAmazon, url: "/brands/amazon-basics" },
+    ],
+  },
+  {
+    title: "Categories",
+    links: [
+      { label: "Laptops", icon: FaLaptop, url: "/categories/laptops" },
+      { label: "Shoes", icon: FaShoePrints, url: "/categories/shoes" },
+      { label: "Furniture", icon: FaCouch, url: "/categories/furniture" },
+    ],
+  },
+  {
+    title: "Deals",
+    links: [
+      { label: "Today's Deals", icon: FaPercent, url: "/deals/today" },
+      { label: "Clearance", icon: FaTags, url: "/deals/clearance" },
+      {
+        label: "Student Discount",
+        icon: FaGraduationCap,
+        url: "/deals/student",
+      },
+    ],
+  },
+];
+```
+
+> This data file contains an array of objects that represent the navbar links and sidebar categories and brands. Each object has a `title` and an array of `links` that contain the label, icon, and URL for each link.
+
+First, we will make the `Sidebar` component dynamic by using the data from the `navbarData.js` file.
+
+```js {.line-numbers}
+// src/components/Sidebar.jsx
+import React from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import { navbarData } from "../data/navbarData"; // importing the navbar data
+
+const Sidebar = () => {
+  const { isSidebarOpen, toggleSidebar } = useAppContext(); // consuming the global context value
+
+  return (
+    <div
+      className={`offcanvas offcanvas-end ${isSidebarOpen ? "show" : ""}`}
+      tabIndex="-1"
+      style={{ visibility: isSidebarOpen ? "visible" : "hidden" }} // toggling the visibility of the sidebar
+    >
+      <div className="offcanvas-header d-flex justify-content-between align-items-center">
+        <h5 className="offcanvas-title">Menu</h5>
+        <button
+          type="button"
+          className="btn"
+          onClick={toggleSidebar} // calling the toggleSidebar function to close the sidebar
+        >
+          &times;
+        </button>
+      </div>
+      <div className="offcanvas-body">
+        {navbarData.map((section, index) => (
+          <div key={index} className="mb-4">
+            <h6>{section.title}</h6>
+            <ul className="list-group">
+              {section.links.map((link, linkIndex) => (
+                <li key={linkIndex} className="list-group-item d-flex align-items-center">
+                  <link.icon className="me-2" />
+                  <a href={link.url}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Sidebar;
+```
+
+> Here, we are using the `navbarData` to render the sidebar categories and brands dynamically. We are mapping over the `navbarData` array and rendering the title and links for each section.
+
+
+Looks good too, but we still haven't made the `Navbar` component dynamic.
+
+So, let's make the `Navbar` component dynamic by using the data from the `navbarData.js` file.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import { navbarData } from "../data/navbarData"; // importing the navbar data
+
+const Navbar = () => {
+  const { toggleSidebar } = useAppContext(); // consuming the global context value
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        {/* Left section: logo + desktop links */}
+        <div className="d-flex align-items-center">
+          <h4 className="text-white fw-bold mb-0 me-4">E-COMMERCE</h4>
+
+          {/* Desktop nav links - visible on lg+ screens */}
+          <div className="d-none d-lg-block">
+            <ul className="navbar-nav flex-row">
+              {navbarData.map((section, index) => (
+                <li key={index} className="nav-item mx-2">
+                  <a
+                    className="nav-link text-white"
+                    href="#"
+                    role="button"
+                  >
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar toggle (visible on small screens) */}
+        <button className="btn btn-dark d-lg-none" onClick={toggleSidebar}>
+          <FaBars />
+        </button>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+```
+
+We just loop over the `navbarData` array and render the title for each section as a link in the navbar.
+
+
+It works perfectly, Now, for the `dropdown` submenu, we need to first think what we are going to do.
+
+I know I dont need to do this but I woant really overengineer this project to really solidify my understanding of the `Context API` and some other functionnalities.
+
+So, I'll not make a `dropdown` submenu, instead I will make a `modal` submenu that will show the links when the user clicks on the link in the navbar.
+
+Nut I want to make it smoothly. For, example if you goto [stripe](https://stripe.com/) and hover over the `Products` link, you will see a smooth transition of the submenu. Witht he modal box size changing accoridn to the items in the submenu. and also when we hover from one submenu to another submenu, the modal boxs move from one submenu to another submenu smoothly.
+
+So, let's make that happen.
+
+First, let's make a submenu component. that will be just a modal box that `submenu` written on it.
+
+```js {.line-numbers}
+// src/components/Submenu.jsx
+import React from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+
+const Submenu = () => {
+  const { isSidebarOpen } = useAppContext(); // consuming the global context value
+
+  return <div>Submenu</div>;
+};
+
+export default Submenu;
+
+```
+
+I'll not use bootstrap styles for the modal box, instead I will create a custom modal box using CSS.
+
+So, inside the styles folder, we create a file named `submenu.css` and add the following styles:
+
+```css
+/* src/styles/submenu.css */
+.submenu {
+    display: none;
+    position: fixed;
+    top: 7rem;
+    left: 50%;
+    width: var(--fluid-width);
+    max-width: var(--max-width);
+    padding: 2rem;
+    transform: rotateX(-90deg) translateX(-50%);
+    transform-origin: top;
+    perspective: 1000px;
+    border-radius: var(--borderRadius);
+    visibility: hidden;
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
+    z-index: -1;
+  }
+  .show-submenu {
+    visibility: visible;
+    display: block;
+    opacity: 1;
+    background-color: aliceblue;
+    transform: rotateX(0deg) translateX(-50%);
+    z-index: 10;
+  }
+  .submenu h5 {
+    margin-bottom: 1rem;
+  }
+  .submenu-links {
+    display: grid;
+    row-gap: 0.5rem;
+  }
+  .submenu-links a {
+    display: block;
+    color: black;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .submenu-links svg {
+    color: black;
+  }
+
+```
+
+Now, we can import the `submenu.css` file in the `Submenu.jsx` file and add the styles to the modal box.
+
+```js {.line-numbers}
+// src/components/Submenu.jsx
+import React from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import "../styles/submenu.css"; // importing the submenu styles
+
+const Submenu = () => {
+
+  return (
+    <div className="submenu show">
+      <h5>Submenu</h5>
+      <p>This is a submenu modal box.</p>
+    </div>
+  );
+};
+export default Submenu;
+```
+
+Now, we create the hover functionality. We will need to add a state variable to manage the submenu state in the `AppContext.jsx` file.
+
+```js {.line-numbers}
+// src/context/AppContext.jsx
+import React, { createContext, useState, useContext } from "react";
+
+export const AppContext = createContext(); // creating a global context object
+
+export const useAppContext = () => {
+  return useContext(AppContext); // returning the context value using useContext hook
+};
+
+const AppContextProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // state variable to manage the sidebar state
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false); // state variable to manage the submenu state
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev); // toggling the sidebar state
+  };
+
+  const toggleSubmenu = () => {
+    setIsSubmenuOpen((prev) => !prev); // toggling the submenu state
+  };
+
+  return (
+    <AppContext.Provider value={{ isSidebarOpen, toggleSidebar, isSubmenuOpen, toggleSubmenu }}>
+      {children} {/* rendering the children components */}
+    </AppContext.Provider>
+  );
+};
+export default AppContextProvider;
+```
+
+Now, we can use the `isSubmenuOpen` state variable to show or hide the submenu modal box in the `Submenu.jsx` file.
+
+```js {.line-numbers}
+// src/components/Submenu.jsx
+import React from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import "../styles/submenu.css"; // importing the submenu styles
+
+const Submenu = () => {
+  const { isSubmenuOpen } = useAppContext(); // consuming the global context value
+
+  return (
+    <div className={`submenu ${isSubmenuOpen ? "show-submenu" : ""}`}>
+      <h5>Submenu</h5>
+      <p>This is a submenu modal box.</p>
+    </div>
+  );
+};
+export default Submenu;
+```
+
+Now what I want to do is, when the user hovers over a link in the navbar, the submenu modal box will appear and show the links for that section.
+
+So, let's go to the `Navbar.jsx` file and add the hover functionality to the links.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React, { useState } from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import { navbarData } from "../data/navbarData"; // importing the navbar data
+
+const Navbar = () => {
+  const { toggleSidebar, toggleSubmenu } = useAppContext(); // consuming the global context value
+
+  const handleMouseEnter = (section) => {
+    console.log("Mouse entered section:", section);
+    toggleSubmenu(); // showing the submenu modal box
+  };
+
+  const handleMouseLeave = () => {
+    console.log("Mouse left section");
+    toggleSubmenu(); // hiding the submenu modal box
+  };
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        {/* Left section: logo + desktop links */}
+        <div className="d-flex align-items-center">
+          <h4 className="text-white fw-bold mb-0 me-4">E-COMMERCE</h4>
+
+          {/* Desktop nav links - visible on lg+ screens */}
+          <div className="d-none d-lg-block">
+            <ul className="navbar-nav flex-row">
+              {navbarData.map((section, index) => (
+                <li
+                  key={index}
+                  className="nav-item mx-2"
+                  onMouseEnter={() => handleMouseEnter(section.title)} // calling handleMouseEnter function when the user hovers over a link
+                  onMouseLeave={handleMouseLeave} // calling handleMouseLeave function when the user leaves the link
+                >
+                  <a className="nav-link text-white" href="#">
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar toggle (visible on small screens) */}
+        <button className="btn btn-dark d-lg-none" onClick={toggleSidebar}>
+          <FaBars />
+        </button>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+```
+> Here, we are adding the `onMouseEnter` and `onMouseLeave` event handlers to the links in the navbar. When the user hovers over a link, the `handleMouseEnter` function will be called and it will show the submenu modal box. When the user leaves the link, the `handleMouseLeave` function will be called and it will hide the submenu modal box.
+
+Now, if you hover over a link in the navbar, the submenu modal box will appear and show the links for that section.
+
+Which is great, but the submenu modal box changing it's position. So, we need to make it so that the submenu modal will appear below the link that the user hovers over.
+
+To do that, we need to find the position of the links and set the position of the submenu modal box accordingly.
+
+To achieve this, we can use the `getBoundingClientRect` method to get the position of the link. Now, how do we do that? We can use the `useRef` hook to get a reference to the link and then use the `getBoundingClientRect` method to get the position of the link.
+
+So, let's modify the `Navbar.jsx` file to get the positions of the links.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React, { useState } from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import { navbarData } from "../data/navbarData"; // importing the navbar data
+
+const Navbar = () => {
+  const { toggleSidebar, toggleSubmenu } = useAppContext(); // consuming the global context value
+  
+  const handleMouseEnter = (e) =>{
+    const section = e.target.textContent; // getting the section title from the link
+    const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
+
+    const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
+    const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
+    console.log("Mouse entered section:", section, "Position:", linkPosition);
+    toggleSubmenu(); // showing the submenu modal box
+  }
+
+  const handleMouseLeave = () => {
+    console.log("Mouse left section");
+    toggleSubmenu(); // hiding the submenu modal box
+  };  
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        {/* Left section: logo + desktop links */}
+        <div className="d-flex align-items-center">
+          <h4 className="text-white fw-bold mb-0 me-4">E-COMMERCE</h4>
+
+          {/* Desktop nav links - visible on lg+ screens */}
+          <div className="d-none d-lg-block">
+            <ul className="navbar-nav flex-row">
+              {navbarData.map((section, index) => (
+                <li
+                  key={index}
+                  className="nav-item mx-2"
+                  onMouseEnter={handleMouseEnter} // calling handleMouseEnter function when the user hovers over a link
+                  onMouseLeave={handleMouseLeave} // calling handleMouseLeave function when the user leaves the link
+                >
+                  <a className="nav-link text-white" href="#">
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar toggle (visible on small screens) */}
+        <button className="btn btn-dark d-lg-none" onClick={toggleSidebar}>
+          <FaBars />
+        </button>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+```
+
+> Here, we are getting the position of the link using the `getBoundingClientRect` method and then calculating the center and bottom position of the link. We can use these values to set the position of the submenu modal box.
+
+Now, we can set the position of the submenu modal box in the `Submenu.jsx` file but how do we ge the position of the link in the `Submenu` component? We need to setup a new function in the `AppContext.jsx` file to set the position of the submenu modal box.
+
+```js {.line-numbers}
+// src/context/AppContext.jsx
+import React, { createContext, useState, useContext } from "react";
+
+export const AppContext = createContext(); // creating a global context object
+
+export const useAppContext = () => {
+  return useContext(AppContext); // returning the context value using useContext hook
+};
+
+const AppContextProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // state variable to manage the sidebar state
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false); // state variable to manage the submenu state
+  const [submenuPosition, setSubmenuPosition] = useState({}); // state variable to manage the submenu position
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev); // toggling the sidebar state
+  };
+
+  const toggleSubmenu = () => {
+    setIsSubmenuOpen((prev) => !prev); // toggling the submenu state
+  };
+
+  const setSubmenuPos = (text, position) => {
+    setSubmenuPosition({ text, position }); // setting the submenu position
+  };
+
+  return (
+    <AppContext.Provider
+      value={{
+        isSidebarOpen,
+        toggleSidebar,
+        isSubmenuOpen,
+        toggleSubmenu,
+        submenuPosition,
+        setSubmenuPos,
+      }}
+    >
+      {children} {/* rendering the children components */}
+    </AppContext.Provider>
+  );
+};
+export default AppContextProvider;
+```
+
+Now, we update the navbar component to set the submenu position when the user hovers over a link.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import { navbarData } from "../data/navbarData"; // importing the navbar data
+
+const Navbar = () => {
+  const { toggleSidebar, toggleSubmenu, setSubmenuPos } = useAppContext(); // consuming the global context value
+  
+  const handleMouseEnter = (e) =>{
+    const section = e.target.textContent; // getting the section title from the link
+    const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
+
+    const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
+    const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
+    console.log("Mouse entered section:", section, "Position:", linkPosition);
+    setSubmenuPos(section, { center, bottom }); // setting the submenu position
+    toggleSubmenu(); // showing the submenu modal box
+  }
+
+  const handleMouseLeave = () => {
+    console.log("Mouse left section");
+    toggleSubmenu(); // hiding the submenu modal box
+  };  
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        {/* Left section: logo + desktop links */}
+        <div className="d-flex align-items-center">
+          <h4 className="text-white fw-bold mb-0 me-4">E-COMMERCE</h4>
+
+          {/* Desktop nav links - visible on lg+ screens */}
+          <div className="d-none d-lg-block">
+            <ul className="navbar-nav flex-row">
+              {navbarData.map((section, index) => (
+                <li
+                  key={index}
+                  className="nav-item mx-2"
+                  onMouseEnter={handleMouseEnter} // calling handleMouseEnter function when the user hovers over a link
+                  onMouseLeave={handleMouseLeave} // calling handleMouseLeave function when the user leaves the link
+                >
+                  <a className="nav-link text-white" href="#">
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar toggle (visible on small screens) */}
+        <button className="btn btn-dark d-lg-none" onClick={toggleSidebar}>
+          <FaBars />
+        </button>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+```
+
+All we need to do now is to use the `submenuPosition` state variable in the `Submenu.jsx` file to set the position of the submenu modal box.
+
+```js {.line-numbers}
+// src/components/Submenu.jsx
+import { useRef, useEffect } from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import "../styles/submenu.css"; // importing the submenu styles
+
+const Submenu = () => {
+  const { isSubmenuOpen, submenuPosition } = useAppContext(); // consuming the global context value
+
+  const container = useRef(null); // creating a ref to the submenu container
+
+  useEffect(() => {
+    const submenu = container.current; // accessing the current value of the ref
+    const { center, bottom } = submenuPosition;
+    container.current.style.left = `${center}px`; // setting the left position of the submenu modal box
+    container.current.style.top = `${bottom}px`; // setting the top position of the submenu modal box
+    console.log(submenu);
+    
+  }, [submenuPosition]); // updating the position when the submenuPosition changes
+
+  return (
+    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}>
+      <h5>{submenuPosition.text}</h5>
+      <p>This is a submenu modal box.</p>
+    </div>
+  );
+};
+export default Submenu;
+
+```
+
+Annnnnnd, it's not working. I have no idea why. this project is giving me a headache. 
+
+And after 30min of reconcidering my code, I found out that I was not setting the `submenuPosition` and the the `toggleSubmenu` function differently. So, i'll make two different functions for opening and closing the submenu modal box and inside the opening function, I will set the `submenuPosition` and then call the `toggleSubmenu` function to open the submenu modal box.
+
+```js {.line-numbers}
+// src/context/AppContext.jsx
+import React, { createContext, useState, useContext } from "react";
+
+export const AppContext = createContext(); // creating a global context object
+
+export const useAppContext = () => {
+  return useContext(AppContext); // returning the context value using useContext hook
+};
+
+const AppContextProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // state variable to manage the sidebar state
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false); // state variable to manage the submenu state
+  const [submenuPosition, setSubmenuPosition] = useState({}); // state variable to manage the submenu position
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev); // toggling the sidebar state
+  };
+
+  const openSubmenu = (position) => {
+    setSubmenuPosition(position); // setting the submenu position
+    setIsSubmenuOpen(true); // opening the submenu modal box
+  };
+
+  const closeSubmenu = () => {
+    setIsSubmenuOpen(false); // closing the submenu modal box
+  };
+
+  return (
+    <AppContext.Provider
+      value={{
+        isSidebarOpen,
+        toggleSidebar,
+        isSubmenuOpen,
+        openSubmenu,
+        closeSubmenu,
+        submenuPosition,
+      }}
+    >
+      {children} {/* rendering the children components */}
+    </AppContext.Provider>
+  );
+};
+export default AppContextProvider;
+```
+
+Now, we update the `navbar` component to use the `openSubmenu` and `closeSubmenu` functions.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import { navbarData } from "../data/navbarData"; // importing the navbar data
+
+const Navbar = () => {
+  const { toggleSidebar, openSubmenu, closeSubmenu } = useAppContext(); // consuming the global context value
+  
+  const handleMouseEnter = (e) =>{
+    const section = e.target.textContent; // getting the section title from the link
+    const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
+
+    const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
+    const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
+    console.log("Mouse entered section:", section, "Position:", linkPosition);
+    openSubmenu({center, bottom }); // setting the submenu position and opening the submenu modal box
+  }
+
+  const handleMouseLeave = () => {
+    console.log("Mouse left section");
+    closeSubmenu(); // closing the submenu modal box
+  };
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        {/* Left section: logo + desktop links */}
+        <div className="d-flex align-items-center">
+          <h4 className="text-white fw-bold mb-0 me-4">E-COMMERCE</h4>
+
+          {/* Desktop nav links - visible on lg+ screens */}
+          <div className="d-none d-lg-block">
+            <ul className="navbar-nav flex-row">
+              {navbarData.map((section, index) => (
+                <li
+                  key={index}
+                  className="nav-item mx-2"
+                  onMouseEnter={handleMouseEnter} // calling handleMouseEnter function when the user hovers over a link
+                  onMouseLeave={handleMouseLeave} // calling handleMouseLeave function when the user leaves the link
+                >
+                  <a className="nav-link text-white" href="#">
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar toggle (visible on small screens) */}
+        <button className="btn btn-dark d-lg-none" onClick={toggleSidebar}>
+          <FaBars />
+        </button>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;
+```
+
+Now, we can refactor the `Submenu.jsx` file to use the `submenuPosition` state variable to set the position of the submenu modal box.
+
+```js {.line-numbers}
+// src/components/Submenu.jsx
+import { useRef, useEffect } from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import "../styles/submenu.css"; // importing the submenu styles
+
+const Submenu = () => {
+  const { isSubmenuOpen, submenuPosition } = useAppContext(); // consuming the global context value
+
+  const container = useRef(null); // creating a ref to the submenu container
+
+  useEffect(() => {
+    const submenu = container.current; // accessing the current value of the ref
+    const { center, bottom } = submenuPosition;
+    submenu.style.left = `${center}px`; // setting the left position of the submenu modal box
+    submenu.style.top = `${bottom}px`; // setting the top position of the submenu modal box
+  }, [submenuPosition]); // updating the position when the submenuPosition changes
+
+  return (
+    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}>
+      <h5>{submenuPosition.text}</h5>
+      <p>This is a submenu modal box.</p>
+    </div>
+  );
+};
+export default Submenu;
+```
+
+Well, now it works, the only thing left to is render the `Submenu links` dynamically.
+
+To do that, we can use the `navbarData` to get the links for the section that the user is hovering over. We can pass the section title to the `openSubmenu` function and then filter the `navbarData` to get the links for that section.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { FaBars } from "react-icons/fa";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
+import { navbarData } from "../data/navbarData"; // importing the navbar data
+
+const Navbar = () => {
+  const { toggleSidebar, openSubmenu, closeSubmenu } = useAppContext(); // consuming the global context value
+  
+  const handleMouseEnter = (e) =>{
+    const section = e.target.textContent; // getting the section title from the link
+    const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
+
+    const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
+    const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
+    console.log("Mouse entered section:", section, "Position:", linkPosition);
+    
+    openSubmenu(section, { center, bottom }); // setting the submenu position and opening the submenu modal box
+  }
+
+  ... // rest of the code remains the same
+
+}
+
+export default Navbar;
+```
+
+We can now, take a new state variable in the `AppContext.jsx` file to store the section and links for the submenu modal box.
+
+```js {.line-numbers}
+// src/context/AppContext.jsx
+import React, { createContext, useState, useContext } from "react";
+import { navbarData } from "../data/navbarData";
+
+export const AppContext = createContext(); // creating a global context object
+
+export const useAppContext = () => {
+  return useContext(AppContext); // returning the context value using useContext hook
+};
+
+const AppContextProvider = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // state variable to manage the sidebar state
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false); // state variable to manage the submenu state
+  const [submenuPosition, setSubmenuPosition] = useState({}); // state variable to manage the submenu position
+  const [section, setSection] = useState({
+    title: "",
+    links: [],
+  }); // state variable to manage the section and links for the submenu modal box
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev); // toggling the sidebar state
+  };
+
+  const openSubmenu = (text, position) => {
+    const sectionData = navbarData.find((item) => item.title === text); // finding the section data from the navbarData
+    console.log(sectionData);
+    
+    setSection(sectionData); // setting the section and links for the submenu modal box
+    setSubmenuPosition(position); // setting the submenu position
+    setIsSubmenuOpen(true); // opening the submenu modal box
+  };  
+
+  const closeSubmenu = () => {
+    setIsSubmenuOpen(false); // closing the submenu modal box
+  };
+
+  return (
+    <AppContext.Provider
+      value={{
+        isSidebarOpen,
+        toggleSidebar,
+        isSubmenuOpen,
+        openSubmenu,
+        closeSubmenu,
+        submenuPosition,
+        section, // passing the section and links for the submenu modal box
+      }}
+    >
+      {children} {/* rendering the children components */}
+    </AppContext.Provider>
+  );
+};
+export default AppContextProvider;
+```
+
+Now, we can use the `section` state variable in the `Submenu.jsx` file to render the links for the section that the user is hovering over.
+
+```js {.line-numbers} 
+// src/components/Submenu.jsx
+import { useRef, useEffect } from "react";
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook  
+import "../styles/submenu.css"; // importing the submenu styles
+
+const Submenu = () => {
+  const { isSubmenuOpen, submenuPosition, section } = useAppContext(); // consuming the global context value
+
+  const container = useRef(null); // creating a ref to the submenu container
+
+  useEffect(() => {
+    const submenu = container.current; // accessing the current value of the ref
+    const { center, bottom } = submenuPosition;
+    submenu.style.left = `${center}px`; // setting the left position of the submenu modal box
+    submenu.style.top = `${bottom}px`; // setting the top position of the submenu modal box
+  }, [submenuPosition]); // updating the position when the submenuPosition changes
+
+  return (
+    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}>
+      <h5>{section.title}</h5>
+      <div className="submenu-links">
+        {section.links.map((link, index) => (
+          <a key={index} href={link.url}>
+            <link.icon className="me-2" />
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Submenu;
+```
+
+
+ANNNNND THIS HELL IS FINALLY OVER!!!!!
+
+
+HOLY SHIZZZZZ MAN!
+
+
+THIS PROJECT MADE REALISE AGAIN WHY I HATE FROMTEND.
+
+One day man one day I'll complete this project and it will be a masterpiece.
+
+NEEEVEEERRRRRRRRRR!
+
+I have nothing more to say, we move on.
