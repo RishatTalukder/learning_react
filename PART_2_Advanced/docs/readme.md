@@ -9196,12 +9196,17 @@ So, inside the styles folder, we create a file named `submenu.css` and add the f
 ```css
 /* src/styles/submenu.css */
 .submenu {
-    display: none;
+  display: none;
+}
+
+  .submenu {
+    display: block;
     position: fixed;
     top: 7rem;
     left: 50%;
     width: var(--fluid-width);
     max-width: var(--max-width);
+    background: var(--white);
     padding: 2rem;
     transform: rotateX(-90deg) translateX(-50%);
     transform-origin: top;
@@ -9214,7 +9219,6 @@ So, inside the styles folder, we create a file named `submenu.css` and add the f
   }
   .show-submenu {
     visibility: visible;
-    display: block;
     opacity: 1;
     background-color: aliceblue;
     transform: rotateX(0deg) translateX(-50%);
@@ -9222,6 +9226,7 @@ So, inside the styles folder, we create a file named `submenu.css` and add the f
   }
   .submenu h5 {
     margin-bottom: 1rem;
+    color: var(--primary-700);
   }
   .submenu-links {
     display: grid;
@@ -9229,14 +9234,14 @@ So, inside the styles folder, we create a file named `submenu.css` and add the f
   }
   .submenu-links a {
     display: block;
-    color: black;
+    color: var(--grey-900);
     text-transform: capitalize;
     display: flex;
     align-items: center;
     gap: 1rem;
   }
   .submenu-links svg {
-    color: black;
+    color: var(--grey-500);
   }
 
 ```
@@ -9881,3 +9886,6 @@ One day man one day I'll complete this project and it will be a masterpiece.
 NEEEVEEERRRRRRRRRR!
 
 I have nothing more to say, we move on.
+
+# Reducer
+

@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext"; // importing the useAppCo
 import "../styles/submenu.css"; // importing the submenu styles
 
 const Submenu = () => {
-  const { isSubmenuOpen, submenuPosition, section } = useAppContext(); // consuming the global context value
+  const { isSubmenuOpen, submenuPosition, section, openSubmenu, closeSubmenu } = useAppContext(); // consuming the global context value
 
   const container = useRef(null); // creating a ref to the submenu container
 
@@ -15,7 +15,14 @@ const Submenu = () => {
   }, [submenuPosition]); // updating the position when the submenuPosition changes
 
   return (
-    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}>
+    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}
+    onMouseEnter={() => {
+      openSubmenu(section.title, submenuPosition); // preventing submenu from closing on mouse enter
+    }} // preventing submenu from closing on mouse enter
+    onMouseLeave={
+      closeSubmenu // closing the submenu on mouse leave
+    }
+    >
       <h5>{section.title}</h5>
       <div className="submenu-links">
         {section.links.map((link, index) => (
