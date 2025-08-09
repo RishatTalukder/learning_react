@@ -9889,3 +9889,722 @@ I have nothing more to say, we move on.
 
 # Reducer
 
+Well, well, well, we have actually reached upto this point, I am really proud of myself.
+
+BUUUUUUUUUUTTTT
+
+Some wierd things are going to happen now.
+
+We learned about the `useState` hook and how to manage state in a functional component. The we realised that we need to manage state in a more complex way to make our application more scalable and maintainable. So, we learned about the `context` API and how to use it to manage state globally in our application.
+
+BUUUUUUTTTTTT
+
+There's still another but in this.
+
+Context API is great for managing state globally, but it can become cumbersome when we have a lot of state to manage and when there is a lot of logic involved in updating the state. And when you have different developers working on the same project, it can become difficult to manage the state and keep track of the logic.
+
+That's why we have the `useReducer` hook.
+
+Now, this is going to be messy and VERY hard to understand because before even starting with the `useReducer` hook, we need to understand how the `reducer` works and also some words like `action`, `dispatch`, `state`, etc.
+
+So, I will try my best to explain it in a simple and intuitive way.
+
+`useReducer` hook is like a lightweight version of `Redux/Redux Toolkit`. It allows us to manage state in a more structured way by using a `reducer` function. It gives some structure and set of rules to follow when managing state. This in a perfect world should lead to a more maintainable and scalable codebase.
+
+> Spoiler alert: This is not a perfect world, so don't expect your code to be perfect.
+
+I'll try to implement the `useReducer` hook in a very simple way, so that you can understand the concept and then we can apply it to our e-commerce project.
+
+Make a new folder named `reducerExample` inside the `react_advanced/src` folder and create a new file named `data.js` inside the `reducerExample` folder. This file will contain some dummy data that we will use to demonstrate the `useReducer` hook.
+
+```js {.line-numbers}
+// src/reducerExample/data.js
+export const data = [
+  { id: 1, 
+    name: "Item 1",
+  },
+  { id: 2, 
+    name: "Item 2",
+  },
+  { id: 3, 
+    name: "Item 3",
+  },
+  { id: 4, 
+    name: "Item 4",
+  },
+]
+```
+> It's just a simple array of objects with an `id` and a `name` property.
+
+I'll create a new file named `ReducerExample.jsx` inside the `reducerExample` folder. This file will contain the main component that will render the data with some functionality.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useState } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const ReducerExample = () => {
+  const [items, setItems] = useState(data); // using useState to manage the items state
+
+  const handleClick = (id) => {
+    const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
+    setItems(newItems); // updating the items state
+  };
+  const resetItems = () => {
+    setItems(data); // resetting the items state to the original data
+  };
+
+  const deleteAllItems = () => {
+    setItems([]); // deleting all items
+  };
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {items.length > 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};
+export default ReducerExample;
+```
+Here I've made a very simple component that renders the items from the dummy data and allows the user to remove an item by clicking on the "Remove" button. It also has a "Reset Items" button to reset the items to the original data and a "Delete All Items" button to delete all items which is rendered only when there are no items left.
+
+Now, I want to just recreate the same functionality using the `useReducer` hook. 
+
+First the anatomy of the `useReducer` hook.
+
+In the `useState` hook, we pass a initial state in the form of a value and get a state variable and a setState function to update the state.
+
+In the `useReducer` hook, we pass a `reducer` function and an initial state value. 
+
+What is a `reducer` function?
+
+We will learn more about it in detail later, but for now, we can create a empty function which I will use as a placeholder.
+
+Just like the `useState` hook, `useReducer` hook returns a state variable and a `dispatch` function to update the state.
+
+Now, what should the `initial state` be?
+
+I our app case it is a list of items, so we can set the initial state to an empty array.
+
+BUUUUUUTTTTT
+
+When we are using the `useReducer` hook, we need to define the initial state in a more structured way. So, we need to create an object that will hold the state of our application not only the items but also we can add more properties to the state object in the future if needed.
+
+So, with the anatomy of the `useReducer` hook in mind, let's impement the `useReducer` hook in the `ReducerExample.jsx` file.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer, useState } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const reducer = ()=>{
+ // This is a placeholder for the reducer function, if needed in the future
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  // const [items, setItems] = useState(data); // using useState to manage the items state
+
+  const handleClick = (id) => {
+    // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
+    // setItems(newItems); // updating the items state
+  };
+  const resetItems = () => {
+    // setItems(data); // resetting the items state to the original data
+  };
+
+  const deleteAllItems = () => {
+    // setItems([]); // deleting all items
+  };
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {state.items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {state.items.length <= 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};
+export default ReducerExample;
+```
+
+> Here, we have created a `reducer` function which is currently a placeholder and an `initialState` object that holds the initial state of our application. We are using the `useReducer` hook to manage the state and getting the `state` variable and the `dispatch` function.
+
+Now, we need to implement the logic to update the state using the `dispatch` function.
+
+
+The dispatch function is used to send an `action` to the reducer function. What is an action? An action is an object that describes what happened in the application. It must have a `type` property that describes the type of action and can have additional properties that provide more information about the action.
+
+So, when we call the `dispatch` function, we need to pass an `action` object to it. The reducer function will then receive this action object and update the state accordingly.
+
+But the problem is how will the reducer function get the state and the action object?
+
+Simple, the dispatch function binds the reducer function to the state and the action object. So, when the dispatch function is called, it will call the reducer function with the current state and the action object.
+
+So, we need to add the state and action parameters to the reducer function.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const reducer = (state, action) =>{
+  console.log("Reducer called with state:", state, "and action:", action);
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
+    // setItems(newItems); // updating the items state
+  };
+  const resetItems = () => {
+    // setItems(data); // resetting the items state to the original data
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: "DELETE_ALL_ITEMS" }); // dispatching an action to delete all items
+  };
+
+  ... // rest of the code remains the same
+
+}
+export default ReducerExample;
+```
+
+> Here, we have added the `state` and `action` parameters to the `reducer` function. We are also dispatching an action to delete all items when the "Delete All Items" button is clicked.
+
+Have a look inside the `inspect element` in the browser and you will see that the `reducer` function is called with the current state and the action object when the "Delete All Items" button is clicked.
+
+You should see a big `console.log` error but right above the error, you should see the `Reducer called with state:` log with the current state and the action object.
+
+And now what I want you do is return something from the `reducer` function, reload the app, log the state anywhere and click the button to see the state change.
+
+this will most surely break your app, but that's okay, you should see that the state is changing and the `reducer` function is being called with the current state and the action object.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer, useState } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const reducer = (state, action) =>{
+  console.log("Reducer called with state:", state, "and action:", action);
+  return 'daihwadwoih' // returning something from the reducer function
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
+    // setItems(newItems); // updating the items state
+  };
+  const resetItems = () => {
+    // setItems(data); // resetting the items state to the original data
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: "DELETE_ALL_ITEMS" }); // dispatching an action to delete all items
+  };
+
+  console.log("Current state:", state); // logging the current state for debugging
+
+  ... // rest of the code remains the same
+}
+export default ReducerExample;
+```
+> So, we leanred that the `reducer` function is called with the current state and the action object whenever the `dispatch` function is called and it must return a the new state. 
+And now we are successfull in implementing the `useReducer` hook and understanding how it manages state in a more structured way.
+
+But how can do we use all this to efficiently manage state.
+
+We have a `dispatch` function that passes an action object to the reducer function, we have and `initialState` which is another object that holds the initial state of our application, and we have a `reducer` function that takes the current state and the action object and returns a new state.
+
+
+Ummmmmmm, what do we do with this?
+
+Well, we can use the `reducer` function to handle different actions and update the state accordingly by checking the `type` property of the action object.
+
+It's a simple if statement that checks the `type` property of the action object and returns a new state based on the action type.
+
+So, let's implement the logic to handle the "DELETE_ALL_ITEMS" action in the `reducer` function.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const reducer = (state, action) =>{
+  console.log("Reducer called with state:", state, "and action:", action);
+  
+  if (action.type === "DELETE_ALL_ITEMS") {
+    return { ...state, items: [] }; // returning a new state with an empty items array
+  }
+  
+  return state; // returning the current state if the action type is not matched
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
+    // setItems(newItems); // updating the items state
+  };
+  const resetItems = () => {
+    // setItems(data); // resetting the items state to the original data
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: "DELETE_ALL_ITEMS" }); // dispatching an action to delete all items
+  };
+
+  console.log("Current state:", state); // logging the current state for debugging
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {state.items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {state.items.length <= 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};
+export default ReducerExample;
+```
+
+> And we have successfully implemented the logic to handle the "DELETE_ALL_ITEMS" action in the `reducer` function. Now, when the "Delete All Items" button is clicked, the `reducer` function will be called with the current state and the action object, and it will return a new state with an empty items array.
+
+We can now implement the logic to handle the "RESET_ITEMS" action in the `reducer` function just like we did for the "DELETE_ALL_ITEMS" action.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const reducer = (state, action) =>{
+  console.log("Reducer called with state:", state, "and action:", action);
+  
+  if (action.type === "DELETE_ALL_ITEMS") {
+    return { ...state, items: [] }; // returning a new state with an empty items array
+  }
+  
+  if (action.type === "RESET_ITEMS") {
+    return { ...state, items: data }; // returning a new state with the original data
+  }
+  
+  return state; // returning the current state if the action type is not matched
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
+    // setItems(newItems); // updating the items state
+  };
+  const resetItems = () => {
+    dispatch({ type: "RESET_ITEMS" }); // dispatching an action to reset the items
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: "DELETE_ALL_ITEMS" }); // dispatching an action to delete all items
+  };
+
+  console.log("Current state:", state); // logging the current state for debugging
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {state.items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {state.items.length <= 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};
+export default ReducerExample;
+```
+
+Annnd, we have successfully implemented the logic to handle the "RESET_ITEMS" action in the `reducer` function. Now, when the "Reset Items" button is clicked, the `reducer` function will be called with the current state and the action object, and it will return a new state with the original data.
+
+The only thing left to do is to implement the logic to handle the "REMOVE_ITEM" action in the `reducer` function when the user clicks on the "Remove" button.
+
+But before that, I want to tlak to about something not so important but still worth mentioning.
+
+As, our functionality rises the amount of actions that we need to handle in the `reducer` function, it can become cumbersome to manage all the actions in a single if statement.
+
+As, we are passing a `string` as the `type` property of the action object we might some unexpected typos in the action type and it can lead to bugs in our application.
+
+So, one approach that I like is to make separate variables for each action type and use them in the action object. This way, we can avoid typos and make our code more readable.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the action type
+const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
+const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
+
+const reducer = (state, action) =>{
+  console.log("Reducer called with state:", state, "and action:", action);
+  
+  if (action.type === DELETE_ALL) {
+    return { ...state, items: [] }; // returning a new state with an empty items array
+  }
+  
+  if (action.type === RESET_ITEMS) {
+    return { ...state, items: data }; // returning a new state with the original data
+  }
+
+  return state; // returning the current state if the action type is not matched
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
+    // setItems(newItems); // updating the items state
+  };
+  const resetItems = () => {
+    dispatch({ type: RESET_ITEMS }); // dispatching an action to reset the items
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: DELETE_ALL }); // dispatching an action to delete all items
+  };
+
+  console.log("Current state:", state); // logging the current state for debugging
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {state.items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {state.items.length <= 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};
+export default ReducerExample;
+```
+
+Now, we can use these constants in the action object and in the `reducer` function to handle the actions.
+
+Time to implement the logic to handle the "REMOVE_ITEM" action in the `reducer` function when the user clicks on the "Remove" button.
+
+There is a problem here, when we are clicking on the "Remove" button, we need to pass the `id` of the item to the `dispatch` function so that we can remove the item from the state. But we can't do that directly because the `dispatch` function only accepts an action object.
+
+In that action object, we can pass the `id` of the item as an additional property. We can directly pass it or Like we must have a `type` property, we can also add a property called `payload` that will hold the `id` of the item to be removed. In the payload we can pass an object with the `id` property or other properties that we need to pass to the `reducer` function.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the action type
+const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
+const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
+
+const reducer = (state, action) =>{
+  console.log("Reducer called with state:", state, "and action:", action);
+  
+  if (action.type === DELETE_ALL) {
+    return { ...state, items: [] }; // returning a new state with an empty items array
+  }
+  
+  if (action.type === RESET_ITEMS) {
+    return { ...state, items: data }; // returning a new state with the original data
+  }
+
+  if (action.type === REMOVE_ITEM) {
+    console.log("Removing item with id:", action.payload.id); // logging the id of the item to be remove
+  }
+
+  return state; // returning the current state if the action type is not matched
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    dispatch({ type: REMOVE_ITEM, payload: { id } }); // dispatching an action to remove the item
+  };
+  const resetItems = () => {
+    dispatch({ type: RESET_ITEMS }); // dispatching an action to reset the items
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: DELETE_ALL }); // dispatching an action to delete all items
+  };
+
+  console.log("Current state:", state); // logging the current state for debugging
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {state.items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {state.items.length <= 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};  
+
+export default ReducerExample;
+```
+> u can pass the `id` of the item to be removed in the dispatch function directly. It is the best practice to pass it in the `payload` property of the action object. This way, we can easily access the `id` of the item to be removed in the `reducer` function.
+
+Now, we can just implement the logic to remove the item from the state in the `reducer` function by filtering out the item with the given `id`.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer } from "react";
+import { data } from "./data"; // importing the dummy data
+
+const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the action type
+const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
+const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
+
+const reducer = (state, action) =>{
+  const { type, payload } = action; // destructuring the action object to get the type and payload
+
+  if (type === DELETE_ALL) {
+    return { ...state, items: [] }; // returning a new state with an empty items array
+  }
+  if (type === RESET_ITEMS) {
+    return { ...state, items: data }; // returning a new state with the original data
+  }
+  if (type === REMOVE_ITEM) {
+    console.log("Removing item with id:", payload.id); // logging the id of the item to be removed
+    const newItems = state.items.filter((item) => item.id !== payload.id); // filtering out the item with the given id
+    return { ...state, items: newItems }; // returning a new state with the updated items array
+  }
+  throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
+}
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    dispatch({ type: REMOVE_ITEM, payload: { id } }); // dispatching an action to remove the item
+  };
+  const resetItems = () => {
+    dispatch({ type: RESET_ITEMS }); // dispatching an action to reset the items
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: DELETE_ALL }); // dispatching an action to delete all items
+  };
+
+  console.log("Current state:", state); // logging the current state for debugging
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {state.items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {state.items.length <= 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};
+export default ReducerExample;
+```
+
+And we have it. 
+
+> Because our reducer should handle 3 actions only if there is any other action type that is not handled, it will throw an error. This is a good practice to follow as it helps us catch errors early in the development process.
+ 
+
+Now, If you look at the `ReducerExample.jsx` file, you will see that we have a very structured way of managing state using the `useReducer` hook. 
+
+BUUUUUUTTTTT
+
+It looks a bit messy with all the action types and the reducer function.
+
+So, what we can do is to create a separate file for the reducer function and the action types. This way, we can keep our component file clean and organized.
+
+Create a new file named `reducer.js` inside the `reducerExample` folder and move the reducer function and the action types to that file.
+
+```js {.line-numbers}
+// src/reducerExample/reducer.js
+import { data } from "./data"; // importing the dummy data
+export const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the action type
+export const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
+export const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
+
+export const reducer = (state, action) =>{
+  const { type, payload } = action; // destructuring the action object to get the type and payload
+
+  if (type === DELETE_ALL) {
+    return { ...state, items: [] }; // returning a new state with an empty items array
+  }
+  if (type === RESET_ITEMS) {
+    return { ...state, items: data }; // returning a new state with the original data
+  }
+  if (type === REMOVE_ITEM) {
+    console.log("Removing item with id:", payload.id); // logging the id of the item to be removed
+    const newItems = state.items.filter((item) => item.id !== payload.id); // filtering out the item with the given id
+    return { ...state, items: newItems }; // returning a new state with the updated items array
+  }
+  throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
+}
+```
+
+Now, we can import the `reducer` function and the action types in the `ReducerExample.jsx` file.
+
+```js {.line-numbers}
+// src/reducerExample/ReducerExample.jsx
+import React, { useReducer } from "react";
+import { data } from "./data"; // importing the dummy data
+import { reducer, DELETE_ALL, RESET_ITEMS, REMOVE_ITEM } from "./reducer"; // importing the reducer function and the action types 
+
+const initialState = {
+  items: data, // initializing the state with the dummy data
+}
+
+const ReducerExample = () => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+  
+  const handleClick = (id) => {
+    dispatch({ type: REMOVE_ITEM, payload: { id } }); // dispatching an action to remove the item
+  };
+  const resetItems = () => {
+    dispatch({ type: RESET_ITEMS }); // dispatching an action to reset the items
+  };
+
+  const deleteAllItems = () => {
+    dispatch({ type: DELETE_ALL }); // dispatching an action to delete all items
+  };
+
+  console.log("Current state:", state); // logging the current state for debugging
+
+  return (
+    <div>
+      <h2>Reducer Example</h2>
+      <ul>
+        {state.items.map((item) => (
+          <li key={item.id}>
+            {item.name}{" "}
+            <button onClick={() => handleClick(item.id)}>Remove</button>
+          </li>
+        ))}
+      </ul>
+      {state.items.length <= 0 ? (
+        <button onClick={resetItems}>Reset Items</button>
+      ) : (
+        <button onClick={deleteAllItems}>Delete All Items</button>
+      )}
+    </div>
+  );
+};
+export default ReducerExample;
+```

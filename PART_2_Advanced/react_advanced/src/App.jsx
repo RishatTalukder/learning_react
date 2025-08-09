@@ -20,6 +20,7 @@ import TaskKeeper from "./projects/project_9/TaskKeeper";
 import ToggleExample from "./Custom_Hooks/ToggleExample";
 import FetchExample from "./Custom_Hooks/FetchExample";
 import Start from "./Context_API/Start";
+import ReducerExample from "./reducerExample/ReducerExample";
 
 function App() {
   return (
@@ -46,7 +47,8 @@ function App() {
       {/* <TaskKeeper /> */}
       {/* <ToggleExample /> */}
       {/* <FetchExample /> */}
-      <Start />
+      {/* <Start /> */}
+      <ReducerExample />
     </div>
   );
 }
