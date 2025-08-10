@@ -21,6 +21,7 @@ import ToggleExample from "./Custom_Hooks/ToggleExample";
 import FetchExample from "./Custom_Hooks/FetchExample";
 import Start from "./Context_API/Start";
 import ReducerExample from "./reducerExample/ReducerExample";
+import CartContainer from "./projects/project_12/CartContainer";
 
 function App() {
   return (
@@ -48,7 +49,8 @@ function App() {
       {/* <ToggleExample /> */}
       {/* <FetchExample /> */}
       {/* <Start /> */}
-      <ReducerExample />
+      {/* <ReducerExample /> */}
+      <CartContainer />
     </div>
   );
 }

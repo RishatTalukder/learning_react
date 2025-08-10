@@ -10608,3 +10608,122 @@ const ReducerExample = () => {
 };
 export default ReducerExample;
 ```
+
+Reducer can be both used to manage complex state logic and also to handle side effects in a more structured way.
+
+But it can be hard to handle side effects in the reducer function because it is a pure function and should not have any side effects.
+
+We will talk more about that later. First let's do make a `Cart`
+
+# Project 12: Cart with useReducer
+
+We see `cart` functionality in almost every e-commerce website. It allows users to add items to their cart, view the cart, and proceed to checkout.
+
+I'll try to make a simple cart page where the user can add and remove items from the cart. The total price will also be calculated and displayed as the user adds an item to the cart or removes an item from the cart.
+
+We will need to use `context API` and also `useReducer` hook to manage the cart state globally in our application.
+
+And some data to render the cart items.
+
+It's just like the `data.js` file we created earlier, but this time it will contain some dummy data for the cart items like the product name, image, price, and quantity.
+
+So, inside the `projects` folder, create a new folder named `project_12` and create a new file named `cartData.js` inside the `project_12` folder.
+
+```js {.line-numbers}
+// src/projects/project_12/cartData.js
+export const cartData = [
+  {
+    id: 1,
+    name: "Product 1",
+    image: "https://via.placeholder.com/150",
+    price: 100,
+    quantity: 1,
+  },
+  {
+    id: 2,
+    name: "Product 2",
+    image: "https://via.placeholder.com/150",
+    price: 200,
+    quantity: 1,
+  },
+  {
+    id: 3,
+    name: "Product 3",
+    image: "https://via.placeholder.com/150",
+    price: 300,
+    quantity: 1,
+  },
+  {
+    id: 4,
+    name: "Product 4",
+    image: "https://via.placeholder.com/150",
+    price: 400,
+    quantity: 1,
+  },
+];
+```
+
+We, already have a `global context` file in the `src` folder named `GlobalContextProvider.jsx` that we created in a previous project. We can use that file to create a global context for our cart state.
+
+Where we will load the `cartData`.
+
+```js {.line-numbers}
+// src/projects/project_12/GlobalContextProvider.jsx
+import React, { createContext, useState, useContext } from "react";
+import { cartData } from "./projects/project_12/cartData";
+
+const GlobalContext = createContext(); // creating a global context object
+
+export const useGlobalContext = () => {
+  return useContext(GlobalContext); // returning the context value using useContext hook
+};
+
+const GlobalContextProvider = ({ children }) => {
+  // destructuring the children prop
+  const [data, setData] = useState(cartData); // initializing state with cart data
+
+  return (
+    <GlobalContext.Provider value={{ data }}>{children}</GlobalContext.Provider>
+  );
+};
+export default GlobalContextProvider;
+
+```
+> Here, we are creating a global context object using `createContext` and providing the `cartData` as the initial state. We are also exporting a custom hook `useGlobalContext` to access the context value in other components.
+
+Now, let's setup a cart page where we can display the cart items and allow the user to add and remove items from the cart.
+
+We will do, the setup first then start adding the functionality.
+
+I want to make two components, one for the cart page and one for the cart items because the cart items will have it's own functionality like adding and removing items from the cart, updating the quantity, etc.
+
+So, create a new folder named `cart` inside the `project_12` folder and create a new file named `Cart.jsx` inside the `cart` folder.
+
+```js {.line-numbers}
+// src/projects/project_12/cart/Cart.jsx
+import React from "react";
+import { useGlobalContext } from "../GlobalContextProvider"; // importing the global context
+
+const Cart = () => {
+  const { data } = useGlobalContext(); // accessing the cart data from the global context
+
+  return (
+    <div>
+      <h2>Cart</h2>
+      <ul>
+        {data.map((item) => (
+          <li key={item.id}>
+            {item.name} - ${item.price} x {item.quantity}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+export default Cart;
+```
+
+> Here, we are accessing the cart data from the global context using the `useGlobalContext` hook and rendering the cart items in a list. We are displaying the product name, price, and quantity of each item in the cart.
+
+Now, we need to create a component for the cart items that will handle the functionality of adding and removing items from the cart, updating the quantity, etc.
+
