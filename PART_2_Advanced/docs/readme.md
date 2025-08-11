@@ -10668,7 +10668,7 @@ We, already have a `global context` file in the `src` folder named `GlobalContex
 Where we will load the `cartData`.
 
 ```js {.line-numbers}
-// src/projects/project_12/GlobalContextProvider.jsx
+// src/GlobalContextProvider.jsx
 import React, { createContext, useState, useContext } from "react";
 import { cartData } from "./projects/project_12/cartData";
 
@@ -10695,35 +10695,1006 @@ Now, let's setup a cart page where we can display the cart items and allow the u
 
 We will do, the setup first then start adding the functionality.
 
-I want to make two components, one for the cart page and one for the cart items because the cart items will have it's own functionality like adding and removing items from the cart, updating the quantity, etc.
+I want to make 3 components for the cart page.
 
-So, create a new folder named `cart` inside the `project_12` folder and create a new file named `Cart.jsx` inside the `cart` folder.
+- `Navbar`: A simple navbar that will display the cart icon and the number of items in the cart.
+- `Cart`: A component that will display the cart items and the total price.
+- `CartItem`: A component that will display a single cart item with the product name, image, price, quantity, and buttons to increase or decrease the quantity and remove the item from the cart.
+
+Let's start with the `Navbar` component. Create a new file named `Navbar.jsx` inside the `project_12` folder.
+
+```js {.line-numbers}import React from 'react'
+import { FaCartPlus } from 'react-icons/fa'
+const Navbar = () => {
+  return (
+    <div className="d-flex justify-content-between align-items-center mb-4">
+        {/* Left side: Title */}
+        <h3 className="mb-0 text-primary">Shopping Cart</h3>
+
+        {/* Right side: Cart Icon with badge */}
+        <div className="position-relative">
+          <FaCartPlus size={28} className="text-primary" />
+          <span
+            className="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle"
+            style={{
+              fontSize: "0.7rem",
+              width: "1.5rem",
+              height: "1.5rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "2px solid white",
+            }}
+          >
+            5
+          </span>
+        </div>
+      </div>
+  )
+}
+
+export default Navbar
+```
+> Here, we are using the `react-icons` library to display a cart icon and a badge to show the number of items in the cart. The badge is styled to look like a circle with a border and centered text.
+
+Now, let's create the `CartContainer` component that will display the cart items and the total price. Create a new file named `CartContainer.jsx` inside the `project_12` folder.
 
 ```js {.line-numbers}
-// src/projects/project_12/cart/Cart.jsx
+// src/projects/project_12/CartContainer.jsx
 import React from "react";
-import { useGlobalContext } from "../GlobalContextProvider"; // importing the global context
+import { useGlobalContext } from "../../GlobalContextProvider";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
 
-const Cart = () => {
-  const { data } = useGlobalContext(); // accessing the cart data from the global context
+const CartContainer = () => {
+  const { data } = useGlobalContext();
+
 
   return (
-    <div>
-      <h2>Cart</h2>
-      <ul>
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      
+      {/* Navbar */}
+      <Navbar />
+      
+      <ul className="list-group mb-4">
         {data.map((item) => (
-          <li key={item.id}>
-            {item.name} - ${item.price} x {item.quantity}
-          </li>
+          <CartItem key={item.id} item={item} />
         ))}
       </ul>
+
+      <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+      {/* Total */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="mb-0">Total</h5>
+        <h5 className="mb-0 text-primary">0.00</h5>
+      </div>
+
+      {/* Clear cart */}
+      <div className="text-end">
+        <button className="btn btn-outline-danger btn-sm">Clear Cart</button>
+      </div>
     </div>
   );
 };
-export default Cart;
+
+export default CartContainer;
 ```
 
-> Here, we are accessing the cart data from the global context using the `useGlobalContext` hook and rendering the cart items in a list. We are displaying the product name, price, and quantity of each item in the cart.
+> In the `CartContainer` component, we are using the `useGlobalContext` hook to access the cart data and rendering the `CartItem` component for each item in the cart. We are also displaying the total price and a button to clear the cart.
 
-Now, we need to create a component for the cart items that will handle the functionality of adding and removing items from the cart, updating the quantity, etc.
+Now, let's create the `CartItem` component that will display a single cart item with the product name, image, price, quantity, and buttons to increase or decrease the quantity and remove the item from the cart. Create a new file named `CartItem.jsx` inside the `project_12` folder.
 
+```js {.line-numbers}
+// src/projects/project_12/CartItem.jsx
+import React from "react";
+import { FaArrowAltCircleUp, FaArrowCircleDown, FaArrowUp, FaUps } from "react-icons/fa";
+
+const CartItem = ({ item }) => {
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {/* Left side: Image + Info */}
+      <div className="d-flex align-items-center">
+        <img
+          src={item.image}
+          alt={item.name}
+          className="me-3"
+          style={{ width: "60px", height: "60px", objectFit: "cover" }}
+        />
+        <div>
+          <h6 className="mb-1">{item.name}</h6>
+          <small className="text-muted">${item.price}</small>
+        </div>
+      </div>
+
+      {/* Right side: Quantity + Amount */}
+      <div
+      className="d-flex justify-content-between align-items-center"
+      >
+        <div className="d-flex flex-column align-items-center">
+        <button className="text-success btn">
+            <FaArrowAltCircleUp />
+            {/* <FaArrowUp /> */}
+        </button>
+        <span>{item.quantity}</span>
+        <button className="text-danger btn">
+            <FaArrowCircleDown />
+        </button>
+      </div>
+
+      {/* Item total price */}
+      <div className="ms-3 fw-bold">${item.price * item.quantity}</div>
+      </div>
+      
+    </li>
+  );
+};
+
+export default CartItem;
+```
+
+> In the `CartItem` component, we are displaying the product image, name, price, and quantity. We are also displaying buttons to increase or decrease the quantity and a total price for the item based on the quantity.
+
+After creating these components, we can now render the `CartContainer` component in the `App.jsx` file.
+
+```js {.line-numbers}
+// src/App.jsx
+import React from "react";
+import CartContainer from "./projects/project_12/CartContainer";
+
+const App = () => {
+  return (
+    <div>
+      <CartContainer />
+    </div>
+  );
+};
+export default App;
+```
+
+> You should see the cart page with the navbar, cart items, and total price displayed. The cart items are rendered from the `cartData` array we created earlier.
+
+![alt text](image-4.png)
+
+Now, we have a basic cart page setup. I'm will focus more on the functionality of adding, removing, and updating the quantity of items in the cart using the `useReducer` hook and less on the styling part.
+
+So, let's get started with the functionality.
+
+Let's set up `useReducer` to manage the cart state. 
+
+Let's make a new file named `cartReducer.js` inside the `project_12` folder and define the reducer function and action types.
+
+```js {.line-numbers}
+// src/projects/project_12/cartReducer.js
+import { cartData } from "./cartData"; // importing the dummy data
+
+export const reducer = (state, action)=>{
+  return state
+}
+
+export default reducer;
+```
+
+> Simple reducer function that takes the current state and the action object and returns the current state. We will implement the logic to handle different actions later.
+
+Let's go to the `context` file and import the `reducer` function and the action types.
+
+```js {.line-numbers}
+// src/projects/project_12/GlobalContextProvider.jsx
+import React, { createContext, useState, useContext, useReducer } from "react";
+import { cartData } from "./projects/project_12/cartData";
+import reducer from "./projects/project_12/cartReducer";
+
+const GlobalContext = createContext(); // creating a global context object
+
+export const useGlobalContext = () => {
+  return useContext(GlobalContext); // returning the context value using useContext hook
+};
+
+const initialState = {
+  data: cartData, // initializing state with cart data
+};
+
+const GlobalContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+
+  return (
+    <GlobalContext.Provider value={{ ...state, dispatch }}>
+      {children}
+    </GlobalContext.Provider>
+  );
+};
+export default GlobalContextProvider;
+```
+
+> Here, we are using the `useReducer` hook to manage the state and passing the `dispatch` function along with the state to the context value. This way, we can access the `dispatch` function in any component that uses the `useGlobalContext` hook.
+
+Now, let's build the functionalities one by one.
+
+First, let's implement the functionality to clear the cart when the user clicks on the "Clear Cart" button.
+
+```js {.line-numbers}
+// src/projects/project_12/cartReducer.js
+import { cartData } from "./cartData"; // importing the dummy data
+
+export const CLEAR_CART = "CLEAR_CART"; // defining a constant for the action type
+
+export const reducer = (state, action) => {
+  const { type } = action; // destructuring the action object to get the type
+
+  if (type === CLEAR_CART) {
+    return { ...state, data: [] }; // returning a new state with an empty cart
+  }
+
+  return state; // returning the current state if the action type is not matched
+};
+
+export default reducer;
+```
+
+> Here, we are defining a constant for the action type `CLEAR_CART` and implementing the logic to clear the cart in the reducer function. When the action type matches, we return a new state with an empty cart.
+
+Now, let's implement the functionality to clear the cart when the user clicks on the "Clear Cart" button in the `CartContainer` component.
+
+```js {.line-numbers}
+// src/projects/project_12/CartContainer.jsx
+import React from "react";
+import { useGlobalContext } from "../../GlobalContextProvider";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+import { CLEAR_CART } from "./cartReducer"; // importing the action type
+
+const CartContainer = () => {
+  const { data, dispatch } = useGlobalContext(); // accessing the data and dispatch function from the context
+
+  const clearCart = () => {
+    dispatch({ type: CLEAR_CART }); // dispatching an action to clear the cart
+  };
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Cart Items */}
+      {data.length === 0 ? (
+        <div className="alert alert-info text-center mb-4">
+          No items in the cart.
+        </div>
+      ) : (
+        <>
+          <ul className="list-group mb-4">
+            {data.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
+          </ul>
+          <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+          {/* Total */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Total</h5>
+            <h5 className="mb-0 text-primary">0.00</h5>
+          </div>
+
+          {/* Clear cart */}
+          <div className="text-end">
+            <button
+              className="btn btn-outline-danger btn-sm"
+              onClick={clearCart}
+              disabled={data.length === 0}
+            >
+              Clear Cart
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+export default CartContainer;
+```
+
+> Here, we are checking if the cart is empty and displaying a message if it is. If there are items in the cart, we render the cart items and the total price. We also added a `clearCart` function that dispatches an action to clear the cart when the "Clear Cart" button is clicked.
+
+Now, we can implement the easier stuffs, like the `total price` calculation and the `total items` count in the cart.
+
+We can just calculate the total price and total items count in the `context` file and add new state properties for them.
+
+```js {.line-numbers}
+// src/projects/project_12/GlobalContextProvider.jsx
+import React, { createContext, useState, useContext, useReducer } from "react";
+import { cartData } from "./projects/project_12/cartData";
+import reducer from "./projects/project_12/cartReducer";
+
+const GlobalContext = createContext(); // creating a global context object
+
+export const useGlobalContext = () => {
+  return useContext(GlobalContext); // returning the context value using useContext hook
+};
+
+const initialState = {
+  data: cartData, // initializing state with cart data
+  totalItems: cartData.reduce((acc, item) => acc + item.quantity, 0), // calculating total items count
+  totalPrice: cartData.reduce((acc, item) => acc + item.price * item.quantity, 0), // calculating total price
+};  
+
+const GlobalContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+
+  return (
+    <GlobalContext.Provider value={{ ...state, dispatch }}>
+      {children}
+    </GlobalContext.Provider>
+  );
+};
+export default GlobalContextProvider;
+```
+
+> Here, we are calculating the total items count and total price using the `reduce` method on the `cartData` array. We are also adding these properties to the initial state.
+
+Now, we can access the `totalItems` and `totalPrice` properties in the `CartContainer` and `Navbar` components and display them.
+
+```js {.line-numbers}
+// src/projects/project_12/CartContainer.jsx
+import React from "react";
+import { useGlobalContext } from "../../GlobalContextProvider";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+import { CLEAR_CART } from "./cartReducer"; // importing the action type
+
+const CartContainer = () => {
+  const { data, totalPrice, dispatch } = useGlobalContext(); // accessing the data, totalItems, totalPrice and dispatch function from the context
+
+  const clearCart = () => {
+    dispatch({ type: CLEAR_CART }); // dispatching an action to clear the cart
+  };
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Cart Items */}
+      {data.length === 0 ? (
+        <div className="alert alert-info text-center mb-4">
+          No items in the cart.
+        </div>
+      ) : (
+        <>
+          <ul className="list-group mb-4">
+            {data.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
+          </ul>
+          <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+          {/* Total */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Total</h5>
+            <h5 className="mb-0 text-primary">${totalPrice.toFixed(2)}</h5>
+          </div>
+
+          {/* Clear cart */}
+          <div className="text-end">
+            <button
+              className="btn btn-outline-danger btn-sm"
+              onClick={clearCart}
+              disabled={data.length === 0}
+            >
+              Clear Cart
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+export default CartContainer;
+
+```
+
+> Here, we are accessing the `totalItems` and `totalPrice` properties from the context and displaying them in the cart container. We are also passing the `totalItems` to the `Navbar` component.
+
+```js {.line-numbers}
+// src/projects/project_12/Navbar.jsx
+import React from 'react'
+import { FaCartPlus } from 'react-icons/fa'
+import { useGlobalContext } from '../../GlobalContextProvider'; // importing the custom hook to access global context
+
+const Navbar = () => {
+  const { totalItems } = useGlobalContext(); // accessing the totalItems from the context
+
+  return (
+    <div className="d-flex justify-content-between align-items-center mb-4">
+      {/* Left side: Title */}
+      <h3 className="mb-0 text-primary">Shopping Cart</h3>
+
+      {/* Right side: Cart Icon with badge */}
+      <div className="position-relative">
+        <FaCartPlus size={28} className="text-primary" />
+        <span
+          className="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle"
+          style={{
+            fontSize: "0.7rem",
+            width: "1.5rem",
+            height: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "2px solid white",
+          }}
+        >
+          {totalItems}
+        </span>
+      </div>
+    </div>
+  )
+}
+export default Navbar
+```
+
+> Here, we are accessing the `totalItems` from the context and displaying it in the badge of the cart icon in the navbar.
+
+Now, we have the total price and total items count displayed in the cart container and the navbar.
+
+Next, let's implement the functionality to increase and decrease the quantity of items in the cart.
+
+We can do this by adding two new action types in the `cartReducer.js` file: `INCREASE_QUANTITY` and `DECREASE_QUANTITY`.
+
+```js {.line-numbers}
+// src/projects/project_12/cartReducer.js
+import { cartData } from "./cartData"; // importing the dummy data
+export const INCREASE_QUANTITY = "INCREASE_QUANTITY"; // defining a constant for the action type
+export const DECREASE_QUANTITY = "DECREASE_QUANTITY"; // defining a constant for the action type
+export const CLEAR_CART = "CLEAR_CART"; // defining a constant for the action type
+
+export const reducer = (state, action) => {
+  const { type, payload } = action; // destructuring the action object to get the type and payload
+
+  if (type === CLEAR_CART) {
+    return { ...state, data: [] }; // returning a new state with an empty cart
+  }
+
+  if (type === INCREASE_QUANTITY) {
+    const newData = state.data.map((item) => {
+      if (item.id === payload.id) {
+        return { ...item, quantity: item.quantity + 1 }; // increasing the quantity of the item
+      }
+      return item; // returning the item as it is if the id does not match
+    });
+    return { ...state, data: newData }; // returning a new state with the updated cart data
+  }
+
+  if (type === DECREASE_QUANTITY) {
+    const newData = state.data.map((item) => {
+      if (item.id === payload.id) {
+        const newQuantity = item.quantity - 1;
+        return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 }; // decreasing the quantity of the item but not less than 1
+      }
+      return item; // returning the item as it is if the id does not match
+    });
+    return { ...state, data: newData }; // returning a new state with the updated cart data
+  }
+
+  throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
+};
+export default reducer;
+```
+
+> Here, we are defining two new action types `INCREASE_QUANTITY` and `DECREASE_QUANTITY` and implementing the logic to increase and decrease the quantity of items in the cart. When the action type matches, we return a new state with the updated cart data.
+
+Now, let's implement the functionality to increase and decrease the quantity of items in the `CartItem` component.
+
+```js {.line-numbers}
+// src/projects/project_12/CartItem.jsx
+import React from "react";
+import { FaArrowAltCircleUp, FaArrowCircleDown } from "react-icons/fa";
+import { useGlobalContext } from "../../GlobalContextProvider"; // importing the custom hook to access global context
+import { INCREASE_QUANTITY, DECREASE_QUANTITY } from "./cartReducer"; 
+
+const CartItem = ({ item }) => {
+  const { dispatch } = useGlobalContext(); // accessing the dispatch function from the context
+
+  const increaseQuantity = () => {
+    dispatch({ type: INCREASE_QUANTITY, payload: { id: item.id } }); // dispatching an action to increase the quantity
+  };
+
+  const decreaseQuantity = () => {
+    dispatch({ type: DECREASE_QUANTITY, payload: { id: item.id } }); // dispatching an action to decrease the quantity
+  };
+
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {/* Left side: Image + Info */}
+      <div className="d-flex align-items-center">
+        <img
+          src={item.image}
+          alt={item.name}
+          className="me-3"
+          style={{ width: "60px", height: "60px", objectFit: "cover" }}
+        />
+        <div>
+          <h6 className="mb-1">{item.name}</h6>
+          <small className="text-muted">${item.price}</small>
+        </div>
+      </div>
+
+      {/* Right side: Quantity + Amount */}
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-column align-items-center">
+          <button className="text-success btn" onClick={increaseQuantity}>
+            <FaArrowAltCircleUp />
+          </button>
+          <span>{item.quantity}</span>
+          <button
+            className="text-danger btn"
+            onClick={decreaseQuantity}
+            disabled={item.quantity <= 1} // disabling the button if the quantity is less than or equal to 1
+          >
+            <FaArrowCircleDown />
+          </button>
+        </div>
+
+        {/* Item total price */}
+        <div className="ms-3 fw-bold">${(item.price * item.quantity).toFixed(2)}</div>
+      </div>
+    </li>
+  );
+};
+export default CartItem;
+```
+
+> Here, we are accessing the `dispatch` function from the context and implementing the `increaseQuantity` and `decreaseQuantity` functions that dispatch actions to increase and decrease the quantity of items in the cart. We are also disabling the decrease button if the quantity is less than or equal to 1.
+
+Now, we have the functionality to increase and decrease the quantity of items in the cart.
+
+But there is a problem, the total price and the total items count are not updating when we increase or decrease the quantity of items in the cart.
+
+We can fix this by calculating the total price and total items count in the `cartReducer.js` file whenever we update the cart data.
+
+```js {.line-numbers}
+// src/projects/project_12/cartReducer.js
+export const INCREASE_QUANTITY = "INCREASE_QUANTITY"; 
+export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
+export const CLEAR_CART = "CLEAR_CART";
+
+const updateTotals = (data) => {
+  const totalItems = data.reduce((acc, item) => acc + item.quantity, 0); // calculating total items count
+  const totalPrice = data.reduce((acc, item) => acc + item.price * item.quantity, 0); // calculating total price
+  return { totalItems, totalPrice }; // returning the totals
+};
+
+export const reducer = (state, action) => {
+  const { type, payload } = action; // destructuring the action object to get the type and payload
+
+  if (type === CLEAR_CART) {
+    return { ...state, data: [], totalItems: 0, totalPrice: 0 }; // returning a new state with an empty cart and totals set to 0
+  }
+
+  if (type === INCREASE_QUANTITY) {
+    const newData = state.data.map((item) => {
+      if (item.id === payload.id) {
+        return { ...item, quantity: item.quantity + 1 }; // increasing the quantity of the item
+      }
+      return item; // returning the item as it is if the id does not match
+    });
+    const { totalItems, totalPrice } = updateTotals(newData); // updating the totals
+    return { ...state, data: newData, totalItems, totalPrice }; // returning a new state with the updated cart data and totals
+  }
+
+  if (type === DECREASE_QUANTITY) {
+    const newData = state.data.map((item) => {
+      if (item.id === payload.id) {
+        const newQuantity = item.quantity - 1;
+        return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 }; // decreasing the quantity of the item but not less than 1
+      }
+      return item; // returning the item as it is if the id does not match
+    });
+    const { totalItems, totalPrice } = updateTotals(newData); // updating the totals
+    return { ...state, data: newData, totalItems, totalPrice }; // returning a new state with the updated cart data and totals
+  }
+
+  throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
+};
+export default reducer;
+```
+
+> Here, we are defining a helper function `updateTotals` that calculates the total items count and total price based on the cart data. We call this function whenever we update the cart data to get the updated totals and return them in the new state.
+
+And we are actually returning the `totalItems` and `totalPrice` in the new state whenever we update the cart data.
+
+It's dine one thing that is left is to add remove button for each cart item to remove it from the cart and it's pretty simple to do.
+
+```js {.line-numbers}
+// src/projects/project_12/cartReducer.js
+export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
+export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
+export const CLEAR_CART = "CLEAR_CART";
+export const REMOVE_ITEM = "REMOVE_ITEM"; // add this line
+
+const updateTotals = (data) => {
+  const totalItems = data.reduce((acc, item) => acc + item.quantity, 0); // calculating total items count
+  const totalPrice = data.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  ); // calculating total price
+  return { totalItems, totalPrice }; // returning the totals
+};
+
+export const reducer = (state, action) => {
+  const { type, payload } = action; // destructuring the action object to get the type and payload
+
+  if (type === CLEAR_CART) {
+    return { ...state, data: [], totalItems: 0, totalPrice: 0 }; // returning a new state with an empty cart and totals set to 0
+  }
+
+  if (type === INCREASE_QUANTITY) {
+    const newData = state.data.map((item) => {
+      if (item.id === payload.id) {
+        return { ...item, quantity: item.quantity + 1 }; // increasing the quantity of the item
+      }
+      return item; // returning the item as it is if the id does not match
+    });
+    const { totalItems, totalPrice } = updateTotals(newData); // updating the totals
+    return { ...state, data: newData, totalItems, totalPrice }; // returning a new state with the updated cart data and totals
+  }
+
+  if (type === DECREASE_QUANTITY) {
+    const newData = state.data.map((item) => {
+      if (item.id === payload.id) {
+        const newQuantity = item.quantity - 1;
+        return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 }; // decreasing the quantity of the item but not less than 1
+      }
+      return item; // returning the item as it is if the id does not match
+    });
+    const { totalItems, totalPrice } = updateTotals(newData); // updating the totals
+    return { ...state, data: newData, totalItems, totalPrice }; // returning a new state with the updated cart data and totals
+  }
+
+  if (type === REMOVE_ITEM) {
+    const newData = state.data.filter((item) => item.id !== payload.id); // remove the item by id
+    const { totalItems, totalPrice } = updateTotals(newData); // update totals
+    return { ...state, data: newData, totalItems, totalPrice }; // return new state
+  }
+
+  throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
+};
+export default reducer;
+```
+
+> Here, we are defining a new action type `REMOVE_ITEM` and implementing the logic to remove an item from the cart by filtering out the item with the given id. We also update the totals after removing the item.
+
+Now, let's implement the functionality to remove an item from the cart in the `CartItem` component.
+
+```js {.line-numbers}
+// src/projects/project_12/CartItem.jsx
+import React from "react";
+import { FaArrowAltCircleUp, FaArrowCircleDown, FaTrash } from "react-icons/fa";
+import { useGlobalContext } from "../../GlobalContextProvider"; // importing the custom hook
+import { INCREASE_QUANTITY, DECREASE_QUANTITY, REMOVE_ITEM } from "./cartReducer"; // importing the action types
+
+const CartItem = ({ item }) => {
+  const { dispatch } = useGlobalContext(); // accessing the dispatch function from the context
+
+  const increaseQuantity = () => {
+    dispatch({ type: INCREASE_QUANTITY, payload: { id: item.id } }); // dispatching an action to increase the quantity
+  };
+
+  const decreaseQuantity = () => {
+    dispatch({ type: DECREASE_QUANTITY, payload: { id: item.id } }); // dispatching an action to decrease the quantity
+  };
+
+  const removeItem = () => {
+    dispatch({ type: REMOVE_ITEM, payload: { id: item.id } }); // dispatching an action to remove the item
+  };
+
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {/* Left side: Image + Info */}
+      <div className="d-flex align-items-center">
+        <img
+          src={item.image}
+          alt={item.name}
+          className="me-3"
+          style={{ width: "60px", height: "60px", objectFit: "cover" }}
+        />
+        <div>
+          <h6 className="mb-1">{item.name}</h6>
+          <small className="text-muted">${item.price}</small>
+        </div>
+      </div>
+
+      {/* Right side: Quantity + Amount */}
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-column align-items-center">
+          <button className="text-success btn" onClick={increaseQuantity}>
+            <FaArrowAltCircleUp />
+          </button>
+          <span>{item.quantity}</span>
+          <button
+            className="text-danger btn"
+            onClick={decreaseQuantity}
+            disabled={item.quantity <= 1} // disabling the button if the quantity is less than or equal to 1
+          >
+            <FaArrowCircleDown />
+          </button>
+        </div>
+
+        {/* Item total price */}
+        <div className="ms-3 fw-bold">${(item.price * item.quantity).toFixed(2)}</div>
+
+        {/* Remove Item Button */}
+        <button className="btn text-danger" onClick={removeItem}>
+          <FaTrash />
+        </button>
+      </div>
+    </li>
+  );
+};
+export default CartItem; 
+```
+
+> Here, we are accessing the `dispatch` function from the context and implementing the `removeItem` function that dispatches an action to remove the item from the cart. We also added a button to remove the item with a trash icon.
+
+And we have the functionalities ready.
+
+One last thing I want to add is loading the data from an API instead of directly importing the `cartData` from the `cartData.js` file.
+
+We learned to start a dummy api server using `json-server` in a previous project, so we can use that to load the cart data.
+
+
+```bash
+npm install -g json-server
+```
+
+Let's create a new file named `db.json` outside the `src` folder and add the following data:
+
+```json
+{
+  "destinations": [
+    ... // other data
+  ],
+  "cartData": [
+    {
+      "id": 1,
+      "name": "Product 1",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 100,
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 200,
+      "quantity": 1
+    },
+    {
+      "id": 3,
+      "name": "Product 3",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 300,
+      "quantity": 1
+    },
+    {
+      "id": 4,
+      "name": "Product 4",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 400,
+      "quantity": 1
+    }
+  ]
+}
+```
+
+> Here, we are creating a new `cartData` array with some sample products. You can add more products as per your requirement.
+
+> PS: There is another endpoint `destinations` in the `db.json` file which is not used in this project, but when we add `cartData` to the `db.json` file, it will be available in the API response as a new endpoint, you can remove or keep the `destinations` endpoint as per your requirement.
+
+
+```bash
+json-server --watch db.json
+```
+
+Our `dummy api` endpoint is `http://localhost:3000/cartData` and we can use this endpoint to fetch the cart data.
+
+We have axios installed in the project, so we can use it to fetch the data from the API.
+
+```bash
+npm install axios
+```
+
+Now, I want to load the data from the API when the cart page loads. So, we need a new state to manage the loading state and an effect to fetch the data from the API. I want to load it as a side effect in the `cartContainer` component.
+
+The use dispatch to pass data to the reducer and update the state.
+
+So, let's update the `CartContainer` component to fetch the data from the API and dispatch it to the reducer.
+
+We will add a new state to the context to manage the loading state and an effect to fetch the data from the API when the component mounts.
+
+```js {.line-numbers}
+// src/projects/project_12/CartContainer.jsx
+export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
+export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
+export const CLEAR_CART = "CLEAR_CART";
+export const REMOVE_ITEM = "REMOVE_ITEM"; // add this line
+
+const updateTotals = (data) => {
+  ... // existing logic to calculate total items and total price
+};
+
+export const reducer = (state, action) => {
+  const { type, payload } = action; // destructuring the action object to get the type and payload
+
+  ... // existing logic for CLEAR_CART, INCREASE_QUANTITY, DECREASE_QUANTITY
+
+  if (type === "SET_LOADING") {
+    return { ...state, loading: payload }; // setting the loading state
+  }
+
+  if (type === "DISPLAY_CART") {
+    return { ...state, data: payload }; // setting the cart data
+  }
+
+  throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
+};
+export default reducer;
+```
+
+```js {.line-numbers}
+// src/projects/project_12/GlobalContextProvider.jsx
+import React, { createContext, useState, useContext, useReducer } from "react";
+import { cartData } from "./projects/project_12/cartData";
+import reducer from "./projects/project_12/cartReducer";
+
+const GlobalContext = createContext(); // creating a global context object
+
+export const useGlobalContext = () => {
+  return useContext(GlobalContext); // returning the context value using useContext hook
+};
+
+const initialState = {
+  loading: true, // initial loading state
+  data: [], // initial cart data
+  totalItems: 0, // total items in the cart
+  totalPrice: 0, // total price of the items in the cart
+};  
+
+const GlobalContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
+
+  return (
+    <GlobalContext.Provider value={{ ...state, dispatch }}>
+      {children}
+    </GlobalContext.Provider>
+  );
+};
+export default GlobalContextProvider;
+```
+
+```js {.line-numbers}
+// src/projects/project_12/CartContainer.jsx
+import React, { useEffect } from "react";
+import { useGlobalContext } from "../../GlobalContextProvider";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+import { CLEAR_CART } from "./cartReducer";
+
+const CartContainer = () => {
+  const { data, totalPrice, dispatch, loading } = useGlobalContext();
+
+  const clearCart = () => {
+    dispatch({ type: CLEAR_CART });
+  };
+
+  const url = "http://localhost:3000/cartData"; // URL to fetch cart data
+
+  const fetchData = async () => {
+    dispatch({ type: "SET_LOADING", payload: true }); // setting loading state to true
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      dispatch({ type: "DISPLAY_CART", payload: data }); // dispatching the fetched data to the context
+    } catch (error) {
+      console.error("Failed to fetch cart data:", error);
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false }); // setting loading state to false
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // fetching data when the component mounts
+  }, []); // empty dependency array to run only once
+
+  if (loading) {
+    return <h1 className="display-1 text-center text-secondary">loading...</h1>;
+  }
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Cart Items */}
+      {data.length === 0 ? (
+        <div className="alert alert-info text-center mb-4">
+          No items in the cart.
+        </div>
+      ) : (
+        <>
+          <ul className="list-group mb-4">
+            {data.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
+          </ul>
+          <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+          {/* Total */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Total</h5>
+            <h5 className="mb-0 text-primary">${totalPrice.toFixed(2)}</h5>
+          </div>
+
+          {/* Clear cart */}
+          <div className="text-end">
+            <button
+              className="btn btn-outline-danger btn-sm"
+              onClick={clearCart}
+              disabled={data.length === 0}
+            >
+              Clear Cart
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+export default CartContainer;
+```
+
+> Here, we are adding a new state `loading` to manage the loading state and an effect to fetch the data from the API when the component mounts. We are also dispatching actions to set the loading state and display the cart data in the context.
+
+> We are also checking the `loading` state and displaying a loading message if the data is still being fetched.
+
+> Now, when you run the app, it will fetch the cart data from the API and display it in the cart page.
+
+> You can also add more products to the `db.json` file and they will be displayed in the cart page.
+
+And that's it! We have successfully built a shopping cart page using React, `useReducer`, and `json-server` to fetch the cart data from an API.
+
+Now, if you look at the `globalContextProvider.jsx` file, you will see that it is not as messy as we saw it was when we did the `e-com landing page` project and Even though we have to write some boilerplate code to set up the `useReducer` hook, it is still some how much cleaner and easy to maintain than using raw `useState` hook or setting up a `context` with `useState` hook.
+
+I know we are still using `context` to manage the global state, but it is the structure of the `useReducer` hook that makes it cleaner and easier to manage the state.
+
+I hope by this project you have a keener understanding of how to use the `useReducer` hook in a real-world application and how it can help you manage complex state logic in a cleaner way.
+
+JUST REMEMBER:
+
+  _JUST MAKE A ACTION_
+
+
+And with this we have almost officially covered all the important concepts of React and how to use them in a real-world application.
+
+Just some extra left over concepts left to cover, like `useMemo`, `useCallback`.
+
+Than we can go to the real scary stuff. 
+
+MAY ALLAH HAVE MERCY ON US ALL.
+
+If you have followed up untill now, you are doing great and you are almost there.

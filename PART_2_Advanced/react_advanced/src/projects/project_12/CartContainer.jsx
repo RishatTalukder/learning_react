@@ -1,60 +1,83 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGlobalContext } from "../../GlobalContextProvider";
 import CartItem from "./CartItem";
 import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+import { CLEAR_CART } from "./cartReducer";
 
 const CartContainer = () => {
-  const { data } = useGlobalContext();
+  const { data, totalPrice, dispatch, loading } = useGlobalContext();
 
+  const clearCart = () => {
+    dispatch({ type: CLEAR_CART });
+  };
+
+  const url = "http://localhost:3000/cartData"; // URL to fetch cart data
+
+  const fetchData = async () => {
+    dispatch({ type: "SET_LOADING", payload: true }); // setting loading state to true
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      dispatch({ type: "DISPLAY_CART", payload: data }); // dispatching the fetched data to the context
+    } catch (error) {
+      console.error("Failed to fetch cart data:", error);
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false }); // setting loading state to false
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // fetching data when the component mounts
+  }, []); // empty dependency array to run only once
+
+  if (loading) {
+    return <h1 className="display-1 text-center text-secondary">loading...</h1>;
+  }
 
   return (
     <div
       className="container py-4"
       style={{ maxWidth: "600px", margin: "auto" }}
     >
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        {/* Left side: Title */}
-        <h3 className="mb-0 text-primary">Shopping Cart</h3>
+      {/* Navbar */}
+      <Navbar />
 
-        {/* Right side: Cart Icon with badge */}
-        <div className="position-relative">
-          <FaCartPlus size={28} className="text-primary" />
-          <span
-            className="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle"
-            style={{
-              fontSize: "0.7rem",
-              width: "1.5rem",
-              height: "1.5rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "2px solid white",
-            }}
-          >
-            5
-          </span>
+      {/* Cart Items */}
+      {data.length === 0 ? (
+        <div className="alert alert-info text-center mb-4">
+          No items in the cart.
         </div>
-      </div>
+      ) : (
+        <>
+          <ul className="list-group mb-4">
+            {data.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
+          </ul>
+          <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+          {/* Total */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Total</h5>
+            <h5 className="mb-0 text-primary">${totalPrice.toFixed(2)}</h5>
+          </div>
 
-      <ul className="list-group mb-4">
-        {data.map((item) => (
-          <CartItem key={item.id} item={item} />
-        ))}
-      </ul>
-
-      <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
-      {/* Total */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="mb-0">Total</h5>
-        <h5 className="mb-0 text-primary">${total}</h5>
-      </div>
-
-      {/* Clear cart */}
-      <div className="text-end">
-        <button className="btn btn-outline-danger btn-sm">Clear Cart</button>
-      </div>
+          {/* Clear cart */}
+          <div className="text-end">
+            <button
+              className="btn btn-outline-danger btn-sm"
+              onClick={clearCart}
+              disabled={data.length === 0}
+            >
+              Clear Cart
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
-
 export default CartContainer;

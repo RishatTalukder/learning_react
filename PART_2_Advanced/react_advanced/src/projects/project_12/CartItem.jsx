@@ -1,7 +1,23 @@
 import React from "react";
-import { FaArrowAltCircleUp, FaArrowCircleDown, FaArrowUp, FaUps } from "react-icons/fa";
+import { FaArrowAltCircleUp, FaArrowCircleDown, FaTrash } from "react-icons/fa";
+import { useGlobalContext } from "../../GlobalContextProvider"; // importing the custom hook
+import { INCREASE_QUANTITY, DECREASE_QUANTITY, REMOVE_ITEM } from "./cartReducer"; // importing the action types
 
 const CartItem = ({ item }) => {
+  const { dispatch } = useGlobalContext(); // accessing the dispatch function from the context
+
+  const increaseQuantity = () => {
+    dispatch({ type: INCREASE_QUANTITY, payload: { id: item.id } }); // dispatching an action to increase the quantity
+  };
+
+  const decreaseQuantity = () => {
+    dispatch({ type: DECREASE_QUANTITY, payload: { id: item.id } }); // dispatching an action to decrease the quantity
+  };
+
+  const removeItem = () => {
+    dispatch({ type: REMOVE_ITEM, payload: { id: item.id } }); // dispatching an action to remove the item
+  };
+
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
       {/* Left side: Image + Info */}
@@ -19,26 +35,30 @@ const CartItem = ({ item }) => {
       </div>
 
       {/* Right side: Quantity + Amount */}
-      <div
-      className="d-flex justify-content-between align-items-center"
-      >
+      <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex flex-column align-items-center">
-        <button className="text-success btn">
+          <button className="text-success btn" onClick={increaseQuantity}>
             <FaArrowAltCircleUp />
-            {/* <FaArrowUp /> */}
-        </button>
-        <span>{item.quantity}</span>
-        <button className="text-danger btn">
+          </button>
+          <span>{item.quantity}</span>
+          <button
+            className="text-danger btn"
+            onClick={decreaseQuantity}
+            disabled={item.quantity <= 1} // disabling the button if the quantity is less than or equal to 1
+          >
             <FaArrowCircleDown />
+          </button>
+        </div>
+
+        {/* Item total price */}
+        <div className="ms-3 fw-bold">${(item.price * item.quantity).toFixed(2)}</div>
+
+        {/* Remove Item Button */}
+        <button className="btn text-danger" onClick={removeItem}>
+          <FaTrash />
         </button>
       </div>
-
-      {/* Item total price */}
-      <div className="ms-3 fw-bold">${item.price * item.quantity}</div>
-      </div>
-      
     </li>
   );
 };
-
 export default CartItem;
