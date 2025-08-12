@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import axios from "axios";
 import { useGlobalContext } from "../../GlobalContextProvider";
 import CartItem from "./CartItem";
 import { FaCartPlus } from "react-icons/fa";
@@ -17,12 +18,8 @@ const CartContainer = () => {
   const fetchData = async () => {
     dispatch({ type: "SET_LOADING", payload: true }); // setting loading state to true
     try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      dispatch({ type: "DISPLAY_CART", payload: data }); // dispatching the fetched data to the context
+      const response = await axios.get(url);
+      dispatch({ type: "DISPLAY_CART", payload: response.data }); // dispatching the fetched data to the context
     } catch (error) {
       console.error("Failed to fetch cart data:", error);
     } finally {
@@ -80,4 +77,3 @@ const CartContainer = () => {
     </div>
   );
 };
-export default CartContainer;
