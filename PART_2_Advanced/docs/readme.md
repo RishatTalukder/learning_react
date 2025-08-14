@@ -6108,8 +6108,8 @@ const ColorBox = ({ hex, weight, rgb }) => {
   );
 };
 export default ColorBox;
-
 ```
+
 > In this component, we are receiving the `hex`, `weight`, and `rgb` properties from the parent component and rendering the color box with the color code inside it. Now we can connect this component to the `ColorGenerator` component and pass the color properties to it.
 
 ```js {.line-numbers}
@@ -6168,10 +6168,7 @@ const ColorGenerator = () => {
       {colors.length > 0 && (
         <div className="row">
           {colors.map((colorObj, index) => (
-            <ColorBox
-              key={index}
-              {...colorObj}
-              />
+            <ColorBox key={index} {...colorObj} />
           ))}
         </div>
       )}
@@ -6183,7 +6180,7 @@ export default ColorGenerator;
 
 > I imported the `ColorBox` component and used it inside the `map()` method to render each color box. I passed the `hex`, `weight`, and `rgb` properties to the `ColorBox` component using the spread operator `{...colorObj}`.
 
-Buuuuuut, you might see something unusual in the console. The `ColorBox` component is not rendering the `hex` property correctly. Actually it's not rendering anything at all. This is because the hex property is a `getter` method in the `Values` class and it returns a string representation of the color. It is not enumerable. To prove my hypothesis, remember we installed a extenstion called `React Developer Tools`? If you go to your app in the browser and open the console and in that section the should be a option called `Components`, click on it and then select the `ColorGenerator` component. You should see the `colors` state variable and if you expand it, you will see that the `hex` property is not there. This is because it is a getter method and it is not enumerable. 
+Buuuuuut, you might see something unusual in the console. The `ColorBox` component is not rendering the `hex` property correctly. Actually it's not rendering anything at all. This is because the hex property is a `getter` method in the `Values` class and it returns a string representation of the color. It is not enumerable. To prove my hypothesis, remember we installed a extenstion called `React Developer Tools`? If you go to your app in the browser and open the console and in that section the should be a option called `Components`, click on it and then select the `ColorGenerator` component. You should see the `colors` state variable and if you expand it, you will see that the `hex` property is not there. This is because it is a getter method and it is not enumerable.
 
 So, what do we do now? We pass the `hex` property separately to the `ColorBox` component instead of using the spread operator. Let's update the `ColorGenerator` component to pass the `hex` property separately.
 
@@ -6191,21 +6188,21 @@ So, what do we do now? We pass the `hex` property separately to the `ColorBox` c
 // src/projects/project_8/ColorGenerator.jsx
 import React, { useState } from "react";
 import Values from "values.js"; // importing the Values class from the values.js library
-import ColorBox from "./ColorBox"; 
+import ColorBox from "./ColorBox";
 
 const ColorGenerator = () => {
-  const [color, setColor] = useState(""); 
+  const [color, setColor] = useState("");
   const [colors, setColors] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     try {
-      const values = new Values(color).all(); 
-      setColors(values); 
-      setIsInvalid(false); 
+      const values = new Values(color).all();
+      setColors(values);
+      setIsInvalid(false);
     } catch (error) {
-      setIsInvalid(true); 
-      setColors([]); 
+      setIsInvalid(true);
+      setColors([]);
     }
   };
 
@@ -6322,7 +6319,6 @@ const ColorBox = ({ hex, weight }) => {
 };
 
 export default ColorBox;
-
 ```
 
 This should give us a nice looking color palette with the color code displayed in the top left corner and the weight of the color displayed in the center of the box. The box will also have a square shape with the background color set to the `hex` value.
@@ -6333,7 +6329,7 @@ One thing that still pokes my eye is that the weight of the color is displayed b
 // src/projects/project_8/ColorBox.jsx
 import React from "react";
 
-const ColorBox = ({ hex, weight, index}) => {
+const ColorBox = ({ hex, weight, index }) => {
   const textColor = index > 10 ? "text-white" : "text-dark"; // setting the text color based on the index
   return (
     <div className="col-2 p-0">
@@ -6369,7 +6365,6 @@ const ColorBox = ({ hex, weight, index}) => {
 };
 
 export default ColorBox;
-
 ```
 
 also,
@@ -6380,7 +6375,7 @@ we need to pass the `index` prop to the `ColorBox` component from the `ColorGene
 // src/projects/project_8/ColorGenerator.jsx
 import React, { useState } from "react";
 import Values from "values.js"; // importing the Values class from the values.js library
-import ColorBox from "./ColorBox";  
+import ColorBox from "./ColorBox";
 
 const ColorGenerator = () => {
   ... // rest of the code remains the same
@@ -6400,11 +6395,12 @@ const ColorGenerator = () => {
         </div>
       )}
     </div>
-  );  
+  );
 };
 
 export default ColorGenerator;
 ```
+
 > Now, the text color will change based on the index of the color in the array. If the index is greater than 10, the text color will be white, otherwise it will be black.
 
 That's it! We have a working `Color Generator` app that allows users to generate shades of a color based on the hexadecimal color code they enter. The app displays the generated colors as a list of color boxes with the color code and weight displayed inside them. The text color changes based on the background color to ensure readability.
@@ -6478,7 +6474,7 @@ const ColorBox = ({ hex, weight, index }) => {
   const handleClick = () => {
     navigator.clipboard.writeText(`#${hex}`);
     setIsCopied(true); // setting the copied state to true
-  }
+  };
 
   useEffect(() => {
     let timer;
@@ -6521,7 +6517,9 @@ const ColorBox = ({ hex, weight, index }) => {
         </div>
 
         {isCopied && (
-          <div className={`position-absolute bottom-0 start-50 translate-middle-x ${textColor} p-1 rounded fw-semibold`}>
+          <div
+            className={`position-absolute bottom-0 start-50 translate-middle-x ${textColor} p-1 rounded fw-semibold`}
+          >
             Copied to clipboard!
           </div>
         )}
@@ -6531,9 +6529,10 @@ const ColorBox = ({ hex, weight, index }) => {
 };
 export default ColorBox;
 ```
+
 > In this code, I created a state variable called `isCopied` to hold the copied state. When the user clicks on the color box, it will set the `isCopied` state to true and show the alert message inside the color box. The alert message will disappear after 2 seconds using the `setTimeout` function. I also used the `useEffect` hook to clear the timer when the component unmounts or when the `isCopied` state changes.
 
-Now you might think what is happening inside the `useEffect` hook. The `useEffect` hook is used to perform side effects in functional components. In this case, we are using it to set up a timer that will reset the `isCopied` state after 2 seconds and then I'm `returning` a `function` that will clear the timer when the component unmounts or when the `isCopied` state changes. 
+Now you might think what is happening inside the `useEffect` hook. The `useEffect` hook is used to perform side effects in functional components. In this case, we are using it to set up a timer that will reset the `isCopied` state after 2 seconds and then I'm `returning` a `function` that will clear the timer when the component unmounts or when the `isCopied` state changes.
 
 This is called a `cleanup function`. Here is a nice example for you
 
@@ -6541,7 +6540,7 @@ This is called a `cleanup function`. Here is a nice example for you
 
 Make a new folder named `cleanup_example` inside the `src` folder. Inside this folder, create a new file named `CleanupExample.jsx`. In this file, we will create a simple component that demonstrates the use of the cleanup function in the `useEffect` hook.
 
-```js {.line-numbers} 
+```js {.line-numbers}
 // src/cleanup_example/CleanupExample.jsx
 import React, { useState, useEffect } from "react";
 
@@ -6556,16 +6555,16 @@ const CleanupExample = () => {
   );
 };
 
-  const Hello = () => {
-    useEffect(() => {
-      console.log("Hello component mounted");
-      setInterval(() => {
-        console.log("Hello component is still mounted");
-      }, 1000);
-    }, []);
+const Hello = () => {
+  useEffect(() => {
+    console.log("Hello component mounted");
+    setInterval(() => {
+      console.log("Hello component is still mounted");
+    }, 1000);
+  }, []);
 
-    return <h2>Hello</h2>;
-  };
+  return <h2>Hello</h2>;
+};
 export default CleanupExample;
 ```
 
@@ -6614,18 +6613,18 @@ const Hello = () => {
 };
 export default CleanupExample;
 ```
-> In this code, I added a cleanup function to the `useEffect` hook that clears the interval when the `Hello` component unmounts. Now, when you toggle the `toggle` state to false, the interval will be cleared and you will not see any more messages in the console.
 
+> In this code, I added a cleanup function to the `useEffect` hook that clears the interval when the `Hello` component unmounts. Now, when you toggle the `toggle` state to false, the interval will be cleared and you will not see any more messages in the console.
 
 And we did it! we have a functional `Color Generator` app that allows users to generate shades of a color based on the hexadecimal color code they enter. The app displays the generated colors as a list of color boxes with the color code and weight displayed inside them. The text color changes based on the background color to ensure `readability`. The user can also copy the color code to the clipboard by clicking on the color box and an alert message is displayed inside the color box for a few seconds.
 
-And we can stop right here with this project... 
+And we can stop right here with this project...
 
 BUUUUUUUUT! I just want to add one last touch to the UI to make it more user-friendly.
 
-When the app start there is nothing on the screen, accept the input field and the button. I want to render default colors when the app starts so that the user can see some colors on the screen and get an idea of how the app works. 
+When the app start there is nothing on the screen, accept the input field and the button. I want to render default colors when the app starts so that the user can see some colors on the screen and get an idea of how the app works.
 
-We can just do that by creating a default colors array and rendering it in the component. 
+We can just do that by creating a default colors array and rendering it in the component.
 
 ```js {.line-numbers}
 // src/projects/project_8/ColorGenerator.jsx
@@ -6635,9 +6634,7 @@ import ColorBox from "./ColorBox";
 
 const ColorGenerator = () => {
   const [color, setColor] = useState("");
-  const [colors, setColors] = useState(
-    new Values("#ff5733").all()
-  ); // initializing with a default color
+  const [colors, setColors] = useState(new Values("#ff5733").all()); // initializing with a default color
   const [isInvalid, setIsInvalid] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -6709,12 +6706,13 @@ Now we can do another one!
 This project is the `To-Do List` app in steriods. We will build `task keeping app` that allows users to create, edit, and delete tasks. The app will have a simple and intuitive user interface that allows users to manage their tasks easily.
 
 The app will have the following features:
+
 - Add new tasks.
 - Edit existing tasks.
 - Delete tasks.
 - Some other small features to enhance the user experience.
 
-To build this app, we will use React and some of the concepts we have learned so far. 
+To build this app, we will use React and some of the concepts we have learned so far.
 
 Let's get started!
 
@@ -6727,34 +6725,31 @@ Let's get started!
 Now, let's make the `TaskKeeper.jsx` file the main component of our app. This component will be responsible for rendering the UI and managing the state of the app.
 
 ```js {.line-numbers}
-import React from 'react'
+import React from "react";
 
 const TaskKeeper = () => {
   return (
-    <div
-    className='d-flex justify-content-center align-items-center mt-5'
-    >
+    <div className="d-flex justify-content-center align-items-center mt-5">
       <div
-      className='bg-light p-3 rounded shadow'
-        style={{ width: '100%', maxWidth: '500px' }}
+        className="bg-light p-3 rounded shadow"
+        style={{ width: "100%", maxWidth: "500px" }}
       >
-        <div style={{ height: '20px' }} className="mb-2 text-danger text-center">
+        <div
+          style={{ height: "20px" }}
+          className="mb-2 text-danger text-center"
+        >
           Alert goes here
         </div>
-        <h1
-        className='text-center text-primary mb-2'
-        >
-            Task Keeper
-        </h1>
+        <h1 className="text-center text-primary mb-2">Task Keeper</h1>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TaskKeeper
+export default TaskKeeper;
 ```
 
-Here I made a small component that renders a centered box with a title and an alert message. This will be the main component of our app. 
+Here I made a small component that renders a centered box with a title and an alert message. This will be the main component of our app.
 
 We can show different types of alerts in this box, like success, error, or info messages. For now, I just added a placeholder for the alert message.
 
@@ -6762,8 +6757,8 @@ Now, let's render this component in the `App.jsx` file.
 
 ```js {.line-numbers}
 // src/App.jsx
-import React from 'react';
-import TaskKeeper from './projects/project_9/TaskKeeper';   
+import React from "react";
+import TaskKeeper from "./projects/project_9/TaskKeeper";
 
 const App = () => {
   return (
@@ -6789,30 +6784,27 @@ So, let's start with the state variables. We will use the `useState` hook to cre
 
 ```js {.line-numbers}
 // src/projects/project_9/TaskKeeper.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 const TaskKeeper = () => {
   const [tasks, setTasks] = useState([]); // state variable to hold the tasks
   const [inputValue, setInputValue] = useState(""); // state variable to hold the input value for the new task
-  const [alert, setAlert] = useState({show:false, message: "", type: "" }); // state variable to hold the alert message and its type
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" }); // state variable to hold the alert message and its type
   const [editingTaskId, setEditingTaskId] = useState(null); // state variable to hold the editing task id
   const [isEditing, setIsEditing] = useState(false); // state variable to hold if we are in editing mode or not
 
   return (
-    <div
-      className='d-flex justify-content-center align-items-center mt-5'
-    >
+    <div className="d-flex justify-content-center align-items-center mt-5">
       <div
-        className='bg-light p-3 rounded shadow'
-        style={{ width: '100%', maxWidth: '500px' }}
+        className="bg-light p-3 rounded shadow"
+        style={{ width: "100%", maxWidth: "500px" }}
       >
-        <div style={{ height: '20px' }} className="mb-2 text-danger text-center">
+        <div
+          style={{ height: "20px" }}
+          className="mb-2 text-danger text-center"
+        >
           {alert.message}
         </div>
-        <h1
-          className='text-center text-primary mb-2'
-        >
-          Task Keeper
-        </h1>
+        <h1 className="text-center text-primary mb-2">Task Keeper</h1>
       </div>
     </div>
   );
@@ -6824,11 +6816,11 @@ Now that we have the state variables set up, let's create a form to add new task
 
 ```js {.line-numbers}
 // src/projects/project_9/TaskKeeper.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 const TaskKeeper = () => {
   const [tasks, setTasks] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [alert, setAlert] = useState({show:false, message: "", type: "" });
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -6844,31 +6836,31 @@ const TaskKeeper = () => {
     };
     setTasks([...tasks, newTask]); // adding the new task to the tasks array
     setInputValue(""); // clearing the input field
-    setAlert({ show: true, message: "Task added successfully", type: "success" });
-  };  
+    setAlert({
+      show: true,
+      message: "Task added successfully",
+      type: "success",
+    });
+  };
 
   return (
-    <div
-      className='d-flex justify-content-center align-items-center mt-5'
-    >
+    <div className="d-flex justify-content-center align-items-center mt-5">
       <div
-        className='bg-light p-3 rounded shadow'
-        style={{ width: '100%', maxWidth: '500px' }}
+        className="bg-light p-3 rounded shadow"
+        style={{ width: "100%", maxWidth: "500px" }}
       >
-        <div style={{ height: '30px' }} className="mb-2 text-center">
-          {
-            alert.show && (
-              <div className={`bg-${alert.type === "error" ? "danger" : "success"} text-white p-1 rounded`}>
-                {alert.message}
-              </div>
-            )
-          }
+        <div style={{ height: "30px" }} className="mb-2 text-center">
+          {alert.show && (
+            <div
+              className={`bg-${
+                alert.type === "error" ? "danger" : "success"
+              } text-white p-1 rounded`}
+            >
+              {alert.message}
+            </div>
+          )}
         </div>
-        <h1
-          className='text-center text-primary mb-2'
-        >
-          Task Keeper
-        </h1>
+        <h1 className="text-center text-primary mb-2">Task Keeper</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <input
@@ -6910,18 +6902,16 @@ const TaskItem = ({ task }) => {
   );
 };
 export default TaskItem;
-
 ```
 
 Now, we add this component to the `TaskKeeper.jsx` file and use it to render each task in the list. We will also pass the task object as a prop to the `TaskItem` component.
 
 ```js {.line-numbers}
 // src/projects/project_9/TaskKeeper.jsx
-import React, { useState } from 'react';
-import TaskItem from './Components/TaskItem'; // importing the TaskItem component
+import React, { useState } from "react";
+import TaskItem from "./Components/TaskItem"; // importing the TaskItem component
 
 const TaskKeeper = () => {
-
   const [tasks, setTasks] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
@@ -7008,7 +6998,6 @@ const TaskKeeper = () => {
   );
 };
 export default TaskKeeper;
-
 ```
 
 > In this code, I added a new section below the form to render the list of tasks. If there are no tasks, it will show a message "No tasks added...". If there are tasks, it will render them using the `TaskItem` component. Each task is passed as a prop to the `TaskItem` component.
@@ -7041,7 +7030,7 @@ const TaskKeeper = () => {
   }, [alert.show]);
 
   ... // rest of the code remains the same
-  
+
 }
 export default TaskKeeper;
 
@@ -7064,7 +7053,7 @@ Now, we can import the icons we want to use in the `TaskItem.jsx` file. We will 
 ```js {.line-numbers}
 // src/projects/project_9/Components/TaskItem.jsx
 import React from "react";
-import { FaTrash, FaEdit } from "react-icons/fa"; // importing the icons  
+import { FaTrash, FaEdit } from "react-icons/fa"; // importing the icons
 
 const TaskItem = ({ task }) => {
   return (
@@ -7088,7 +7077,7 @@ export default TaskItem;
 
 Now, we need to add the functionality to edit and delete tasks. Let's handle the delete functionality first. We will pass a `deleteTask` function as a prop to the `TaskItem` component and call it when the delete button is clicked.
 
-```js {.line-numbers} 
+```js {.line-numbers}
 // src/projects/project_9/TaskKeeper.jsx
 import React, { useState, useEffect } from 'react';
 import TaskItem from './Components/TaskItem';
@@ -7229,8 +7218,8 @@ Now, let's handle the edit functionality. We will add a function to handle the e
 
 ```js {.line-numbers}
 // src/projects/project_9/TaskKeeper.jsx
-import React, { useState, useEffect } from 'react';
-import TaskItem from './Components/TaskItem';
+import React, { useState, useEffect } from "react";
+import TaskItem from "./Components/TaskItem";
 
 const TaskKeeper = () => {
   const [tasks, setTasks] = useState([]);
@@ -7251,33 +7240,44 @@ const TaskKeeper = () => {
         task.id === editingTaskId ? { ...task, name: input } : task
       );
       setTasks(updatedTasks);
-      setAlert({ show: true, message: "Task updated successfully", type: "success" });
+      setAlert({
+        show: true,
+        message: "Task updated successfully",
+        type: "success",
+      });
       setIsEditing(false);
       setEditingTaskId(null);
     } else {
       const newTask = {
-        id: Date.now(), // using timestamp as a unique id  
+        id: Date.now(), // using timestamp as a unique id
         name: input,
       };
       setTasks([...tasks, newTask]); // adding the new task to the tasks array
-      setAlert({ show: true, message: "Task added successfully", type: "success" });
-    } 
+      setAlert({
+        show: true,
+        message: "Task added successfully",
+        type: "success",
+      });
+    }
     setInputValue(""); // clearing the input field
   };
-
 
   //useEffect to hide the alert message after a few seconds
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id)); // filtering out the task with the given id
-    setAlert({ show: true, message: "Task deleted successfully", type: "success" });
+    setAlert({
+      show: true,
+      message: "Task deleted successfully",
+      type: "success",
+    });
   };
 
   const editTask = (task) => {
     setInputValue(task.name); // setting the input value to the task name
     setEditingTaskId(task.id); // setting the editing task id
     setIsEditing(true); // setting the editing mode to true
-  };  
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-5">
@@ -7308,7 +7308,8 @@ const TaskKeeper = () => {
             />
           </div>
           <button type="submit" className="btn btn-primary w-100">
-            {isEditing ? "Update Task" : "Add Task"} {/* changing button text based on editing mode */}
+            {isEditing ? "Update Task" : "Add Task"}{" "}
+            {/* changing button text based on editing mode */}
           </button>
         </form>
 
@@ -7345,7 +7346,11 @@ const TaskKeeper = () => {
           onClick={() => {
             setTasks([]); // clearing all tasks
             if (tasks.length > 0) {
-              setAlert({ show: true, message: "All tasks cleared", type: "success" });
+              setAlert({
+                show: true,
+                message: "All tasks cleared",
+                type: "success",
+              });
             }
           }}
         >
@@ -7389,10 +7394,9 @@ const TaskItem = ({ task, deleteTask, editTask }) => {
 export default TaskItem;
 ```
 
-Now, what happend is first we see if the edit button is clicked, We call the `editTask` function with the task object. We took a state variable for the `editingTaskId` and `isEditing` remember? So, when the edit button is clicked, we set the input value to the task name which will be shown in the input field, and we set the `editingTaskId` to the task id and `isEditing` to true. 
+Now, what happend is first we see if the edit button is clicked, We call the `editTask` function with the task object. We took a state variable for the `editingTaskId` and `isEditing` remember? So, when the edit button is clicked, we set the input value to the task name which will be shown in the input field, and we set the `editingTaskId` to the task id and `isEditing` to true.
 
 In the handleSubmit function we check if the `isEditing` state is true, then we update the task with the given id and set the alert message to "Task updated successfully". If `isEditing` is false, we add a new task as we did before.
-
 
 And that's how we can edit and delete tasks in our Task Keeper app. It's kinda confusing and straightforward at the same time. But the tricky part is. so many things are happening at the same time. We are updating the state, setting the alert message, and clearing the input field all in one function.
 
@@ -7402,8 +7406,7 @@ When we click The refresh button or close the browser, all the tasks will be los
 
 To do this, we can use the `useEffect` hook to save the tasks to the local storage whenever the `tasks` state changes. But there is a catche here, even after saving the tasks to the local storage, when we refresh the page, the tasks will be lost because we are not loading the tasks from the local storage when the component mounts.
 
-So, we need to both get and save the tasks to the local storage. We can do this by using the `useEffect` hook and the `localStorage` API. 
-
+So, we need to both get and save the tasks to the local storage. We can do this by using the `useEffect` hook and the `localStorage` API.
 
 What is the local storage API? It is a web storage API that allows us to store data in the browser. If you open the inspect tool in your browser and go to the Application tab, you will see a section called Local Storage. This is where we can store our data.
 
@@ -7413,8 +7416,8 @@ So, let's get started with the implementation.
 
 ```js {.line-numbers}
 // src/projects/project_9/TaskKeeper.jsx
-import React, { useState, useEffect } from 'react';
-import TaskItem from './Components/TaskItem';
+import React, { useState, useEffect } from "react";
+import TaskItem from "./Components/TaskItem";
 
 const getTasksFromLocalStorage = () => {
   const tasks = localStorage.getItem("tasks");
@@ -7441,19 +7444,27 @@ const TaskKeeper = () => {
       );
       setTasks(updatedTasks);
       localStorage.setItem("tasks", JSON.stringify(updatedTasks)); // saving the updated tasks to local storage
-      setAlert({ show: true, message: "Task updated successfully", type: "success" });
+      setAlert({
+        show: true,
+        message: "Task updated successfully",
+        type: "success",
+      });
       setIsEditing(false);
       setEditingTaskId(null);
     } else {
       const newTask = {
-        id: Date.now(), // using timestamp as a unique id  
+        id: Date.now(), // using timestamp as a unique id
         name: input,
       };
       const newTasks = [...tasks, newTask];
       setTasks(newTasks); // adding the new task to the tasks array
       localStorage.setItem("tasks", JSON.stringify(newTasks)); // saving the new tasks to local storage
-      setAlert({ show: true, message: "Task added successfully", type: "success" });
-    } 
+      setAlert({
+        show: true,
+        message: "Task added successfully",
+        type: "success",
+      });
+    }
     setInputValue(""); // clearing the input field
   };
 
@@ -7470,7 +7481,11 @@ const TaskKeeper = () => {
     const updatedTasks = tasks.filter((task) => task.id !== id); // filtering out the task with the given id
     setTasks(updatedTasks);
     localStorage.setItem("tasks", JSON.stringify(updatedTasks)); // saving the updated tasks to local storage
-    setAlert({ show: true, message: "Task deleted successfully", type: "success" });
+    setAlert({
+      show: true,
+      message: "Task deleted successfully",
+      type: "success",
+    });
   };
 
   const editTask = (task) => {
@@ -7512,7 +7527,8 @@ const TaskKeeper = () => {
             />
           </div>
           <button type="submit" className="btn btn-primary w-100">
-            {isEditing ? "Update Task" : "Add Task"} {/* changing button text based on editing mode */}
+            {isEditing ? "Update Task" : "Add Task"}{" "}
+            {/* changing button text based on editing mode */}
           </button>
         </form>
 
@@ -7549,14 +7565,18 @@ const TaskKeeper = () => {
           onClick={() => {
             setTasks([]);
             if (tasks.length > 0) {
-              setAlert({ show: true, message: "All tasks cleared", type: "success" });
+              setAlert({
+                show: true,
+                message: "All tasks cleared",
+                type: "success",
+              });
             }
           }}
         >
           Clear All Tasks
-        </button> 
+        </button>
       </div>
-    </div>  
+    </div>
   );
 };
 export default TaskKeeper;
@@ -7574,11 +7594,11 @@ If you want to add some more better stylling but the functionality is done. You 
 
 ANNNNNND There you have it! You have built a simple Task Keeper app in React that allows you to add, edit, delete, and persist tasks using local storage.
 
-# Extra 
+# Extra
 
 When I was Adding a theme from bootswatch I noticed that on refreshing the page, the normal Bootstrap theme is applied instead of the selected theme. This is because the vite has some issues with bootswatch themes.
 
-But a quick work around is to take the `theme` and `js` imports from `app.jsx` and put them in the `main.jsx` file. 
+But a quick work around is to take the `theme` and `js` imports from `app.jsx` and put them in the `main.jsx` file.
 
 ```js {.line-numbers}
 import { StrictMode } from "react";
@@ -7594,22 +7614,22 @@ createRoot(document.getElementById("root")).render(
   </StrictMode>
 );
 ```
+
 This way, the theme will be applied correctly when the page is refreshed.
 
 # Custom Hooks
 
-Whne we were doing the previous project, we saw that the code was getting a bit messy with all the state variables and functions. This issue was we can make functions of other components but we cannot pass state variables to other components. 
+Whne we were doing the previous project, we saw that the code was getting a bit messy with all the state variables and functions. This issue was we can make functions of other components but we cannot pass state variables to other components.
 
 So, this is where custom hooks come in handy. Custom hooks are a way to extract logic from a component and reuse it in other components. They are just like regular functions but they can use React hooks inside them.
 
-Let's create a custom hook to see how we can use it to manage the state and logic in multiple components. 
+Let's create a custom hook to see how we can use it to manage the state and logic in multiple components.
 
-The most common 2 use of hooks are maybe the `toggle` and `fetch` hooks. So, let's create a custom hook for the `toggle` functionality. 
-
+The most common 2 use of hooks are maybe the `toggle` and `fetch` hooks. So, let's create a custom hook for the `toggle` functionality.
 
 ## UseToggle Hook
 
-There are some rules to follow when creating custom hooks. 
+There are some rules to follow when creating custom hooks.
 
 - The name of the custom hook should start with the word `use`.
 - The custom hook should return an array or an object that contains the state and the function to update the state.
@@ -7684,7 +7704,7 @@ const ToggleExample = () => {
 export default ToggleExample;
 ```
 
-We can skip the `useState` hook and directly use the custom hook to manage the toggle state. Because we are returning the `value` and the `toggle` function from the custom hook. 
+We can skip the `useState` hook and directly use the custom hook to manage the toggle state. Because we are returning the `value` and the `toggle` function from the custom hook.
 
 The toggle function will toggle the value of the `toggle` state variable. So, we don't need to write the toggle logic again in the component. We can just call the `toggleValue` function to toggle the value.
 
@@ -7694,7 +7714,7 @@ This is how we can create a custom hook to manage the toggle state. We can use t
 
 We will have to fetch data from an API in many projects. And everytime the process is the same. We will have to use the `useState` and `useEffect` hooks to fetch the data and manage the loading and error states.
 
-Let's make a generic component that fetches data from an API and returns the data, loading, and error states. 
+Let's make a generic component that fetches data from an API and returns the data, loading, and error states.
 
 ```js {.line-numbers}
 // src/Custom_Hooks/FetchExample.jsx
@@ -7708,7 +7728,9 @@ const FetchExample = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/posts"
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -7746,7 +7768,7 @@ Here we can see that we are fetching data from an API and managing the loading a
 
 Now, let's create a custom hook that will do the same thing. We will create a new file named `useFetchData.js` inside the `Custom_Hooks/hooks` folder and move the fetching logic to that file.
 
-```js {.line-numbers} 
+```js {.line-numbers}
 // src/Custom_Hooks/hooks/useFetchData.js
 import { useState, useEffect } from "react";
 
@@ -7786,7 +7808,9 @@ import React from "react";
 import useFetchData from "./hooks/useFetchData"; // importing the custom hook
 
 const FetchExample = () => {
-  const { data, loading, error } = useFetchData("https://jsonplaceholder.typicode.com/posts"); // using the custom hook
+  const { data, loading, error } = useFetchData(
+    "https://jsonplaceholder.typicode.com/posts"
+  ); // using the custom hook
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -7809,7 +7833,7 @@ export default FetchExample;
 
 Now, instead of a cluttered component with all the state variables and functions, we have a clean component that uses the custom hook to fetch data from an API.
 
-ps: I just copied and pasted the code from the `FetchExample.jsx` component to the `useFetchData.js` file. 
+ps: I just copied and pasted the code from the `FetchExample.jsx` component to the `useFetchData.js` file.
 
 It's easier to implement the custom hooks in the project if you have a clear understanding of the logic and the state management in the component.
 
@@ -7847,7 +7871,8 @@ const Main = () => {
 
   return (
     <div className="d-flex flex-column align-items-center mt-5">
-      <Nav user={user} handleLogout={handleLogout} /> {/* passing the user and handleLogout function as props */}
+      <Nav user={user} handleLogout={handleLogout} />{" "}
+      {/* passing the user and handleLogout function as props */}
       <h1 className="mt-3">Welcome to the Context API Example</h1>
     </div>
   );
@@ -7896,7 +7921,7 @@ const UserContainer = ({ user, handleLogout }) => {
 export default UserContainer;
 ```
 
-What I'm doing here is creating a state variable named `user` in the `Start` component and passing it down to the `Nav` component as a prop. Then, I pass the `user` prop to the `UserContainer` component and display the user name. 
+What I'm doing here is creating a state variable named `user` in the `Start` component and passing it down to the `Nav` component as a prop. Then, I pass the `user` prop to the `UserContainer` component and display the user name.
 
 When we click the logout button, we call the `handleLogout` function which sets the user name to an empty string.
 
@@ -7905,7 +7930,6 @@ We know what this is because I explained it in the fundamentals section. But the
 And for larger scale applications, this can become a nightmare.
 
 So, this is where the `Context API` comes in handy. It allows us to create a global state that can be accessed by any component in the application without having to pass props down manually at every level.
-
 
 As we knew from the virtual DOM, the `HTML/JSX` is just a representation of the UI and has a tree-like structure. The `Context API` is a way to create a global state in this tree-like structure that can be accessed by any component in the application.
 
@@ -7932,7 +7956,9 @@ const Main = () => {
   };
 
   return (
-    <UserContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+    <UserContext.Provider value={{ user, handleLogout }}>
+      {" "}
+      {/* providing the user and handleLogout function as context value */}
       <div className="d-flex flex-column align-items-center mt-5">
         <Nav /> {/* Nav component will consume the context value */}
         <h1 className="mt-3">Welcome to the Context API Example</h1>
@@ -7977,7 +8003,7 @@ export default UserContainer;
 
 And we can clear the `props` that we passed to the `UserContainer` component in the `Nav` component since we are now consuming the context value directly in the `UserContainer` component.
 
-```js {.line-numbers} 
+```js {.line-numbers}
 // src/Context_API/Nav.jsx
 import React from "react";
 import UserContainer from "./UserContainer";
@@ -8023,7 +8049,7 @@ Now, we can use this custom hook in the `UserContainer` component to consume the
 ```js {.line-numbers}
 // src/Context_API/UserContainer.jsx
 import React from "react";
-import useUserContext from "./hooks/useUserContext"; // importing the custom hook 
+import useUserContext from "./hooks/useUserContext"; // importing the custom hook
 
 const UserContainer = () => {
   const { user, handleLogout } = useUserContext(); // consuming the context value using the custom hook
@@ -8068,7 +8094,7 @@ I need you guys to do the following steps to create a global context:
   - Do the normal setup like we did in the `Start.jsx` file.
   - import the `createContext` method from the `react` package and create a context object named `GlobalContext`.
   - Create a Component function named `GlobalContextProvider` that will provide the global state to the entire application.
-  - Inside the `GlobalContextProvider` component, create a state variable named `user` and a function named `handleLogout` that will set the user name to an empty string on logout.  
+  - Inside the `GlobalContextProvider` component, create a state variable named `user` and a function named `handleLogout` that will set the user name to an empty string on logout.
 - Return the `GlobalContext.Provider` component with the `value` prop set to an object containing the `user` and `handleLogout` function.
 - Finally export the `GlobalContext` and `GlobalContextProvider` components.
 
@@ -8078,7 +8104,7 @@ import React, { createContext, useState } from "react";
 
 export const GlobalContext = createContext(); // creating a global context object
 
-const GlobalContextProvider = ()=>{
+const GlobalContextProvider = () => {
   const [user, setUser] = useState("John Doe"); // state variable to hold the user name
 
   const handleLogout = () => {
@@ -8086,11 +8112,13 @@ const GlobalContextProvider = ()=>{
   };
 
   return (
-    <GlobalContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+    <GlobalContext.Provider value={{ user, handleLogout }}>
+      {" "}
+      {/* providing the user and handleLogout function as context value */}
       {/* children components will go here */}
     </GlobalContext.Provider>
-  );  
-}
+  );
+};
 
 export default GlobalContextProvider;
 ```
@@ -8108,14 +8136,16 @@ If you remember in the fundamentals section, You know that we can use a Componen
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
-import GlobalContextProvider from "./GlobalContextProvider.jsx"; // importing the GlobalContextProvider component 
+import GlobalContextProvider from "./GlobalContextProvider.jsx"; // importing the GlobalContextProvider component
 // import "bootstrap/dist/css/bootstrap.min.css";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <GlobalContextProvider> {/* wrapping the App component with the GlobalContextProvider component */}
+    <GlobalContextProvider>
+      {" "}
+      {/* wrapping the App component with the GlobalContextProvider component */}
       <App />
     </GlobalContextProvider>
   </StrictMode>
@@ -8132,7 +8162,8 @@ import React, { createContext, useState } from "react";
 
 export const GlobalContext = createContext(); // creating a global context object
 
-const GlobalContextProvider = ({ children }) => { // destructuring the children prop
+const GlobalContextProvider = ({ children }) => {
+  // destructuring the children prop
   const [user, setUser] = useState("John Doe"); // state variable to hold the user name
 
   const handleLogout = () => {
@@ -8140,7 +8171,9 @@ const GlobalContextProvider = ({ children }) => { // destructuring the children 
   };
 
   return (
-    <GlobalContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+    <GlobalContext.Provider value={{ user, handleLogout }}>
+      {" "}
+      {/* providing the user and handleLogout function as context value */}
       {children} {/* rendering the children components */}
     </GlobalContext.Provider>
   );
@@ -8158,7 +8191,7 @@ And as we have a single global context provider we can screate a custom hook tha
 
 ```js {.line-numbers}
 // src/GlobalContextProvider.jsx
-import React, { createContext, useState, useContext} from "react"; 
+import React, { createContext, useState, useContext } from "react";
 
 const GlobalContext = createContext(); // creating a global context object
 
@@ -8166,8 +8199,8 @@ export const useGlobalContext = () => {
   return useContext(GlobalContext); // returning the context value using useContext hook
 };
 
-
-const GlobalContextProvider = ({ children }) => { // destructuring the children prop
+const GlobalContextProvider = ({ children }) => {
+  // destructuring the children prop
   const [user, setUser] = useState("John Doe"); // state variable to hold the user name
 
   const handleLogout = () => {
@@ -8175,7 +8208,9 @@ const GlobalContextProvider = ({ children }) => { // destructuring the children 
   };
 
   return (
-    <GlobalContext.Provider value={{ user, handleLogout }}> {/* providing the user and handleLogout function as context value */}
+    <GlobalContext.Provider value={{ user, handleLogout }}>
+      {" "}
+      {/* providing the user and handleLogout function as context value */}
       {children} {/* rendering the children components */}
     </GlobalContext.Provider>
   );
@@ -8189,11 +8224,11 @@ Now let's do some Practice Projects to solidify our understanding of the Context
 
 # Project 9 : SideBar & Modal
 
-For this project, I'll break the traditional rule of this repo. 
+For this project, I'll break the traditional rule of this repo.
 
 I want set up the projects from the very beginning. So, Make a whole new folder named `PART_2.5_ PROJECTS` outside the `react_advanced` folder.
 
-Inside that folder, we will create a new react project using `Vite`. 
+Inside that folder, we will create a new react project using `Vite`.
 
 ```bash
 cd PART_2.5_PROJECTS
@@ -8210,7 +8245,7 @@ npm install
 
 And you'll have a clean project setup with `Vite` and `React`.
 
-I'll also install the essential dependencies that we will need for this project. 
+I'll also install the essential dependencies that we will need for this project.
 
 ```bash
 npm install bootstrap bootswatch react-icons
@@ -8222,17 +8257,17 @@ The main.jsx and app.jsx should look like this:
 
 ```js {.line-numbers}
 // src/main.jsx
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import App from './App.jsx'
+import App from "./App.jsx";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
-  </StrictMode>,
-)
+  </StrictMode>
+);
 ```
 
 ```js {.line-numbers}
@@ -8250,7 +8285,6 @@ export default App;
 
 Adn we don't need any of the `css` files because we are using bootstrap and bootswatch for styling. So, you can delete the `index.css` and the `app.css` files.
 
-
 Now we can start making the project.
 
 ## Structure
@@ -8259,7 +8293,7 @@ What am I going to do in this project is to create two buttons to open a sidebar
 
 Then show you how the global context can help us to manage the state of the sidebar and modal components.
 
-So, I'll create 3 component `Home`, `SideBar`, and `Modal` inside the `src/components` folder. 
+So, I'll create 3 component `Home`, `SideBar`, and `Modal` inside the `src/components` folder.
 
 Home, SideBar, and Modal components should look like this:
 
@@ -8268,11 +8302,7 @@ Home, SideBar, and Modal components should look like this:
 import React from "react";
 
 const Home = () => {
-  return (
-    <div>
-     home
-    </div>
-  );
+  return <div>home</div>;
 };
 export default Home;
 ```
@@ -8282,11 +8312,7 @@ export default Home;
 import React from "react";
 
 const SideBar = () => {
-  return (
-    <div>
-      sidebar
-    </div>
-  );
+  return <div>sidebar</div>;
 };
 export default SideBar;
 ```
@@ -8295,13 +8321,9 @@ export default SideBar;
 // src/components/Modal.jsx
 import React from "react";
 const Modal = () => {
-  return (
-    <div>
-      modal
-    </div>
-  );
+  return <div>modal</div>;
 };
-export default Modal; 
+export default Modal;
 ```
 
 Now, we render `Home`, `SideBar`, and `Modal` components in the `App.jsx` file.
@@ -8331,13 +8353,13 @@ Now, we have the basic structure of the project set up.
 
 We can talk about what we are going to do in this project.
 
-I want two buttons one in the middle of the screen to open the modal and one in the top left corner to open the sidebar. 
+I want two buttons one in the middle of the screen to open the modal and one in the top left corner to open the sidebar.
 
 When we click on the modal button, it should open a modal with some content inside it. And when we click on the sidebar button, it should open a sidebar with some content inside it.
 
 We can use the `react-icons` package to add icons to the buttons.
 
-Let's add the buttons to the `Home` component. 
+Let's add the buttons to the `Home` component.
 
 ```js {.line-numbers}
 // src/components/Home.jsx
@@ -8369,7 +8391,6 @@ const Home = () => {
 };
 
 export default Home;
-
 ```
 
 Now, we have two buttons in the `Home` component. One button is in the top right corner to open the sidebar and the other button is in the center of the screen to open the modal.
@@ -8390,13 +8411,12 @@ const SideBar = () => {
       tabIndex="-1"
       style={{ visibility: "visible" }}
     >
-      <div className="offcanvas-header
-        d-flex justify-content-between align-items-center">
+      <div
+        className="offcanvas-header
+        d-flex justify-content-between align-items-center"
+      >
         <h5 className="offcanvas-title">Sidebar</h5>
-        <button
-          type="button"
-          className="btn"
-        >
+        <button type="button" className="btn">
           <FaTimes />
         </button>
       </div>
@@ -8415,7 +8435,7 @@ The `show` class is used to show the sidebar and the `offcanvas-start` class is 
 
 We can add this class to the `div` element logically when we click on the sidebar button in the `Home` component.
 
-But we know that we cannot manage the state of the sidebar in the `Home` component because it is a separate component. What do we do? 
+But we know that we cannot manage the state of the sidebar in the `Home` component because it is a separate component. What do we do?
 
 We can use the `Context API` to manage the state of the sidebar and modal components.
 
@@ -8469,7 +8489,9 @@ import GlobalContextProvider from "./GlobalContextProvider.jsx"; // importing th
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <GlobalContextProvider> {/* wrapping the App component with the GlobalContextProvider component */}
+    <GlobalContextProvider>
+      {" "}
+      {/* wrapping the App component with the GlobalContextProvider component */}
       <App />
     </GlobalContextProvider>
   </StrictMode>
@@ -8569,13 +8591,17 @@ const Modal = () => {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">Modal Title</h5>
+            <h5 className="modal-title" id="exampleModalLabel">
+              Modal Title
+            </h5>
           </div>
-          <div className="modal-body">
-            Modal content goes here.
-          </div>
+          <div className="modal-body">Modal content goes here.</div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={toggleModal}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={toggleModal}
+            >
               Close
             </button>
           </div>
@@ -8641,17 +8667,17 @@ Now, let's set up the `main.jsx` and `App.jsx` files.
 
 ```js {.line-numbers}
 // src/main.jsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import App from './App.jsx'
+import App from "./App.jsx";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
 ```
 
 ```js {.line-numbers}
@@ -8683,11 +8709,15 @@ const Hero = () => {
         <h1 className="display-5 fw-bold text-white">Explore the Best Deals</h1>
         <div className="col-lg-6 mx-auto">
           <p className="fs-5 mb-4">
-            Dive into a wide range of products from top brands and popular categories.
-            Experience seamless shopping with our intuitive and responsive interface.
+            Dive into a wide range of products from top brands and popular
+            categories. Experience seamless shopping with our intuitive and
+            responsive interface.
           </p>
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button type="button" className="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">
+            <button
+              type="button"
+              className="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold"
+            >
               Browse Categories
             </button>
             <button type="button" className="btn btn-outline-light btn-lg px-4">
@@ -8747,20 +8777,34 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">E-Commerce</a>
-        <button className="navbar-toggler" type="button" onClick={toggleSidebar}>
-          <span><FaBars /></span>
+        <a className="navbar-brand" href="#">
+          E-Commerce
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={toggleSidebar}
+        >
+          <span>
+            <FaBars />
+          </span>
         </button>
         <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}>
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">Home</a>
+              <a className="nav-link active" aria-current="page" href="#">
+                Home
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Products</a>
+              <a className="nav-link" href="#">
+                Products
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Contact Us</a>
+              <a className="nav-link" href="#">
+                Contact Us
+              </a>
             </li>
           </ul>
         </div>
@@ -8773,9 +8817,7 @@ export default Navbar;
 
 As you can see, we are using the `useState` hook to manage the state of the sidebar. When the user clicks on the hamburger icon, it will toggle the sidebar state and show or hide the sidebar links.
 
-
 I don't want the states in the `Navbar` component to be managed by the `Navbar` component itself. Instead, I want to manage the state of the sidebar in a global context so that we can use it in other components as well.
-
 
 So, let's setup a global context to manage the state of the sidebar.
 
@@ -8783,7 +8825,7 @@ We will create a new file named `AppContext.jsx` inside the `context` folder and
 
 ```js {.line-numbers}
 // src/context/AppContext.jsx
-import React, { createContext, useState, useContext } from "react"; 
+import React, { createContext, useState, useContext } from "react";
 
 export const AppContext = createContext(); // creating a global context object
 
@@ -8811,20 +8853,22 @@ Now, we can wrap the `App` component with the `AppContextProvider` component in 
 
 ```js {.line-numbers}
 // src/main.jsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "bootswatch/dist/lux/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import App from './App.jsx'
-import AppContextProvider from './context/AppContext.jsx'; // importing the AppContextProvider component
+import App from "./App.jsx";
+import AppContextProvider from "./context/AppContext.jsx"; // importing the AppContextProvider component
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AppContextProvider> {/* wrapping the App component with the AppContextProvider component */}
+    <AppContextProvider>
+      {" "}
+      {/* wrapping the App component with the AppContextProvider component */}
       <App />
     </AppContextProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
 ```
 
 Now, we can use the `useAppContext` hook to consume the global context value in the `Navbar` component.
@@ -8841,20 +8885,36 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">E-Commerce</a>
-        <button className="navbar-toggler" type="button" onClick={toggleSidebar}>
-          <span><FaBars /></span>
+        <a className="navbar-brand" href="#">
+          E-Commerce
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={toggleSidebar}
+        >
+          <span>
+            <FaBars />
+          </span>
         </button>
-        <div className={`collapse navbar-collapse ${isSidebarOpen ? "show" : ""}`}>
+        <div
+          className={`collapse navbar-collapse ${isSidebarOpen ? "show" : ""}`}
+        >
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">Home</a>
+              <a className="nav-link active" aria-current="page" href="#">
+                Home
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Products</a>
+              <a className="nav-link" href="#">
+                Products
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Contact Us</a>
+              <a className="nav-link" href="#">
+                Contact Us
+              </a>
             </li>
           </ul>
         </div>
@@ -8865,7 +8925,7 @@ const Navbar = () => {
 export default Navbar;
 ```
 
-This looks good, now for the real problem. I dont want the sidebar to be a drop down menu. I want it to be a full-screen sidebar with sections for different categories and brands and with their links. 
+This looks good, now for the real problem. I dont want the sidebar to be a drop down menu. I want it to be a full-screen sidebar with sections for different categories and brands and with their links.
 
 So, let's make a side bar component that will be a full-screen sidebar with sections for different categories and brands.
 
@@ -8914,6 +8974,7 @@ const Sidebar = () => {
 
 export default Sidebar;
 ```
+
 > Here is a sidebar I copied again. I'll make that dynamic later with data from a file later. But a place holder and for testing It looks nice.
 
 Now, we can import the `Sidebar` component in the `App.jsx` file and render it.
@@ -9091,7 +9152,10 @@ const Sidebar = () => {
             <h6>{section.title}</h6>
             <ul className="list-group">
               {section.links.map((link, linkIndex) => (
-                <li key={linkIndex} className="list-group-item d-flex align-items-center">
+                <li
+                  key={linkIndex}
+                  className="list-group-item d-flex align-items-center"
+                >
                   <link.icon className="me-2" />
                   <a href={link.url}>{link.label}</a>
                 </li>
@@ -9107,7 +9171,6 @@ export default Sidebar;
 ```
 
 > Here, we are using the `navbarData` to render the sidebar categories and brands dynamically. We are mapping over the `navbarData` array and rendering the title and links for each section.
-
 
 Looks good too, but we still haven't made the `Navbar` component dynamic.
 
@@ -9135,11 +9198,7 @@ const Navbar = () => {
             <ul className="navbar-nav flex-row">
               {navbarData.map((section, index) => (
                 <li key={index} className="nav-item mx-2">
-                  <a
-                    className="nav-link text-white"
-                    href="#"
-                    role="button"
-                  >
+                  <a className="nav-link text-white" href="#" role="button">
                     {section.title}
                   </a>
                 </li>
@@ -9160,7 +9219,6 @@ export default Navbar;
 ```
 
 We just loop over the `navbarData` array and render the title for each section as a link in the navbar.
-
 
 It works perfectly, Now, for the `dropdown` submenu, we need to first think what we are going to do.
 
@@ -9186,7 +9244,6 @@ const Submenu = () => {
 };
 
 export default Submenu;
-
 ```
 
 I'll not use bootstrap styles for the modal box, instead I will create a custom modal box using CSS.
@@ -9199,51 +9256,50 @@ So, inside the styles folder, we create a file named `submenu.css` and add the f
   display: none;
 }
 
-  .submenu {
-    display: block;
-    position: fixed;
-    top: 7rem;
-    left: 50%;
-    width: var(--fluid-width);
-    max-width: var(--max-width);
-    background: var(--white);
-    padding: 2rem;
-    transform: rotateX(-90deg) translateX(-50%);
-    transform-origin: top;
-    perspective: 1000px;
-    border-radius: var(--borderRadius);
-    visibility: hidden;
-    opacity: 0;
-    transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
-    z-index: -1;
-  }
-  .show-submenu {
-    visibility: visible;
-    opacity: 1;
-    background-color: aliceblue;
-    transform: rotateX(0deg) translateX(-50%);
-    z-index: 10;
-  }
-  .submenu h5 {
-    margin-bottom: 1rem;
-    color: var(--primary-700);
-  }
-  .submenu-links {
-    display: grid;
-    row-gap: 0.5rem;
-  }
-  .submenu-links a {
-    display: block;
-    color: var(--grey-900);
-    text-transform: capitalize;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .submenu-links svg {
-    color: var(--grey-500);
-  }
-
+.submenu {
+  display: block;
+  position: fixed;
+  top: 7rem;
+  left: 50%;
+  width: var(--fluid-width);
+  max-width: var(--max-width);
+  background: var(--white);
+  padding: 2rem;
+  transform: rotateX(-90deg) translateX(-50%);
+  transform-origin: top;
+  perspective: 1000px;
+  border-radius: var(--borderRadius);
+  visibility: hidden;
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
+  z-index: -1;
+}
+.show-submenu {
+  visibility: visible;
+  opacity: 1;
+  background-color: aliceblue;
+  transform: rotateX(0deg) translateX(-50%);
+  z-index: 10;
+}
+.submenu h5 {
+  margin-bottom: 1rem;
+  color: var(--primary-700);
+}
+.submenu-links {
+  display: grid;
+  row-gap: 0.5rem;
+}
+.submenu-links a {
+  display: block;
+  color: var(--grey-900);
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.submenu-links svg {
+  color: var(--grey-500);
+}
 ```
 
 Now, we can import the `submenu.css` file in the `Submenu.jsx` file and add the styles to the modal box.
@@ -9255,7 +9311,6 @@ import { useAppContext } from "../context/AppContext"; // importing the useAppCo
 import "../styles/submenu.css"; // importing the submenu styles
 
 const Submenu = () => {
-
   return (
     <div className="submenu show">
       <h5>Submenu</h5>
@@ -9291,7 +9346,9 @@ const AppContextProvider = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider value={{ isSidebarOpen, toggleSidebar, isSubmenuOpen, toggleSubmenu }}>
+    <AppContext.Provider
+      value={{ isSidebarOpen, toggleSidebar, isSubmenuOpen, toggleSubmenu }}
+    >
       {children} {/* rendering the children components */}
     </AppContext.Provider>
   );
@@ -9380,6 +9437,7 @@ const Navbar = () => {
 };
 export default Navbar;
 ```
+
 > Here, we are adding the `onMouseEnter` and `onMouseLeave` event handlers to the links in the navbar. When the user hovers over a link, the `handleMouseEnter` function will be called and it will show the submenu modal box. When the user leaves the link, the `handleMouseLeave` function will be called and it will hide the submenu modal box.
 
 Now, if you hover over a link in the navbar, the submenu modal box will appear and show the links for that section.
@@ -9401,21 +9459,21 @@ import { navbarData } from "../data/navbarData"; // importing the navbar data
 
 const Navbar = () => {
   const { toggleSidebar, toggleSubmenu } = useAppContext(); // consuming the global context value
-  
-  const handleMouseEnter = (e) =>{
+
+  const handleMouseEnter = (e) => {
     const section = e.target.textContent; // getting the section title from the link
     const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
 
     const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
-    const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
+    const bottom = linkPosition.bottom - 3; // getting the bottom position of the link
     console.log("Mouse entered section:", section, "Position:", linkPosition);
     toggleSubmenu(); // showing the submenu modal box
-  }
+  };
 
   const handleMouseLeave = () => {
     console.log("Mouse left section");
     toggleSubmenu(); // hiding the submenu modal box
-  };  
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -9514,22 +9572,22 @@ import { navbarData } from "../data/navbarData"; // importing the navbar data
 
 const Navbar = () => {
   const { toggleSidebar, toggleSubmenu, setSubmenuPos } = useAppContext(); // consuming the global context value
-  
-  const handleMouseEnter = (e) =>{
+
+  const handleMouseEnter = (e) => {
     const section = e.target.textContent; // getting the section title from the link
     const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
 
     const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
-    const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
+    const bottom = linkPosition.bottom - 3; // getting the bottom position of the link
     console.log("Mouse entered section:", section, "Position:", linkPosition);
     setSubmenuPos(section, { center, bottom }); // setting the submenu position
     toggleSubmenu(); // showing the submenu modal box
-  }
+  };
 
   const handleMouseLeave = () => {
     console.log("Mouse left section");
     toggleSubmenu(); // hiding the submenu modal box
-  };  
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -9587,21 +9645,22 @@ const Submenu = () => {
     container.current.style.left = `${center}px`; // setting the left position of the submenu modal box
     container.current.style.top = `${bottom}px`; // setting the top position of the submenu modal box
     console.log(submenu);
-    
   }, [submenuPosition]); // updating the position when the submenuPosition changes
 
   return (
-    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}>
+    <div
+      ref={container}
+      className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}
+    >
       <h5>{submenuPosition.text}</h5>
       <p>This is a submenu modal box.</p>
     </div>
   );
 };
 export default Submenu;
-
 ```
 
-Annnnnnd, it's not working. I have no idea why. this project is giving me a headache. 
+Annnnnnd, it's not working. I have no idea why. this project is giving me a headache.
 
 And after 30min of reconcidering my code, I found out that I was not setting the `submenuPosition` and the the `toggleSubmenu` function differently. So, i'll make two different functions for opening and closing the submenu modal box and inside the opening function, I will set the `submenuPosition` and then call the `toggleSubmenu` function to open the submenu modal box.
 
@@ -9662,16 +9721,16 @@ import { navbarData } from "../data/navbarData"; // importing the navbar data
 
 const Navbar = () => {
   const { toggleSidebar, openSubmenu, closeSubmenu } = useAppContext(); // consuming the global context value
-  
-  const handleMouseEnter = (e) =>{
+
+  const handleMouseEnter = (e) => {
     const section = e.target.textContent; // getting the section title from the link
     const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
 
     const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
-    const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
+    const bottom = linkPosition.bottom - 3; // getting the bottom position of the link
     console.log("Mouse entered section:", section, "Position:", linkPosition);
-    openSubmenu({center, bottom }); // setting the submenu position and opening the submenu modal box
-  }
+    openSubmenu({ center, bottom }); // setting the submenu position and opening the submenu modal box
+  };
 
   const handleMouseLeave = () => {
     console.log("Mouse left section");
@@ -9736,7 +9795,10 @@ const Submenu = () => {
   }, [submenuPosition]); // updating the position when the submenuPosition changes
 
   return (
-    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}>
+    <div
+      ref={container}
+      className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}
+    >
       <h5>{submenuPosition.text}</h5>
       <p>This is a submenu modal box.</p>
     </div>
@@ -9758,7 +9820,7 @@ import { navbarData } from "../data/navbarData"; // importing the navbar data
 
 const Navbar = () => {
   const { toggleSidebar, openSubmenu, closeSubmenu } = useAppContext(); // consuming the global context value
-  
+
   const handleMouseEnter = (e) =>{
     const section = e.target.textContent; // getting the section title from the link
     const linkPosition = e.target.getBoundingClientRect(); // getting the position of the link
@@ -9766,7 +9828,7 @@ const Navbar = () => {
     const center = (linkPosition.left + linkPosition.right) / 2; // calculating the center of the link
     const bottom = linkPosition.bottom- 3; // getting the bottom position of the link
     console.log("Mouse entered section:", section, "Position:", linkPosition);
-    
+
     openSubmenu(section, { center, bottom }); // setting the submenu position and opening the submenu modal box
   }
 
@@ -9806,11 +9868,11 @@ const AppContextProvider = ({ children }) => {
   const openSubmenu = (text, position) => {
     const sectionData = navbarData.find((item) => item.title === text); // finding the section data from the navbarData
     console.log(sectionData);
-    
+
     setSection(sectionData); // setting the section and links for the submenu modal box
     setSubmenuPosition(position); // setting the submenu position
     setIsSubmenuOpen(true); // opening the submenu modal box
-  };  
+  };
 
   const closeSubmenu = () => {
     setIsSubmenuOpen(false); // closing the submenu modal box
@@ -9837,10 +9899,10 @@ export default AppContextProvider;
 
 Now, we can use the `section` state variable in the `Submenu.jsx` file to render the links for the section that the user is hovering over.
 
-```js {.line-numbers} 
+```js {.line-numbers}
 // src/components/Submenu.jsx
 import { useRef, useEffect } from "react";
-import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook  
+import { useAppContext } from "../context/AppContext"; // importing the useAppContext hook
 import "../styles/submenu.css"; // importing the submenu styles
 
 const Submenu = () => {
@@ -9856,7 +9918,10 @@ const Submenu = () => {
   }, [submenuPosition]); // updating the position when the submenuPosition changes
 
   return (
-    <div ref={container} className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}>
+    <div
+      ref={container}
+      className={`${isSubmenuOpen ? "submenu show-submenu" : "submenu"}`}
+    >
       <h5>{section.title}</h5>
       <div className="submenu-links">
         {section.links.map((link, index) => (
@@ -9872,12 +9937,9 @@ const Submenu = () => {
 export default Submenu;
 ```
 
-
 ANNNNND THIS HELL IS FINALLY OVER!!!!!
 
-
 HOLY SHIZZZZZ MAN!
-
 
 THIS PROJECT MADE REALISE AGAIN WHY I HATE FROMTEND.
 
@@ -9920,20 +9982,13 @@ Make a new folder named `reducerExample` inside the `react_advanced/src` folder 
 ```js {.line-numbers}
 // src/reducerExample/data.js
 export const data = [
-  { id: 1, 
-    name: "Item 1",
-  },
-  { id: 2, 
-    name: "Item 2",
-  },
-  { id: 3, 
-    name: "Item 3",
-  },
-  { id: 4, 
-    name: "Item 4",
-  },
-]
+  { id: 1, name: "Item 1" },
+  { id: 2, name: "Item 2" },
+  { id: 3, name: "Item 3" },
+  { id: 4, name: "Item 4" },
+];
 ```
+
 > It's just a simple array of objects with an `id` and a `name` property.
 
 I'll create a new file named `ReducerExample.jsx` inside the `reducerExample` folder. This file will contain the main component that will render the data with some functionality.
@@ -9979,15 +10034,16 @@ const ReducerExample = () => {
 };
 export default ReducerExample;
 ```
+
 Here I've made a very simple component that renders the items from the dummy data and allows the user to remove an item by clicking on the "Remove" button. It also has a "Reset Items" button to reset the items to the original data and a "Delete All Items" button to delete all items which is rendered only when there are no items left.
 
-Now, I want to just recreate the same functionality using the `useReducer` hook. 
+Now, I want to just recreate the same functionality using the `useReducer` hook.
 
 First the anatomy of the `useReducer` hook.
 
 In the `useState` hook, we pass a initial state in the form of a value and get a state variable and a setState function to update the state.
 
-In the `useReducer` hook, we pass a `reducer` function and an initial state value. 
+In the `useReducer` hook, we pass a `reducer` function and an initial state value.
 
 What is a `reducer` function?
 
@@ -10010,18 +10066,17 @@ So, with the anatomy of the `useReducer` hook in mind, let's impement the `useRe
 import React, { useReducer, useState } from "react";
 import { data } from "./data"; // importing the dummy data
 
-const reducer = ()=>{
- // This is a placeholder for the reducer function, if needed in the future
-}
+const reducer = () => {
+  // This is a placeholder for the reducer function, if needed in the future
+};
 
 const initialState = {
   items: data, // initializing the state with the dummy data
-}
-
+};
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   // const [items, setItems] = useState(data); // using useState to manage the items state
 
   const handleClick = (id) => {
@@ -10062,7 +10117,6 @@ export default ReducerExample;
 
 Now, we need to implement the logic to update the state using the `dispatch` function.
 
-
 The dispatch function is used to send an `action` to the reducer function. What is an action? An action is an object that describes what happened in the application. It must have a `type` property that describes the type of action and can have additional properties that provide more information about the action.
 
 So, when we call the `dispatch` function, we need to pass an `action` object to it. The reducer function will then receive this action object and update the state accordingly.
@@ -10088,7 +10142,7 @@ const initialState = {
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
     // setItems(newItems); // updating the items state
@@ -10133,7 +10187,7 @@ const initialState = {
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
     // setItems(newItems); // updating the items state
@@ -10152,13 +10206,13 @@ const ReducerExample = () => {
 }
 export default ReducerExample;
 ```
-> So, we leanred that the `reducer` function is called with the current state and the action object whenever the `dispatch` function is called and it must return a the new state. 
-And now we are successfull in implementing the `useReducer` hook and understanding how it manages state in a more structured way.
+
+> So, we leanred that the `reducer` function is called with the current state and the action object whenever the `dispatch` function is called and it must return a the new state.
+> And now we are successfull in implementing the `useReducer` hook and understanding how it manages state in a more structured way.
 
 But how can do we use all this to efficiently manage state.
 
 We have a `dispatch` function that passes an action object to the reducer function, we have and `initialState` which is another object that holds the initial state of our application, and we have a `reducer` function that takes the current state and the action object and returns a new state.
-
 
 Ummmmmmm, what do we do with this?
 
@@ -10173,23 +10227,23 @@ So, let's implement the logic to handle the "DELETE_ALL_ITEMS" action in the `re
 import React, { useReducer } from "react";
 import { data } from "./data"; // importing the dummy data
 
-const reducer = (state, action) =>{
+const reducer = (state, action) => {
   console.log("Reducer called with state:", state, "and action:", action);
-  
+
   if (action.type === "DELETE_ALL_ITEMS") {
     return { ...state, items: [] }; // returning a new state with an empty items array
   }
-  
+
   return state; // returning the current state if the action type is not matched
-}
+};
 
 const initialState = {
   items: data, // initializing the state with the dummy data
-}
+};
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
     // setItems(newItems); // updating the items state
@@ -10235,27 +10289,27 @@ We can now implement the logic to handle the "RESET_ITEMS" action in the `reduce
 import React, { useReducer } from "react";
 import { data } from "./data"; // importing the dummy data
 
-const reducer = (state, action) =>{
+const reducer = (state, action) => {
   console.log("Reducer called with state:", state, "and action:", action);
-  
+
   if (action.type === "DELETE_ALL_ITEMS") {
     return { ...state, items: [] }; // returning a new state with an empty items array
   }
-  
+
   if (action.type === "RESET_ITEMS") {
     return { ...state, items: data }; // returning a new state with the original data
   }
-  
+
   return state; // returning the current state if the action type is not matched
-}
+};
 
 const initialState = {
   items: data, // initializing the state with the dummy data
-}
+};
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
     // setItems(newItems); // updating the items state
@@ -10313,27 +10367,27 @@ const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the action typ
 const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
 const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
 
-const reducer = (state, action) =>{
+const reducer = (state, action) => {
   console.log("Reducer called with state:", state, "and action:", action);
-  
+
   if (action.type === DELETE_ALL) {
     return { ...state, items: [] }; // returning a new state with an empty items array
   }
-  
+
   if (action.type === RESET_ITEMS) {
     return { ...state, items: data }; // returning a new state with the original data
   }
 
   return state; // returning the current state if the action type is not matched
-}
+};
 
 const initialState = {
   items: data, // initializing the state with the dummy data
-}
+};
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     // const newItems = items.filter((item) => item.id !== id); // filtering out the item with the given id
     // setItems(newItems); // updating the items state
@@ -10387,13 +10441,13 @@ const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the action typ
 const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
 const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
 
-const reducer = (state, action) =>{
+const reducer = (state, action) => {
   console.log("Reducer called with state:", state, "and action:", action);
-  
+
   if (action.type === DELETE_ALL) {
     return { ...state, items: [] }; // returning a new state with an empty items array
   }
-  
+
   if (action.type === RESET_ITEMS) {
     return { ...state, items: data }; // returning a new state with the original data
   }
@@ -10403,15 +10457,15 @@ const reducer = (state, action) =>{
   }
 
   return state; // returning the current state if the action type is not matched
-}
+};
 
 const initialState = {
   items: data, // initializing the state with the dummy data
-}
+};
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     dispatch({ type: REMOVE_ITEM, payload: { id } }); // dispatching an action to remove the item
   };
@@ -10443,10 +10497,11 @@ const ReducerExample = () => {
       )}
     </div>
   );
-};  
+};
 
 export default ReducerExample;
 ```
+
 > u can pass the `id` of the item to be removed in the dispatch function directly. It is the best practice to pass it in the `payload` property of the action object. This way, we can easily access the `id` of the item to be removed in the `reducer` function.
 
 Now, we can just implement the logic to remove the item from the state in the `reducer` function by filtering out the item with the given `id`.
@@ -10460,7 +10515,7 @@ const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the action typ
 const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
 const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
 
-const reducer = (state, action) =>{
+const reducer = (state, action) => {
   const { type, payload } = action; // destructuring the action object to get the type and payload
 
   if (type === DELETE_ALL) {
@@ -10475,15 +10530,15 @@ const reducer = (state, action) =>{
     return { ...state, items: newItems }; // returning a new state with the updated items array
   }
   throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
-}
+};
 
 const initialState = {
   items: data, // initializing the state with the dummy data
-}
+};
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     dispatch({ type: REMOVE_ITEM, payload: { id } }); // dispatching an action to remove the item
   };
@@ -10519,12 +10574,11 @@ const ReducerExample = () => {
 export default ReducerExample;
 ```
 
-And we have it. 
+And we have it.
 
 > Because our reducer should handle 3 actions only if there is any other action type that is not handled, it will throw an error. This is a good practice to follow as it helps us catch errors early in the development process.
- 
 
-Now, If you look at the `ReducerExample.jsx` file, you will see that we have a very structured way of managing state using the `useReducer` hook. 
+Now, If you look at the `ReducerExample.jsx` file, you will see that we have a very structured way of managing state using the `useReducer` hook.
 
 BUUUUUUTTTTT
 
@@ -10541,7 +10595,7 @@ export const DELETE_ALL = "DELETE_ALL_ITEMS"; // defining a constant for the act
 export const RESET_ITEMS = "RESET_ITEMS"; // defining a constant for the action type
 export const REMOVE_ITEM = "REMOVE_ITEM"; // defining a constant for the action type
 
-export const reducer = (state, action) =>{
+export const reducer = (state, action) => {
   const { type, payload } = action; // destructuring the action object to get the type and payload
 
   if (type === DELETE_ALL) {
@@ -10556,7 +10610,7 @@ export const reducer = (state, action) =>{
     return { ...state, items: newItems }; // returning a new state with the updated items array
   }
   throw new Error(`No matching action type: ${type}`); // throwing an error if the action type is not matched
-}
+};
 ```
 
 Now, we can import the `reducer` function and the action types in the `ReducerExample.jsx` file.
@@ -10565,15 +10619,15 @@ Now, we can import the `reducer` function and the action types in the `ReducerEx
 // src/reducerExample/ReducerExample.jsx
 import React, { useReducer } from "react";
 import { data } from "./data"; // importing the dummy data
-import { reducer, DELETE_ALL, RESET_ITEMS, REMOVE_ITEM } from "./reducer"; // importing the reducer function and the action types 
+import { reducer, DELETE_ALL, RESET_ITEMS, REMOVE_ITEM } from "./reducer"; // importing the reducer function and the action types
 
 const initialState = {
   items: data, // initializing the state with the dummy data
-}
+};
 
 const ReducerExample = () => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
-  
+
   const handleClick = (id) => {
     dispatch({ type: REMOVE_ITEM, payload: { id } }); // dispatching an action to remove the item
   };
@@ -10687,8 +10741,8 @@ const GlobalContextProvider = ({ children }) => {
   );
 };
 export default GlobalContextProvider;
-
 ```
+
 > Here, we are creating a global context object using `createContext` and providing the `cartData` as the initial state. We are also exporting a custom hook `useGlobalContext` to access the context value in other components.
 
 Now, let's setup a cart page where we can display the cart items and allow the user to add and remove items from the cart.
@@ -10704,37 +10758,38 @@ I want to make 3 components for the cart page.
 Let's start with the `Navbar` component. Create a new file named `Navbar.jsx` inside the `project_12` folder.
 
 ```js {.line-numbers}import React from 'react'
-import { FaCartPlus } from 'react-icons/fa'
+import { FaCartPlus } from "react-icons/fa";
 const Navbar = () => {
   return (
     <div className="d-flex justify-content-between align-items-center mb-4">
-        {/* Left side: Title */}
-        <h3 className="mb-0 text-primary">Shopping Cart</h3>
+      {/* Left side: Title */}
+      <h3 className="mb-0 text-primary">Shopping Cart</h3>
 
-        {/* Right side: Cart Icon with badge */}
-        <div className="position-relative">
-          <FaCartPlus size={28} className="text-primary" />
-          <span
-            className="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle"
-            style={{
-              fontSize: "0.7rem",
-              width: "1.5rem",
-              height: "1.5rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "2px solid white",
-            }}
-          >
-            5
-          </span>
-        </div>
+      {/* Right side: Cart Icon with badge */}
+      <div className="position-relative">
+        <FaCartPlus size={28} className="text-primary" />
+        <span
+          className="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle"
+          style={{
+            fontSize: "0.7rem",
+            width: "1.5rem",
+            height: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "2px solid white",
+          }}
+        >
+          5
+        </span>
       </div>
-  )
-}
+    </div>
+  );
+};
 
-export default Navbar
+export default Navbar;
 ```
+
 > Here, we are using the `react-icons` library to display a cart icon and a badge to show the number of items in the cart. The badge is styled to look like a circle with a border and centered text.
 
 Now, let's create the `CartContainer` component that will display the cart items and the total price. Create a new file named `CartContainer.jsx` inside the `project_12` folder.
@@ -10750,16 +10805,14 @@ import Navbar from "./Navbar";
 const CartContainer = () => {
   const { data } = useGlobalContext();
 
-
   return (
     <div
       className="container py-4"
       style={{ maxWidth: "600px", margin: "auto" }}
     >
-      
       {/* Navbar */}
       <Navbar />
-      
+
       <ul className="list-group mb-4">
         {data.map((item) => (
           <CartItem key={item.id} item={item} />
@@ -10791,7 +10844,12 @@ Now, let's create the `CartItem` component that will display a single cart item 
 ```js {.line-numbers}
 // src/projects/project_12/CartItem.jsx
 import React from "react";
-import { FaArrowAltCircleUp, FaArrowCircleDown, FaArrowUp, FaUps } from "react-icons/fa";
+import {
+  FaArrowAltCircleUp,
+  FaArrowCircleDown,
+  FaArrowUp,
+  FaUps,
+} from "react-icons/fa";
 
 const CartItem = ({ item }) => {
   return (
@@ -10811,24 +10869,21 @@ const CartItem = ({ item }) => {
       </div>
 
       {/* Right side: Quantity + Amount */}
-      <div
-      className="d-flex justify-content-between align-items-center"
-      >
+      <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex flex-column align-items-center">
-        <button className="text-success btn">
+          <button className="text-success btn">
             <FaArrowAltCircleUp />
             {/* <FaArrowUp /> */}
-        </button>
-        <span>{item.quantity}</span>
-        <button className="text-danger btn">
+          </button>
+          <span>{item.quantity}</span>
+          <button className="text-danger btn">
             <FaArrowCircleDown />
-        </button>
-      </div>
+          </button>
+        </div>
 
-      {/* Item total price */}
-      <div className="ms-3 fw-bold">${item.price * item.quantity}</div>
+        {/* Item total price */}
+        <div className="ms-3 fw-bold">${item.price * item.quantity}</div>
       </div>
-      
     </li>
   );
 };
@@ -10863,7 +10918,7 @@ Now, we have a basic cart page setup. I'm will focus more on the functionality o
 
 So, let's get started with the functionality.
 
-Let's set up `useReducer` to manage the cart state. 
+Let's set up `useReducer` to manage the cart state.
 
 Let's make a new file named `cartReducer.js` inside the `project_12` folder and define the reducer function and action types.
 
@@ -10871,9 +10926,9 @@ Let's make a new file named `cartReducer.js` inside the `project_12` folder and 
 // src/projects/project_12/cartReducer.js
 import { cartData } from "./cartData"; // importing the dummy data
 
-export const reducer = (state, action)=>{
-  return state
-}
+export const reducer = (state, action) => {
+  return state;
+};
 
 export default reducer;
 ```
@@ -11021,8 +11076,11 @@ export const useGlobalContext = () => {
 const initialState = {
   data: cartData, // initializing state with cart data
   totalItems: cartData.reduce((acc, item) => acc + item.quantity, 0), // calculating total items count
-  totalPrice: cartData.reduce((acc, item) => acc + item.price * item.quantity, 0), // calculating total price
-};  
+  totalPrice: cartData.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  ), // calculating total price
+};
 
 const GlobalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
@@ -11099,16 +11157,15 @@ const CartContainer = () => {
   );
 };
 export default CartContainer;
-
 ```
 
 > Here, we are accessing the `totalItems` and `totalPrice` properties from the context and displaying them in the cart container. We are also passing the `totalItems` to the `Navbar` component.
 
 ```js {.line-numbers}
 // src/projects/project_12/Navbar.jsx
-import React from 'react'
-import { FaCartPlus } from 'react-icons/fa'
-import { useGlobalContext } from '../../GlobalContextProvider'; // importing the custom hook to access global context
+import React from "react";
+import { FaCartPlus } from "react-icons/fa";
+import { useGlobalContext } from "../../GlobalContextProvider"; // importing the custom hook to access global context
 
 const Navbar = () => {
   const { totalItems } = useGlobalContext(); // accessing the totalItems from the context
@@ -11137,9 +11194,9 @@ const Navbar = () => {
         </span>
       </div>
     </div>
-  )
-}
-export default Navbar
+  );
+};
+export default Navbar;
 ```
 
 > Here, we are accessing the `totalItems` from the context and displaying it in the badge of the cart icon in the navbar.
@@ -11199,7 +11256,7 @@ Now, let's implement the functionality to increase and decrease the quantity of 
 import React from "react";
 import { FaArrowAltCircleUp, FaArrowCircleDown } from "react-icons/fa";
 import { useGlobalContext } from "../../GlobalContextProvider"; // importing the custom hook to access global context
-import { INCREASE_QUANTITY, DECREASE_QUANTITY } from "./cartReducer"; 
+import { INCREASE_QUANTITY, DECREASE_QUANTITY } from "./cartReducer";
 
 const CartItem = ({ item }) => {
   const { dispatch } = useGlobalContext(); // accessing the dispatch function from the context
@@ -11245,7 +11302,9 @@ const CartItem = ({ item }) => {
         </div>
 
         {/* Item total price */}
-        <div className="ms-3 fw-bold">${(item.price * item.quantity).toFixed(2)}</div>
+        <div className="ms-3 fw-bold">
+          ${(item.price * item.quantity).toFixed(2)}
+        </div>
       </div>
     </li>
   );
@@ -11263,13 +11322,16 @@ We can fix this by calculating the total price and total items count in the `car
 
 ```js {.line-numbers}
 // src/projects/project_12/cartReducer.js
-export const INCREASE_QUANTITY = "INCREASE_QUANTITY"; 
+export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
 export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
 export const CLEAR_CART = "CLEAR_CART";
 
 const updateTotals = (data) => {
   const totalItems = data.reduce((acc, item) => acc + item.quantity, 0); // calculating total items count
-  const totalPrice = data.reduce((acc, item) => acc + item.price * item.quantity, 0); // calculating total price
+  const totalPrice = data.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  ); // calculating total price
   return { totalItems, totalPrice }; // returning the totals
 };
 
@@ -11312,7 +11374,7 @@ export default reducer;
 
 And we are actually returning the `totalItems` and `totalPrice` in the new state whenever we update the cart data.
 
-It's dine one thing that is left is to add remove button for each cart item to remove it from the cart and it's pretty simple to do.
+It's done, one thing that is left is to add remove button for each cart item to remove it from the cart and it's pretty simple to do.
 
 ```js {.line-numbers}
 // src/projects/project_12/cartReducer.js
@@ -11380,7 +11442,11 @@ Now, let's implement the functionality to remove an item from the cart in the `C
 import React from "react";
 import { FaArrowAltCircleUp, FaArrowCircleDown, FaTrash } from "react-icons/fa";
 import { useGlobalContext } from "../../GlobalContextProvider"; // importing the custom hook
-import { INCREASE_QUANTITY, DECREASE_QUANTITY, REMOVE_ITEM } from "./cartReducer"; // importing the action types
+import {
+  INCREASE_QUANTITY,
+  DECREASE_QUANTITY,
+  REMOVE_ITEM,
+} from "./cartReducer"; // importing the action types
 
 const CartItem = ({ item }) => {
   const { dispatch } = useGlobalContext(); // accessing the dispatch function from the context
@@ -11430,7 +11496,9 @@ const CartItem = ({ item }) => {
         </div>
 
         {/* Item total price */}
-        <div className="ms-3 fw-bold">${(item.price * item.quantity).toFixed(2)}</div>
+        <div className="ms-3 fw-bold">
+          ${(item.price * item.quantity).toFixed(2)}
+        </div>
 
         {/* Remove Item Button */}
         <button className="btn text-danger" onClick={removeItem}>
@@ -11440,7 +11508,7 @@ const CartItem = ({ item }) => {
     </li>
   );
 };
-export default CartItem; 
+export default CartItem;
 ```
 
 > Here, we are accessing the `dispatch` function from the context and implementing the `removeItem` function that dispatches an action to remove the item from the cart. We also added a button to remove the item with a trash icon.
@@ -11450,7 +11518,6 @@ And we have the functionalities ready.
 One last thing I want to add is loading the data from an API instead of directly importing the `cartData` from the `cartData.js` file.
 
 We learned to start a dummy api server using `json-server` in a previous project, so we can use that to load the cart data.
-
 
 ```bash
 npm install -g json-server
@@ -11499,7 +11566,6 @@ Let's create a new file named `db.json` outside the `src` folder and add the fol
 > Here, we are creating a new `cartData` array with some sample products. You can add more products as per your requirement.
 
 > PS: There is another endpoint `destinations` in the `db.json` file which is not used in this project, but when we add `cartData` to the `db.json` file, it will be available in the API response as a new endpoint, you can remove or keep the `destinations` endpoint as per your requirement.
-
 
 ```bash
 json-server --watch db.json
@@ -11567,7 +11633,7 @@ const initialState = {
   data: [], // initial cart data
   totalItems: 0, // total items in the cart
   totalPrice: 0, // total price of the items in the cart
-};  
+};
 
 const GlobalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
@@ -11686,14 +11752,13 @@ I hope by this project you have a keener understanding of how to use the `useRed
 
 JUST REMEMBER:
 
-  _JUST MAKE A ACTION_
-
+_JUST MAKE A ACTION_
 
 And with this we have almost officially covered all the important concepts of React and how to use them in a real-world application.
 
 Just some extra left over concepts left to cover, like `useMemo`, `useCallback`.
 
-Than we can go to the real scary stuff. 
+Than we can go to the real scary stuff.
 
 MAY ALLAH HAVE MERCY ON US ALL.
 
