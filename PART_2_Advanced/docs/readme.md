@@ -6,6 +6,120 @@
 - [Gmail](talukderrishat2@gmail.com)
 - [discord](https://discord.gg/ZB495XggcF)
 
+# Table of Contents
+
+- [REACT (PART-2 : Advanced \& Hooks)](#react-part-2--advanced--hooks)
+- [Table of Contents](#table-of-contents)
+- [A Small Recap of Part 1](#a-small-recap-of-part-1)
+- [Structure](#structure)
+- [Setting up the project](#setting-up-the-project)
+      - [**Some more `useful extensions` for `vs code`**](#some-more-useful-extensions-for-vs-code)
+- [Let's make a `Counter`](#lets-make-a-counter)
+  - [Approach](#approach)
+    - [The Variable](#the-variable)
+    - [Increase, Decrease and Reset](#increase-decrease-and-reset)
+      - [The Virtual DOM](#the-virtual-dom)
+    - [The useState Hook](#the-usestate-hook)
+    - [Another way to update the state](#another-way-to-update-the-state)
+    - [A task for you to do](#a-task-for-you-to-do)
+    - [Solution](#solution)
+    - [General Rules of `React hooks / useState`](#general-rules-of-react-hooks--usestate)
+  - [Some extra](#some-extra)
+    - [useState Functional update](#usestate-functional-update)
+    - [Asynchronous state updates](#asynchronous-state-updates)
+    - [Set time out issue](#set-time-out-issue)
+  - [End of the project](#end-of-the-project)
+- [Project 2: Todo List](#project-2-todo-list)
+  - [Steps](#steps)
+  - [Rendering the data](#rendering-the-data)
+  - [Removing a todo](#removing-a-todo)
+    - [Understanding the Filter method](#understanding-the-filter-method)
+  - [The Clear All](#the-clear-all)
+  - [Adding a todo](#adding-a-todo)
+    - [What we need?](#what-we-need)
+    - [Adding the input field](#adding-the-input-field)
+    - [Getting the value of the input field](#getting-the-value-of-the-input-field)
+    - [Adding the todo item](#adding-the-todo-item)
+  - [Recap](#recap)
+- [Project 3: UseEffect Example(Counter Again)](#project-3-useeffect-examplecounter-again)
+  - [UseEffect](#useeffect)
+  - [Remaking the counter app](#remaking-the-counter-app)
+    - [Infinite loop](#infinite-loop)
+  - [Multiple Side Effects](#multiple-side-effects)
+    - [Setting up the second counter](#setting-up-the-second-counter)
+- [Fetching data with useEffect Project](#fetching-data-with-useeffect-project)
+  - [Setting up the project](#setting-up-the-project-1)
+    - [Using dummy data](#using-dummy-data)
+    - [Adding the load users button](#adding-the-load-users-button)
+  - [Fetching data from the API](#fetching-data-from-the-api)
+    - [Fetching the data](#fetching-the-data)
+    - [Fetching the data with axios](#fetching-the-data-with-axios)
+      - [Promise](#promise)
+      - [fetching the data with axios](#fetching-the-data-with-axios-1)
+    - [Async and Await](#async-and-await)
+      - [Why fetching from an API is asynchronous?](#why-fetching-from-an-api-is-asynchronous)
+    - [Fixing the bug](#fixing-the-bug)
+    - [Preparing the fetched data](#preparing-the-fetched-data)
+  - [Ternary operator](#ternary-operator)
+  - [Reactify the project](#reactify-the-project)
+  - [Bonus (Setting a Error state variable)](#bonus-setting-a-error-state-variable)
+- [Project 5: Destination](#project-5-destination)
+  - [Setting up the project](#setting-up-the-project-2)
+    - [Setting up json-server](#setting-up-json-server)
+    - [Setting up the project](#setting-up-the-project-3)
+  - [Building the Destination component](#building-the-destination-component)
+    - [Fetching The Data from the API](#fetching-the-data-from-the-api)
+    - [Loading screen](#loading-screen)
+    - [Rendering everthing](#rendering-everthing)
+    - [Toggling the card](#toggling-the-card)
+- [React Folder Structure](#react-folder-structure)
+  - [Organizing the components](#organizing-the-components)
+  - [Using `index.jsx` to simplify imports](#using-indexjsx-to-simplify-imports)
+  - [Bonus: Glean](#bonus-glean)
+- [Handling Missing Data](#handling-missing-data)
+  - [Using Vanilla JS to handle missing data](#using-vanilla-js-to-handle-missing-data)
+- [Form Handling](#form-handling)
+  - [Controlled Inputs](#controlled-inputs)
+  - [Handling Form Submission](#handling-form-submission)
+- [Project-6: Form Practice Project (Users List)](#project-6-form-practice-project-users-list)
+- [Some More Form Handling](#some-more-form-handling)
+  - [Multiple Inputs](#multiple-inputs)
+  - [Checkbox and Select Inputs](#checkbox-and-select-inputs)
+  - [Uncontrolled Inputs](#uncontrolled-inputs)
+  - [Using the `ref` Attribute](#using-the-ref-attribute)
+- [Project 7 : Dummy Text Generator](#project-7--dummy-text-generator)
+- [Project 8 : Color Generator](#project-8--color-generator)
+  - [Cleanup Function Example](#cleanup-function-example)
+- [Project 9: Task Keeper](#project-9-task-keeper)
+  - [Project Structure](#project-structure)
+- [Extra](#extra)
+- [Custom Hooks](#custom-hooks)
+  - [UseToggle Hook](#usetoggle-hook)
+  - [UseFetchData Hook](#usefetchdata-hook)
+- [Context API](#context-api)
+- [Project 9 : SideBar \& Modal](#project-9--sidebar--modal)
+  - [Structure](#structure-1)
+- [Project 10 : E-COM LANDING PAGE](#project-10--e-com-landing-page)
+- [Reducer](#reducer)
+- [Project 12: Cart with useReducer](#project-12-cart-with-usereducer)
+- [Performace](#performace)
+  - [MEMO \& Callbacks](#memo--callbacks)
+- [useMemo](#usememo)
+- [useTransition \& Suspense](#usetransition--suspense)
+  - [LAZY \& SUSPENSE](#lazy--suspense)
+    - [**Key Concepts**](#key-concepts)
+    - [**When to Use**](#when-to-use)
+    - [**Why Use It**](#why-use-it)
+  - [**Example — Showing 5000 Images on Button Click**](#example--showing-5000-images-on-button-click)
+    - [**`ImageGallery.jsx`**](#imagegalleryjsx)
+    - [**`App.jsx`**](#appjsx)
+    - [**How It Works Here**](#how-it-works-here)
+    - [**Where to Use in Real Projects**](#where-to-use-in-real-projects)
+- [THAT IS BOYYSSSSS!!!!!!](#that-is-boyysssss)
+- [THANK YOU](#thank-you)
+- [HAPPY CODING 🫰](#happy-coding-)
+
+
 # A Small Recap of Part 1
 
 - Made a `React` app using `create-react-app`.
@@ -11763,3 +11877,705 @@ Than we can go to the real scary stuff.
 MAY ALLAH HAVE MERCY ON US ALL.
 
 If you have followed up untill now, you are doing great and you are almost there.
+
+# Performace
+
+Well, we have covered a lot of concepts and built some complex applications using React. But it's not a fairytale that we have a heavily optimized tools that can mix and match the best of both worlds, we still have to do some performance optimizations to make our applications run smoothly and efficiently.
+
+React is a powerful library and also pretty fast, but it can still be slow if carelessly just make featured and components without thinking about the performance.
+
+So, let's talk some common issues that we overlook and how we can optimize our React applications for better performance.
+
+Let's make a very simple component in the `src/performance` folder named `normal` component.
+
+```js {.line-numbers}
+// src/performance/Normal.jsx
+import React from "react";
+import Render from "./Render";
+
+const names = ["John", "Jane", "Doe", "Smith", "Alice", "Bob"];
+
+const Normal = () => {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div className="container d-flex flex-column align-items-center justify-content-center">
+      <h1>Normal Component</h1>
+      <button onClick={() => setCount(count + 1)}>Count: {count}</button>
+
+      <div>
+        {names.map((name, index) => (
+          <Render name={name} key={index} />
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Normal;
+```
+
+And, also create a `Render.jsx` component in the same folder to render the names.
+
+```js {.line-numbers}
+// src/performance/Render.jsx
+import React from "react";
+const Render = ({ name }) => {
+  return <div className="m-2 p-2">{name}</div>;
+};
+export default Render;
+```
+
+Now, if you render this `Normal` component in the `App.jsx` file, you will see that when you click the button to increment the count and all the names are rendered in the screen. Nothing out of the ordinary, right?
+
+Now, I want you to open the `React DevTools` and in the top right corner, you will a settings icon, click on it and enable the `Highlight updates when components render` option.
+
+Now, when you click the button to increment the count, you will see all the things that are rendered in the screen are highlighted, which means they are re-rendered.
+
+But there is no connection between the count and the names, so why are they re-rendering?
+
+It's because when a higher component re-renders, all of its child components or the lower level components also re-render by default. Simply the whole file is re-rendered.
+
+So, in that process we are re-rendering the `Render` component for each name even though the names are not changing, which is not efficient.
+
+This is a re-occurring problem in React applications, especially when we have a lot of components and complex state logic.
+
+We can face different types of performance issues in React applications, but the most common ones are:
+
+1. **Unnecessary Re-renders**: When a component re-renders even though its props or state haven't changed, leading to performance degradation.
+2. **Expensive Calculations**: When a component performs heavy calculations or operations on every render, causing slow performance.
+3. **Large Component Trees**: When a component has a large number of child components, leading to slow rendering and performance issues.
+4. **Memory Leaks**: When a component doesn't clean up resources properly, leading to memory leaks and performance degradation.
+
+There are also some some built in and manual ways to optimize the performance of React applications.
+
+1. **Lower Level Components**: Use lower level components to avoid unnecessary re-renders.
+2. **Memoization**: Use `React.memo` to memoize components and avoid unnecessary re-renders.
+3. **useMemo and useCallback**: Use `useMemo` to memoize expensive calculations and `useCallback` to memoize functions to avoid unnecessary re-renders.
+4. **React Profiler**: Use the React Profiler to identify performance bottlenecks and optimize them.
+5. **useTransition**: Use `useTransition` to defer updates and avoid blocking the main thread.
+
+I'll try to go through each of these methods and explain how and when to use them.
+
+I'll let you figure how you can stop the `Render` component from re-rendering when the count changes. I know I can trust you BUDDY!
+
+> Just try to make a new component for the `count` and `Render` fully separate from the `Normal` component and see if it works.
+
+> PS: It'll work
+
+Let's Start with the first method, using `React.memo`.
+
+## MEMO & Callbacks
+
+Memo is a built in higher order component in React that allows you to memoize a component and avoid unnecessary re-renders.
+
+What is memoization you say?
+
+It's an internal `hashamp`/ `dictionary` / `object` that stores the previous props and state of a component and compares them with the current props and state. If they are the same, it returns the previous result instead of re-rendering the component.
+
+We can use this in the `render` component to avoid unnecessary re-renders when the count changes.
+
+```js {.line-numbers}
+// src/performance/Render.jsx
+import React, { memo } from "react";
+const RenderMEMO = ({ name }) => {
+  return <div className="m-2 p-2">{name}</div>;
+};
+export default memo(RenderMEMO); // Using memo to prevent unnecessary re-renders
+```
+
+And just by exporting the `Render` component with `memo`, we can prevent it from re-rendering when the count changes in the `Normal` component.
+
+In the `Nomal` component, we can import the `RenderMEMO` component instead of the `Render` component. Take a look at broweser and click the button to increment the count, you will see that the `Render` component is not re-rendering anymore.
+
+Now, here is a task for you.
+
+Refactor the `Render` component where you pass the whole list and then map over it to render the names, instead of passing each name as a prop to the `Render` component.
+
+And make a `delete` button in the `Normal` component to remove a name from the list and pass the function to the `Render` component to remove the name from the list.
+
+Make it and try it yourself and monitor what is happening in the browser and the React DevTools.
+
+You should see the whole page is rendering even though you used `memo` in the `Render` component.
+
+Here is mine,
+
+```js {.line-numbers}
+// src/performance/Normal.jsx
+import React from "react";
+import RenderMEMOIssue from "./RenderMEMOIssue";
+
+const names = ["John", "Jane", "Doe", "Smith", "Alice", "Bob"];
+const Normal = () => {
+  const [count, setCount] = React.useState(0);
+  const [nameList, setNameList] = React.useState(names);
+
+  const removeName = (name) => {
+    setNameList(nameList.filter((n) => n !== name)); // removing the name from the list
+  };
+  return (
+    <div className="container d-flex flex-column align-items-center justify-content-center">
+      <h1>Normal Component</h1>
+      <button onClick={() => setCount(count + 1)}>Count: {count}</button>
+
+      <div>
+        <RenderMEMOIssue
+          nameList={nameList}
+          removeName={removeName} // passing the remove function to the Render component
+        />
+      </div>
+    </div>
+  );
+};
+export default Normal;
+```
+
+```js {.line-numbers}
+// src/performance/RenderMEMOIssue.jsx
+import React, { memo } from "react";
+const RenderMEMOIssue = ({ nameList, removeName }) => {
+  return (
+    <div>
+      {nameList.map((name, index) => (
+        <div
+          key={index}
+          className="m-2 p-2 d-flex justify-content-between align-items-center"
+        >
+          <span>{name}</span>
+          <button className="btn btn-danger" onClick={() => removeName(name)}>
+            Delete
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+};
+export default memo(RenderMEMOIssue); // Using memo to prevent unnecessary re-renders
+```
+
+> Here, we are passing the whole list of names to the `RenderMEMOIssue` component and mapping over it to render the names. We also added a delete button to remove a name from the list.
+
+Now, what is happening here why the whole page is re-rendering even though we used `memo` in the `RenderMEMOIssue` component?
+
+It is because when ever the count button is pressed the `Normal` component re-renders and the `RenderMEMOIssue` component is also re-rendered which is temporarily stopped because of the `memo`, but the main issue is the `removeName` function is being recreated every time the `Normal` component re-renders, which causes the `RenderMEMOIssue` component to re-render as well.
+
+Let's try to understand how re-renders are triggered and how memo works in `React`.
+
+When a component re-renders, React compares the previous props and state with the current props and state. If they are different, it re-renders the component. If they are the same, it skips the re-rendering process.
+
+But everytime a state changes the whole tree related to that state also re-renders, which means the `normal` component file will run again and the `removeName` function will be recreated, in a new scope, which does not happen for value props like strings, numbers, arrays, objects, etc.
+
+So, as the re-render is triggered, the `removeName` function is recreated even though it has the same logic, which causes the `RenderMEMOIssue` component to re-render as well because its props have changed. For us, it is the same but for the memo, it is a new function and it does not match the previous props, so it re-renders the component.
+
+So, what is the solution?
+
+It's to use the `useCallback` hook to memoize the `removeName` function and prevent it from being recreated on every re-render.
+
+```js {.line-numbers}
+// src/performance/Normal.jsx
+import React, { useCallback } from "react";
+import RenderMEMOIssue from "./RenderMEMOIssue";
+
+const names = ["John", "Jane", "Doe", "Smith", "Alice", "Bob"];
+const Normal = () => {
+  const [count, setCount] = React.useState(0);
+  const [nameList, setNameList] = React.useState(names);
+
+  const removeName = useCallback((name) => {
+    setNameList(nameList.filter((n) => n !== name)); // removing the name from the list
+  }, []);
+
+  return (
+    <div className="container d-flex flex-column align-items-center justify-content-center">
+      <h1>Normal Component</h1>
+      <button onClick={() => setCount(count + 1)}>Count: {count}</button>
+      <div>
+        <RenderMEMOIssue
+          nameList={nameList}
+          removeName={removeName} // passing the memoized remove function to the Render component
+        />
+      </div>
+    </div>
+  );
+};
+export default Normal;
+```
+
+> Usecallback has the structure of like the useEffect hook, it takes a function as the first argument and an array of dependencies as the second argument. Now, for the `useCallback` hook, the function will be memoized and will not be recreated on every re-render unless the dependencies change.
+
+But if you take a look in the browser and click the button to increment the count, you will see that the `RenderMEMOIssue` component is not re-rendering anymore, which is great!
+
+BUUUUUUT!
+
+If you click the delete button to remove a name from the list, you will see that the `names` are not actually getting removed from the list but why?
+
+This is because we are using the `nameList` state in the `removeName` function is saved and memoized when the `useCallback` hook is called, so it will always use the initial value of `nameList` which is the `names` array we defined at the top of the file.
+
+So, even thought the `removeName` function is working properly the contents inside the function is not using the updated value of `nameList` because it is saved in the closure of the `useCallback` hook.
+
+And that's why there is a `dependency` array in the `useCallback` hook, to tell React when to update the memoized function.
+
+So, we need to add `nameList` to the dependency array of the `useCallback` hook to make sure that the `removeName` function uses the updated value of `nameList`.
+
+```js {.line-numbers}
+// src/performance/Normal.jsx
+import React, { useCallback } from "react";
+import RenderMEMOIssue from "./RenderMEMOIssue";
+
+const names = ["John", "Jane", "Doe", "Smith", "Alice", "Bob"];
+const Normal = () => {
+  const [count, setCount] = React.useState(0);
+  const [nameList, setNameList] = React.useState(names);
+
+  const removeName = useCallback(
+    (name) => {
+      setNameList(nameList.filter((n) => n !== name)); // removing the name from the list
+    },
+    [nameList] // adding nameList to the dependency array
+  );
+
+  return (
+    <div className="container d-flex flex-column align-items-center justify-content-center">
+      <h1>Normal Component</h1>
+      <button onClick={() => setCount(count + 1)}>Count: {count}</button>
+      <div>
+        <RenderMEMOIssue
+          nameList={nameList}
+          removeName={removeName} // passing the memoized remove function to the Render component
+        />
+      </div>
+    </div>
+  );
+};
+export default Normal;
+```
+
+And this way the `removeName` function will use the updated value of `nameList` and the names will be removed from the list when you click the delete button.
+
+# useMemo
+
+Don't get it confused with the `memo` higher order component, `useMemo` is a hook that allows you to memoize a value and avoid unnecessary calculations on every render.
+
+It's specifically useful when you have expensive calculations or operations that you don't want to run on every render.
+
+Inside the `normal` component, let's say we have a function to calculate the sum of 1 to 100000000.
+
+```js {.line-numbers}
+import React, { useCallback } from "react";
+import RenderMEMOIssue from "./RenderMEMOIssue";
+
+const names = ["John", "Jane", "Doe", "Smith", "Alice", "Bob"];
+const Normal = () => {
+  const [count, setCount] = React.useState(0);
+  const [nameList, setNameList] = React.useState(names);
+
+  const sunOneToOneBillion = () => {
+    let sum = 0;
+    for (let i = 1; i <= 1000000000; i++) {
+      sum += i;
+    }
+    return sum;
+  };
+
+  const summ = sunOneToOneBillion();
+
+  const removeName = useCallback((name) => {
+    setNameList(nameList.filter((n) => n !== name)); // removing the name from the list
+  }, []);
+
+  return (
+    <div className="container d-flex flex-column align-items-center justify-content-center">
+      <h1>Normal Component</h1>
+      <button onClick={() => setCount(count + 1)}>Count: {count}</button>
+      <div>
+        <RenderMEMOIssue
+          nameList={nameList}
+          removeName={removeName} // passing the memoized remove function to the Render component
+        />
+      </div>
+    </div>
+  );
+};
+export default Normal;
+```
+
+You'll see that the app is stuck when ever you click the button to increment the count, because the `sunOneToOneBillion` function is being called on every render and it takes a lot of time to calculate the sum.
+
+So, we can use the `useMemo` hook to memoize the result of the `sunOneToOneBillion` function and avoid unnecessary calculations on every render.
+
+```js {.line-numbers}
+import React, { useCallback, useMemo } from "react";
+import RenderMEMOIssue from "./RenderMEMOIssue";
+
+const names = ["John", "Jane", "Doe", "Smith", "Alice", "Bob"];
+const Normal = () => {
+  const [count, setCount] = React.useState(0);
+  const [nameList, setNameList] = React.useState(names);
+
+  const sunOneToOneBillion = () => {
+    let sum = 0;
+    for (let i = 1; i <= 1000000000; i++) {
+      sum += i;
+    }
+    return sum;
+  };
+
+  const summ = useMemo(() => sunOneToOneBillion(), []); // Memoizing the sum calculation to avoid re-computation on every render
+
+  const removeName = useCallback((name) => {
+    setNameList(nameList.filter((n) => n !== name)); // removing the name from the list
+  }, []);
+
+  return (
+    <div className="container d-flex flex-column align-items-center justify-content-center">
+      <h1>Normal Component</h1>
+      <button onClick={() => setCount(count + 1)}>Count: {count}</button>
+      <div>
+        <RenderMEMOIssue
+          nameList={nameList}
+          removeName={removeName} // passing the memoized remove function to the Render component
+        />
+      </div>
+    </div>
+  );
+};
+export default Normal;
+```
+
+> Here, we are using the `useMemo` hook to memoize the result of the `sunOneToOneBillion` function. The function will only be called once when the component mounts, and the result will be cached. On subsequent renders, the cached result will be returned instead of recalculating the sum.
+
+> This way, the app will not get stuck when you click the button to increment the count, and the sum will be calculated only once when the component mounts.
+
+> You can also add a dependency array to the `useMemo` hook to recalculate the sum when the dependencies change, but in this case, we don't have any dependencies, so we can pass an empty array.
+
+> This is particularly useful when you have expensive calculations or operations that you don't want to run on every render, like fetching data from an API or performing complex calculations.
+
+# useTransition & Suspense
+
+We can use this hook to specify a certain part of the component that can be deferred or delayed, allowing the main thread to remain responsive while the deferred updates are processed in the background.
+
+It'll give you a `pending` state that you can use to show a loading indicator or a spinner while the deferred updates are being processed.
+
+And a `startTransition` function that you can use to wrap the deferred updates.
+
+Let's make a new component named `TransitionAndSuspense.jsx` in the `src/performance` folder.
+
+In this component I need a input field and a function to generate a list of `5000` thousand images and the images will be displayed in a grid layout right below the input field.
+
+```js {.line-numbers}
+// src/performance/TransitionAndSuspense.jsx
+import React, { useState, useTransition } from "react";
+import av from "./av.svg";
+const TransitionAndSuspense = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [images, setImages] = useState([]);
+
+  const generateImages = () => {
+    const newImages = [];
+    for (let i = 0; i < 5000; i++) {
+      newImages.push(av);
+    }
+    return newImages;
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+
+    setImages(generateImages()); // wrapping the state update in startTransition
+  };
+
+  return (
+    <div className="container">
+      <h1>Transition and Suspense Example</h1>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder="Type something..."
+        className="form-control mb-3"
+      />
+      <div className="row">
+        {images.map((image, index) => (
+          <div className="col-4 mb-3" key={index}>
+            <img src={image} alt={`Random ${index}`} className="img-fluid" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default TransitionAndSuspense;
+```
+
+> Here, we are creating a simple input field and a function to generate a list of 5000 images. The images are displayed in a grid layout below the input field.
+
+Here every time we type something in the input field, the `handleInputChange` function is called and it generates a new list of 5000 images and updates the state.
+
+Which can make the app unresponsive and slow, especially it can also make your browser crash or pc freeze.
+
+Which is very very bad.
+
+So, as this is not vritical functionality related tot the input field, we can wrap the state update in a `startTransition` function to defer the updates and keep the main thread responsive.
+
+```js {.line-numbers}
+import React, { useState, useTransition } from "react";
+import av from "./av.svg";
+const TransitionAndSuspense = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [images, setImages] = useState([]);
+  const [isPending, startTransition] = useTransition(); // using useTransition hook to get pending state and startTransition function
+
+  const generateImages = () => {
+    const newImages = [];
+    for (let i = 0; i < 5000; i++) {
+      newImages.push(av);
+    }
+    return newImages;
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+
+    startTransition(() => {
+      setImages(generateImages()); // wrapping the state update in startTransition
+    });
+  };
+
+  return (
+    <div className="container">
+      <h1>Transition and Suspense Example</h1>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder="Type something..."
+        className="form-control mb-3"
+      />
+      {isPending && <div className="text-center">Loading images...</div>}{" "}
+      {/* showing loading indicator when the updates are pending */}
+      <div className="row">
+        {images.map((image, index) => (
+          <div className="col-4 mb-3" key={index}>
+            <img src={image} alt={`Random ${index}`} className="img-fluid" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default TransitionAndSuspense;
+```
+
+> Here, we are using the `useTransition` hook to get the `isPending` state and the `startTransition` function. We wrap the state update in the `startTransition` function to defer the updates and keep the main thread responsive.
+
+> We also show a loading indicator when the updates are pending, which is a good user experience practice.
+
+## LAZY & SUSPENSE
+
+This concept is a bit different from the previous ones, necause it has a broader scope and is not just limited to performance optimizations.
+
+But for now I want to give you a brief overview of how to use `React.lazy` and `Suspense` to load components lazily and improve the performance of your React applications.
+
+React’s `lazy` and `Suspense` are tools for **code-splitting** — breaking your app into smaller chunks that load **only when needed**.
+
+Instead of loading _all_ components when the app first renders, you can load heavy components **on demand**. This reduces your **initial bundle size** and improves **page load performance**.
+
+### **Key Concepts**
+
+1. **`React.lazy`**
+
+   - Lets you dynamically import a component only when it’s rendered.
+   - Example:
+
+     ```jsx
+     const MyComponent = React.lazy(() => import("./MyComponent"));
+     ```
+
+   - Here, `MyComponent` is not included in the main bundle — it’s fetched as a separate file when needed.
+
+2. **`Suspense`**
+
+   - Wraps lazy-loaded components and shows a fallback (like a spinner) while the component is being fetched.
+   - Example:
+
+     ```jsx
+     <Suspense fallback={<div>Loading...</div>}>
+       <MyComponent />
+     </Suspense>
+     ```
+
+---
+
+### **When to Use**
+
+- Large components or modules that **aren’t needed immediately**.
+- Heavy UI sections (charts, image galleries, maps, editors).
+- Rarely used admin pages or modals.
+- Route-based code splitting in React Router.
+
+---
+
+### **Why Use It**
+
+- **Performance boost**: Smaller initial bundle size → faster load times.
+- **Better user experience**: Show loading indicators while fetching heavy components.
+- **Avoid unnecessary resource loading**: Load only what’s needed.
+
+---
+
+## **Example — Showing 5000 Images on Button Click**
+
+If we load 5000 images at the start, the browser will choke. Instead, we can:
+
+- Keep the heavy `ImageGallery` component **lazy-loaded**.
+- Only load it **after** the user clicks a button.
+
+---
+
+### **`ImageGallery.jsx`**
+
+```jsx
+import React from "react";
+
+const ImageGallery = () => {
+  const images = Array.from(
+    { length: 5000 },
+    (_, i) => `https://picsum.photos/200?random=${i}`
+  );
+
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      {images.map((src, index) => (
+        <img
+          key={index}
+          src={src}
+          alt={`Random ${index}`}
+          style={{
+            width: "200px",
+            height: "200px",
+            objectFit: "cover",
+            margin: "2px",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default ImageGallery;
+```
+
+---
+
+### **`App.jsx`**
+
+```jsx
+import React, { useState, Suspense } from "react";
+
+const LazyImageGallery = React.lazy(() => import("./ImageGallery"));
+
+const TransitionAndSuspense = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [showImages, setShowImages] = useState(false);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleShowImages = () => {
+    setShowImages(!showImages); // Toggle the visibility of images
+  };
+
+  return (
+    <div className="container">
+      <h1>Lazy & Suspense Example</h1>
+
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder="Type something..."
+        className="form-control mb-3"
+      />
+
+      <button onClick={handleShowImages} className="btn btn-primary mb-3">
+        Show 5000 Images
+      </button>
+
+      {showImages && (
+        <Suspense
+          fallback={<div className="text-center">Loading images...</div>}
+        >
+          <LazyImageGallery />
+        </Suspense>
+      )}
+    </div>
+  );
+};
+
+export default TransitionAndSuspense;
+```
+
+---
+
+### **How It Works Here**
+
+1. **Initial load**:
+
+   - Only `App.jsx` is loaded — no gallery code is in the bundle.
+   - Fast load time.
+
+2. **Button click**:
+
+   - React fetches `ImageGallery.jsx` **on demand** as a separate JS file.
+   - While fetching, `Suspense` shows `Loading gallery...`.
+
+3. **After load**:
+
+   - The `ImageGallery` renders, showing 5000 images.
+
+---
+
+### **Where to Use in Real Projects**
+
+- Big **admin dashboards** — lazy load each analytics chart.
+- **Maps** — Google Maps or Leaflet components are heavy; load when needed.
+- **Rich text editors** like Draft.js or Quill — only when editing starts.
+- **Modal forms** that appear rarely.
+
+Again We will get back to this topic when we cover the `React Router` and how to use it with `lazy` and `Suspense` to load components lazily based on routes.
+
+But for now, just remember that `React.lazy` and `Suspense` are powerful tools to improve the performance of your React applications by loading components lazily and showing loading indicators while the components are being fetched.
+
+# THAT IS BOYYSSSSS!!!!!!
+
+You have done it!!!
+
+You have finished the React course and you are now ready to take on the world of React development.
+
+THIS WAS A LONG LONG LOOOOONG JOURNEY, I'm so proud of you for sticking with it and proud of myself for creating this article.
+
+
+I LEARNED SO MUCH WHILE WRITING THIS ARTICLE AND I HOPE YOU DID TOO.
+
+This is by far my biggest and my most fruitful article I have ever written and I hope it helps you in your journey to become a better React developer.
+
+
+I'm filled with emotion and gratitude for all the support and love I have received from you guys.
+
+But our work is not done yet, we still have a lot to cover and a lot to learn.
+
+But for now 
+
+# THANK YOU
+
+LAUGHING OUT LOUD, I know this is not the end, but it is a milestone in our journey to become better React developers.
+
+If you guys like these types of articles and want me to write more articles like this, please let me know. You can contact me on my:
+
+- [LinkedIn](https://www.linkedin.com/in/pro-programmer/)
+- [YouTube](http://www.youtube.com/@itvaya)
+- [gtihub](https://github.com/RishatTalukder/learning_react)
+- [Gmail](talukderrishat2@gmail.com)
+- [discord](https://discord.gg/ZB495XggcF)
+
+# HAPPY CODING 🫰
