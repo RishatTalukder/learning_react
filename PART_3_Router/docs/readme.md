@@ -818,3 +818,406 @@ export default Navbar;
 And this will give a nice shared navbar for our application. The `navbar` will be rendered on every route and we can navigate to different routes using the links in the `Navbar`.
 
 # Code Splitting
+
+Code splitting is a powerful feature in `React` that allows us to split our code into smaller chunks and load them on demand. This can significantly improve the performance of our application by reducing the initial load time.
+
+In `React Router`, we can use the `lazy` and `Suspense` components to achieve code splitting. The `lazy` function allows us to dynamically import a component, and the `Suspense` component allows us to show a fallback UI while the component is being loaded.
+
+When a website loads it's actually downloading the entire codebase of the application Which is the `JavaScript` code that is written in the `src` folder. This can be a problem if the application is large and has many components because it will take a long time to load the entire codebase.
+
+And as we are using `react-router` to handle routing, not every component will be used at the same time. So, we can split the code into smaller chunks and load them on demand when the user navigates to that route.
+
+Let's see how we can implement code splitting in our application.
+
+First, we need to import the `lazy` and `Suspense` components from `react`. Then, we can use the `lazy` function to dynamically import our components.
+
+```js {.line-numbers}
+// src/App.jsx
+import { useState, lazy, Suspense } from "react";
+import { Routes, Route, Link } from "react-router";
+import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
+const Home = lazy(() => import("./components/Home"));
+const About = lazy(() => import("./components/About"));
+const Contact = lazy(() => import("./components/Contacts"));
+const Profile = lazy(() => import("./components/Profile"));
+
+function App() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Home />
+              </Suspense>
+            }
+          />
+          <Route
+            path="about"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <About />
+              </Suspense>
+            }
+          >
+            <Route
+              path="profile"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Profile />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route
+            path="contact"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Contact />
+              </Suspense>
+            }
+          />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+export default App;
+```
+
+> Here, we have used the `lazy` function to dynamically import our components. The `lazy` function takes a function that returns a promise that resolves to the component. This way, the component will be loaded only when it is needed.
+
+And we have wrapped the components in the `Suspense` component with a fallback UI that will be shown while the component is being loaded. In this case, we are showing a simple "Loading..." message.
+
+# Dynamic Routing
+
+Now, as we know how to create routes and nested routes, we can also create dynamic routes in our application. 
+
+What is dynamic routing?
+
+Whne we create a route that route can hove some items/components that are simillar but not the same. Like, products in a e-commerce website. We can see all the products in a single page but when we click on a product, we are taken to a new page that shows the details of that product. Which is same for all the products. Now for all the products we cannot create a new route manually. So, we can create a dynamic route that will take the product id as a parameter and render the product details page.
+
+Let's make a simple example of dynamic routing in our application.
+
+In the `components` folder, create a new file called `Product.jsx`.
+
+```js {.line-numbers}
+// src/components/Product.jsx
+import React from "react";
+const Product = () => {
+  return (
+    <div>
+      <h1>Product</h1>
+      <p>This is the details page for product</p>
+    </div>
+  );
+};
+export default Product;
+```
+
+Now, we can create a dynamic route for this component in the `App.jsx` file. We can use the `:id` syntax to create a dynamic route that will take the product id as a parameter.
+
+```js {.line-numbers}
+// src/App.jsx
+import { useState, lazy, Suspense } from "react";
+import { Routes, Route, Link } from "react-router";
+import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
+const Home = lazy(() => import("./components/Home"));
+const About = lazy(() => import("./components/About"));
+const Contact = lazy(() => import("./components/Contacts"));
+const Profile = lazy(() => import("./components/Profile"));
+const Product = lazy(() => import("./components/Product"));
+
+function App() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Home />
+              </Suspense>
+            }
+          />
+          <Route
+            path="about"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <About />
+              </Suspense>
+            }
+          >
+            <Route
+              path="profile"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Profile />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route
+            path="contact"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Contact />
+              </Suspense>
+            }
+          />
+          <Route
+            path="product/:id" // Dynamic route for product details
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Product />
+              </Suspense>
+            }
+          />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+export default App;
+```
+
+> Here, we have added a new route with the path `product/:id` which will take the product id as a parameter. The `:id` part is a dynamic segment that will match any value in that position of the URL.
+
+Now, when we navigate to the `product/:id` route, the `Product` component will be rendered and we can access the product id from the URL.
+
+Now, To render the correct product details, we need to access the `id` parameter from the URL in the `Product` component. We can do that using the `useParams` hook from `react-router`.
+
+```js {.line-numbers}
+// src/components/Product.jsx
+import React from "react";
+import { useParams } from "react-router";
+const Product = () => {
+  const { id } = useParams(); // Get the id parameter from the URL
+  return (
+    <div>
+      <h1>Product {id}</h1>
+      <p>This is the details page for product {id}</p>
+    </div>
+  );
+};
+export default Product;
+```
+
+Now, we can Input any parameters in the URL like `localhost:3000/product/1`, `localhost:3000/product/2`, etc. and it will render the `Product` component with the corresponding product id.
+
+Which is great but I want to make it a little more realistic. So, let's create a new component for the named `products` and then we can link to the product details page from that component.
+
+Here is a small data set of products that we can use to render the products list.
+
+```js {.line-numbers}
+// src/Data/products.js
+const products = [
+    {
+        id: 1,
+        name: "Apple iPhone 14",
+        description: "The latest Apple smartphone featuring a 6.1-inch Super Retina XDR display, A15 Bionic chip, and advanced dual-camera system."
+    },
+    {
+        id: 2,
+        name: "Sony WH-1000XM5 Headphones",
+        description: "Premium wireless noise-cancelling headphones with up to 30 hours of battery life and superior sound quality."
+    },
+    {
+        id: 3,
+        name: "Dell XPS 13 Laptop",
+        description: "Ultra-thin 13-inch laptop with Intel Core i7 processor, 16GB RAM, 512GB SSD, and a stunning InfinityEdge display."
+    },
+];
+export default products;
+```
+
+Now, we can create a new component called `Products.jsx` in the `components` folder and also I'm going to style it using `bootstrap`.
+
+
+```js {.line-numbers}
+// src/components/main.jsx
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import { BrowserRouter } from "react-router";
+import "bootswatch/dist/darkly/bootstrap.min.css"; // Import Bootswatch theme CSS
+import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JS
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
+);
+```
+
+```js {.line-numbers}
+// src/components/Products.jsx
+import React from "react";
+import { Link } from "react-router";
+import products from "../Data/products";
+
+const Products = () => {
+  return (
+    <div className="container">
+      <h1>Products</h1>
+      <div className="row">
+        {products.map((product) => (
+          <div className="" key={product.id}>
+            <div className="card mb-4">
+              <div className="card-body">
+                <h5 className="card-title">{product.name}</h5>
+                <Link to={`/product/${product.id}`} className="btn btn-primary">
+                  View Details
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Products;
+```
+
+Also, I added a new link and route for the `Products` component in the `App.jsx` file.
+
+```js {.line-numbers}
+// src/App.jsx
+import { useState, lazy, Suspense } from "react";
+import { Routes, Route, Link } from "react-router";
+import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
+const Home = lazy(() => import("./components/Home"));
+const About = lazy(() => import("./components/About"));
+const Contact = lazy(() => import("./components/Contacts"));
+const Profile = lazy(() => import("./components/Profile"));
+const Product = lazy(() => import("./components/Product"));
+const Products = lazy(() => import("./components/Products"));
+
+function App() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          ...   {/* everything else remains the same */}
+          <Route
+            path="products"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Products />
+              </Suspense>
+            }
+          /> {/* Route for Products */}
+          <Route
+            path="product/:id" // Dynamic route for product details
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Product />
+              </Suspense>
+            }
+          />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+export default App;
+```
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { Link, Outlet } from "react-router"; // Use react-router-dom
+
+const Navbar = () => {
+  return (
+    <>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4"      >
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">
+            MyApp
+          </Link>
+          <div className=" navbar-collapse">
+            <ul className="navbar-nav mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/about">
+                  About
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/contact">
+                  Contact
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/products">
+                  Products
+                </Link> {/* Link to the Products page */}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <Outlet />
+    </>
+  );
+};
+
+export default Navbar;
+```
+
+And now we can go to the `Products` page and see the list of products. When we click on the "View Details" button, it will navigate to the product details page for that product.
+
+Now, how do we get the exact product details from the `products` data set? We can use the `useParams` hook to get the product id from the URL and then find the product in the `products` data set.
+
+```js {.line-numbers}
+// src/components/Product.jsx
+import React from "react";
+import { useParams, Link } from "react-router";
+import products from "../Data/products";
+
+
+const Product = () => {
+  const { id } = useParams(); // Get the id parameter from the URL
+  const product = products.find((p) => p.id === parseInt(id)); // Find the product in the products data set
+
+  if (!product) {
+    return <div>Product not found</div>; // Handle case when product is not found
+  }
+
+  return (
+    <div className="container">
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+      <Link to="/products" className="btn btn-secondary">
+        Back to Products
+      </Link>
+    </div>
+  );
+};
+export default Product;
+```
+
+> Here, we are using the `useParams` hook to get the `id` parameter from the URL. Then, we are using the `find` method to find the product in the `products` data set that matches the `id`. If the product is not found, we return a message saying "Product not found".
+
+Now, when we navigate to the product details page, it will show the product name and description based on the product id in the URL.
+
