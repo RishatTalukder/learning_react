@@ -418,23 +418,22 @@ function App() {
           <Link to="about">About</Link>
         </li>
         <li>
-          <Link to="contact">Contact</Link> 
+          <Link to="contact">Contact</Link>
         </li>
       </ul>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} /> 
+        <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
-} 
+}
 export default App;
 ```
 
 > `/` is the default path when the application loads, so we have added a route for it and rendered the `Home` component. Now, when the user accesses the `localhost:3000/` path, they will see the `Home` component.
-
 
 ## Nested Routes
 
@@ -522,7 +521,6 @@ export default App;
 
 Now that we have added the nested route for the `Profile` component, we need to make sure that the `About` component can render the nested routes.
 
-
 By adding the new route inside the `About` route, we are telling the `react-router` that the `Profile` component is a child of the `About` component.
 
 So, it's will configure the path to be `localhost:3000/about/profile` for the `Profile` component.
@@ -582,7 +580,7 @@ So, we can make a new component called `navbar.jsx` and move the `ul` element wi
 ```js {.line-numbers}
 // src/components/Navbar.jsx
 import React from "react";
-import { Link } from "react-router";  
+import { Link } from "react-router";
 
 const Navbar = () => {
   return (
@@ -624,9 +622,10 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Navbar />}>
-        <Route path="home" element={<Home />} />
+          <Route path="home" element={<Home />} />
           <Route path="about" element={<About />}>
-            <Route path="profile" element={<Profile />} />{/* Nested route for Profile */}
+            <Route path="profile" element={<Profile />} />
+            {/* Nested route for Profile */}
           </Route>
           <Route path="contact" element={<Contact />} />
         </Route>
@@ -642,7 +641,7 @@ export default App;
 ```js {.line-numbers}
 // src/components/Navbar.jsx
 import React from "react";
-import { Link, Outlet } from "react-router";  
+import { Link, Outlet } from "react-router";
 
 const Navbar = () => {
   return (
@@ -656,7 +655,6 @@ const Navbar = () => {
       <li>
         <Link to="contact">Contact</Link>
       </li>
-
       <Outlet /> {/* This will render the nested routes */}
     </ul>
   );
@@ -694,9 +692,11 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Navbar />}>
-        <Route index element={<Home />} /> {/* Index route for Home component */}
+          <Route index element={<Home />} />{" "}
+          {/* Index route for Home component */}
           <Route path="about" element={<About />}>
-            <Route path="profile" element={<Profile />} />{/* Nested route for Profile */}
+            <Route path="profile" element={<Profile />} />
+            {/* Nested route for Profile */}
           </Route>
           <Route path="contact" element={<Contact />} />
         </Route>
@@ -712,7 +712,7 @@ export default App;
 ```js {.line-numbers}
 // src/components/Navbar.jsx
 import React from "react";
-import { Link, Outlet } from "react-router";  
+import { Link, Outlet } from "react-router";
 
 const Navbar = () => {
   return (
@@ -780,7 +780,7 @@ import { Link, Outlet } from "react-router"; // Use react-router-dom
 const Navbar = () => {
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4"      >
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             MyApp
@@ -812,7 +812,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
 ```
 
 And this will give a nice shared navbar for our application. The `navbar` will be rendered on every route and we can navigate to different routes using the links in the `Navbar`.
@@ -896,7 +895,7 @@ And we have wrapped the components in the `Suspense` component with a fallback U
 
 # Dynamic Routing
 
-Now, as we know how to create routes and nested routes, we can also create dynamic routes in our application. 
+Now, as we know how to create routes and nested routes, we can also create dynamic routes in our application.
 
 What is dynamic routing?
 
@@ -1021,27 +1020,29 @@ Here is a small data set of products that we can use to render the products list
 ```js {.line-numbers}
 // src/Data/products.js
 const products = [
-    {
-        id: 1,
-        name: "Apple iPhone 14",
-        description: "The latest Apple smartphone featuring a 6.1-inch Super Retina XDR display, A15 Bionic chip, and advanced dual-camera system."
-    },
-    {
-        id: 2,
-        name: "Sony WH-1000XM5 Headphones",
-        description: "Premium wireless noise-cancelling headphones with up to 30 hours of battery life and superior sound quality."
-    },
-    {
-        id: 3,
-        name: "Dell XPS 13 Laptop",
-        description: "Ultra-thin 13-inch laptop with Intel Core i7 processor, 16GB RAM, 512GB SSD, and a stunning InfinityEdge display."
-    },
+  {
+    id: 1,
+    name: "Apple iPhone 14",
+    description:
+      "The latest Apple smartphone featuring a 6.1-inch Super Retina XDR display, A15 Bionic chip, and advanced dual-camera system.",
+  },
+  {
+    id: 2,
+    name: "Sony WH-1000XM5 Headphones",
+    description:
+      "Premium wireless noise-cancelling headphones with up to 30 hours of battery life and superior sound quality.",
+  },
+  {
+    id: 3,
+    name: "Dell XPS 13 Laptop",
+    description:
+      "Ultra-thin 13-inch laptop with Intel Core i7 processor, 16GB RAM, 512GB SSD, and a stunning InfinityEdge display.",
+  },
 ];
 export default products;
 ```
 
 Now, we can create a new component called `Products.jsx` in the `components` folder and also I'm going to style it using `bootstrap`.
-
 
 ```js {.line-numbers}
 // src/components/main.jsx
@@ -1111,7 +1112,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Navbar />}>
-          ...   {/* everything else remains the same */}
+          ... {/* everything else remains the same */}
           <Route
             path="products"
             element={
@@ -1146,7 +1147,7 @@ import { Link, Outlet } from "react-router"; // Use react-router-dom
 const Navbar = () => {
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4"      >
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             MyApp
@@ -1171,7 +1172,8 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/products">
                   Products
-                </Link> {/* Link to the Products page */}
+                </Link>{" "}
+                {/* Link to the Products page */}
               </li>
             </ul>
           </div>
@@ -1194,7 +1196,6 @@ Now, how do we get the exact product details from the `products` data set? We ca
 import React from "react";
 import { useParams, Link } from "react-router";
 import products from "../Data/products";
-
 
 const Product = () => {
   const { id } = useParams(); // Get the id parameter from the URL
@@ -1221,3 +1222,590 @@ export default Product;
 
 Now, when we navigate to the product details page, it will show the product name and description based on the product id in the URL.
 
+# UseNavigate Hook
+
+Sometimes, we might want to navigate to a different route programmatically. For example, after submitting a form, we might want to navigate to a success page. Or when the user clicks on a button, we might want to navigate to a different page.
+
+We can use the `useNavigate` hook from `react-router` to achieve this. The `useNavigate` hook returns a function that we can call to navigate to a different route.
+
+Let's make a simple Login form that will navigate to the `Dashboard` page after submitting the form.
+
+```js {.line-numbers}
+// src/components/Login.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+
+const Login = ({ setUser }) => {
+  // Accept setUser prop
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // Get the navigate function from useNavigate hook
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setUser(username); // Set the user in the parent component
+    navigate("/dashboard");
+  };
+
+  return (
+    <div className="container">
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Username</label>
+          <input
+            type="text"
+            className="form-control"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Login;
+```
+
+> Here, we have created a simple login form with username and password fields. When the form is submitted, we call the `handleSubmit` function which prevents the default form submission behavior, sets the user in the parent component using the `setUser` prop, and then navigates to the `/dashboard` route using the `navigate` function from the `useNavigate` hook.
+
+Now, we can create a new component called `Dashboard.jsx` in the `components` folder.
+
+```js {.line-numbers}
+// src/components/Dashboard.jsx
+import React from "react";
+const Dashboard = () => {
+  return (
+    <div className="container">
+      <h1>Dashboard</h1>
+      <p>Welcome to the Dashboard!</p>
+    </div>
+  );
+};
+export default Dashboard;
+```
+
+Now, we need to add routes for the `Login` and `Dashboard` components in the `App.jsx` file.
+
+```js {.line-numbers}
+// src/App.jsx
+import { useState, lazy, Suspense } from "react";
+import { Routes, Route, Link } from "react-router";
+import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
+... // other imports
+const Login = lazy(() => import("./components/Login"));
+// const Dashboard = lazy(() => import("./components/Dashboard"));
+
+function App() {
+  const [user, setUser] = useState(null); // State to manage user login status
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          ...   {/* everything else remains the same */}
+
+          <Route
+            path="login"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Login
+                setUser={setUser} // Pass setUser prop to Login component
+                />
+              </Suspense>
+            }
+          />
+
+
+          <Route
+              path="dashboard"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  {/* <Dashboard /> */}
+                  <Dashboard user={user} />
+                </Suspense>
+              }
+            />
+
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+export default App;
+
+```
+
+> Here, we have added routes for the `Login` and `Dashboard` components. We are also passing the `setUser` function as a prop to the `Login` component so that it can set the user in the parent component when the form is submitted.
+
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import React from "react";
+import { Link, Outlet } from "react-router"; // Use react-router-dom
+const Navbar = () => {
+  return (
+    <>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">
+            MyApp
+          </Link>
+          <div className=" navbar-collapse">
+            <ul className="navbar-nav mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/about">
+                  About
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/contact">
+                  Contact
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/products">
+                  Products
+                </Link>{" "}
+                {/* Link to the Products page */}
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>{" "}
+                {/* Link to the Login page */}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <Outlet />
+    </>
+  );
+};
+export default Navbar;
+```
+
+Now, I can go to the `Login` page, enter the username and password, and when I submit the form, it will navigate to the `Dashboard` page.
+
+And this should work seamlessly without reloading the page.
+
+The useNavigate hook is a powerful feature that allows us to navigate to different routes programmatically. We can use it in various scenarios like form submissions, button clicks, etc.
+
+And there is a Component version of this hook called `Navigate` component which we can use to navigate to a different route. And it's main use case is for protection of routes.
+
+# Protected Routes
+
+Some times we might want to protect certain routes in our application. For example, we might want to restrict access to the `Dashboard` page only to the `admin` user. Or we might want to restrict access to the `Profile` page only to the logged-in users.
+
+How do we do that?
+
+It's farely a logical question.
+
+We just need to check if the user is logged in or if the user is an admin before rendering the component. But I the issue is the cheking must be done before redirecting to the `path` of the route.
+
+So, what we can do is, create a new component called `ProtectedRoute.jsx` in the `components` folder. This component will check if the user is logged in or if the user is an admin before rendering the component. If the user is not logged in or not an admin, it will redirect to the `Login` page.
+
+And we will use the `Navigate` component from `react-router` to redirect to the `home` or `login` page if the user is not authorized to access the route.
+
+Than we will wrap the `Dashboard` route with the `ProtectedRoute` component in the `App.jsx` file.
+
+```js {.line-numbers}
+// src/components/ProtectedRoute.jsx
+import React from "react";
+import { Navigate } from "react-router";
+
+const ProtectedRoute = ({ user, children }) => {
+  if (user !== "admin") {
+    // Check if the user is not admin
+    return <Navigate to="/" />; // Redirect to Login page
+  }
+  return children; // Render the children components if the user is admin
+};
+export default ProtectedRoute;
+```
+
+> Here, we have created a `ProtectedRoute` component that takes the `user` and `children` as props Because we need to check if the user is an admin before rendering the `children` components. We will get the `dashboard` component as `children` prop because we will wrap the `Dashboard` route with the `ProtectedRoute` component in the `App.jsx` file.
+
+```js {.line-numbers}
+// src/App.jsx
+import { useState, lazy, Suspense } from "react";
+import { Routes, Route, Link } from "react-router";
+import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute component
+... // other imports
+const Login = lazy(() => import("./components/Login"));
+const Dashboard = lazy(() => import("./components/Dashboard"));
+
+function App() {
+  const [user, setUser] = useState(null); // State to manage user login status
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          ...   {/* everything else remains the same */}
+
+          <Route
+            path="login"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Login
+                setUser={setUser} // Pass setUser prop to Login component
+                />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <ProtectedRoute user={user}>
+                  {/* Wrap Dashboard component with ProtectedRoute */}
+                  <Dashboard user={user} />
+                </ProtectedRoute>
+              </Suspense>
+            }
+          />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+export default App;
+```
+
+> Here, we have imported the `ProtectedRoute` component and wrapped the `Dashboard` component with it. We are also passing the `user` state as a prop to the `ProtectedRoute` component so that it can check if the user is an admin before rendering the `Dashboard` component.
+
+Now, when we navigate to the `Dashboard` page, it will check if the user is an admin. If the user is not an admin, it will redirect to the `Login` page. If the user is an admin, it will render the `Dashboard` component.
+
+```js {.line-numbers}
+// src/components/Dashboard.jsx
+import React from "react";
+const Dashboard = ({ user }) => {
+  return (
+    <div className="container">
+      <h1>Dashboard</h1>
+      <p>Welcome to the Dashboard, {user}!</p>
+    </div>
+  );
+};
+export default Dashboard;
+```
+
+> Here, we are displaying a welcome message with the user's name in the `Dashboard` component. We are getting the `user` prop from the `ProtectedRoute` component.
+
+And, that how we can protect our routes in a `React` application using `react-router`. We can create a `ProtectedRoute` component that checks if the user is logged in or if the user is an admin before rendering the component. If the user is not authorized to access the route, it will redirect to the `Login` page.
+
+Adn that's the basics of routing in `React` using `react-router`. We have learned how to create routes, nested routes, dynamic routes, and protected routes. We have also learned how to use the `useNavigate` hook to navigate to different routes programmatically.
+
+And finally, all the one that is pinching me is the whole structure of the application. For, explaining the routing concepts, I have created a very basic application with a few components and routes. But in a real-world application, we need to keep everything organized and structured properly.
+
+So, let's refactor the application to make it more organized and structured.
+
+# Refactoring the Application Structure & Code
+
+In the components folder, we have a lot of components and files. And it's getting hard to manage everything in a single folder. So, we can create subfolders for each feature or module in our application.
+
+Before that let's nest the `product.jsx` inside a the `products`  component. This is is because I have a route for `products` and a dynamic route for `product/:id`. 
+
+When we are routing we should stick to either `absolute` or `relative` paths. Because mixing both can lead to confusion and errors.
+
+As the `product` componet has the prefix of `products` in the route, it makes sense to nest it inside the `products` folder.
+
+This way we can keep all the related files and components together in a single folder.
+
+So, I'll make a new folder called `layouts` for the `nested` layouts like `Navbar` and `products`. 
+
+So, let's refactor the `products` component and create a new file called `ProductsLayout`
+
+```js {.line-numbers}
+// src/components/layouts/ProductsLayout.jsx
+import React from 'react'
+import { Outlet } from 'react-router'
+
+const ProductSharedLayout = () => {
+  return (
+    <div>
+      <Outlet />
+    </div>
+  )
+}
+
+export default ProductSharedLayout
+```
+
+WE have to refactor the `products` component to remove the container absolute path to relative path.
+
+```js {.line-numbers}
+// src/components/Products.jsx
+import React from "react";
+import { Link } from "react-router";
+import products from "../Data/products";
+
+const Products = () => {
+  return (
+    <div className="container">
+      <h1>Products</h1>
+      <div className="row">
+        {products.map((product) => (
+          <div className="" key={product.id}>
+            <div className="card mb-4">
+              <div className="card-body">
+                <h5 className="card-title">{product.name}</h5>
+                <Link to={`${product.id}`} className="btn btn-primary">
+                  View Details
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Products;
+```
+
+Now we can refactor the `App.jsx` file to use the new `ProductsLayout` component and also we can move all the components to their respective folders.
+
+I decided to Refector the whole app like this:
+
+```
+react_router/
+├── .gitignore
+├── README.md
+├── eslint.config.js
+├── index.html
+├── node_modules/
+├── package-lock.json
+├── package.json
+├── public/
+│   └── vite.svg
+├── src/
+│   ├── App.jsx
+│   ├── DashBoard_Pages/
+│   │   └── Dashboard.jsx
+│   ├── Data/
+│   │   └── products.js
+│   ├── ErrorPages/
+│   │   └── NotFound.jsx
+│   ├── Layouts/
+│   │   ├── ProductSharedLayout.jsx
+│   │   └── RootSharedLayout.jsx
+│   ├── Product_pages/
+│   │   ├── Product.jsx
+│   │   └── Products.jsx
+│   ├── Protected/
+│   │   └── ProtectedRoute.jsx
+│   ├── components/
+│   │   ├── About.jsx
+│   │   ├── Contacts.jsx
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── Products.jsx
+│   │   └── Profile.jsx
+│   └── main.jsx
+└── vite.config.js
+```
+
+> I made Folders for `Dashboard_Pages`, `Product_pages`, `Layouts`, `ErrorPages`, and `Protected` components. This way we can keep all the related files and components together in a single folder.
+
+And all the starting pages are in the `components` folder.
+
+We need to refactor the `App.jsx` file to use the new folder structure and also to use the `ProductsLayout` component.
+
+```js {.line-numbers}
+// src/App.jsx
+import { useState, lazy, Suspense } from "react";
+import { Routes, Route, Link } from "react-router";
+// import Navbar from "./components/Navbar";
+import NotFound from "./ErrorPages/NotFound";
+import ProtectedRoute from "./Protected/ProtectedRoute";
+import ProductSharedLayout from "./Layouts/ProductSharedLayout";
+import RootSharedLayout from "./Layouts/RootSharedLayout";
+const Home = lazy(() => import("./components/Home"));
+const About = lazy(() => import("./components/About"));
+const Contact = lazy(() => import("./components/Contacts"));
+const Profile = lazy(() => import("./components/Profile"));
+const Product = lazy(() => import("./Product_pages/Product"));
+const Products = lazy(() => import("./Product_pages/Products"));
+const Login = lazy(() => import("./components/Login"));
+const Dashboard = lazy(() => import("./DashBoard_Pages/Dashboard"));
+
+function App() {
+  const [user, setUser] = useState(null);
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<RootSharedLayout />}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Home />
+              </Suspense>
+            }
+          />
+          <Route
+            path="about"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <About />
+              </Suspense>
+            }
+          >
+            <Route
+              path="profile"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Profile />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route
+            path="contact"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Contact />
+              </Suspense>
+            }
+          />
+          <Route
+            path="products"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <ProductSharedLayout />
+              </Suspense>
+            }
+          >
+            <Route
+            index
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Products />
+              </Suspense>
+            }
+          ></Route>
+            <Route
+              path=":id" // Dynamic route for product details
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Product />
+                </Suspense>
+              }
+            />
+          </Route>
+
+          <Route
+            path="login"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Login setUser={setUser} />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <ProtectedRoute user={user}>
+                  {/* <Dashboard /> */}
+                  <Dashboard user={user} />
+                </ProtectedRoute>
+              </Suspense>
+            }
+          />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+export default App;
+```
+
+I also , implemented a `RootSharedLayout` component for the `Navbar` layout, You can do it yourselves or not do it at all.
+
+> DO IT !
+
+AAAAH! Just kidding, here is the code for the `RootSharedLayout` component.
+
+```js {.line-numbers}
+// src/components/layouts/RootSharedLayout.jsx
+import React from "react";
+import { Outlet } from "react-router";
+import Navbar from "../components/Navbar";
+
+const RootSharedLayout = () => {
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
+};
+
+export default RootSharedLayout;
+```
+
+> Here, we have created a `RootSharedLayout` component that renders the `Navbar` component and an `Outlet` component. The `Outlet` component will render the matched child route components.
+
+We used the this shared layout in as the root layout for all the routes in the `App.jsx` file.
+
+And that's it. We have refactored the whole application structure and code to make it more organized and structured.
+
+# Some Thoughts
+
+I have no say I'm not as hapy as I thought I would be after writing this whole thing. I was way more happier when I was writing the previous articles.
+
+Maybe it's because I was writing about something new and exciting and advanced react topics which I was learning myself.
+
+But routing is a boring topic. And it can sometime make things a little more complicated than it needs to be. But it's a cruicial part of any web application.
+
+I willingly made this article a little shorter and less explained because If you don't understand the fundamentals and the basics of react like hooks and Components, you won't be able to understand routing in react.
+
+And if you know the basics of react, while trying to understand routing, you will get confused and lost in the sea of concepts and ideas.
+
+So, it'll help refresh the basics of react and then try to understand routing in react.
+
+So, try to recreate the whole application by yourself and try to understand each and every line of code and route and how it works.
+
+There is no one way to learn routing you can figure out your own way of learning it, structuring it and implementing it. 
+
+So, now that you what you can do with routing in react, go ahead and try to implement it in your own projects or any project we did in this series.
+
+let's move on to the next topic which is `AXIOS` and a little bit of `API` calls in react.
+
+
+# AXIOS

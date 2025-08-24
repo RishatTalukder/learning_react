@@ -1,10 +1,9 @@
 import React from "react";
 import { Link, Outlet } from "react-router"; // Use react-router-dom
-
 const Navbar = () => {
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4"      >
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             MyApp
@@ -29,15 +28,20 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/products">
                   Products
-                </Link>
+                </Link>{" "}
+                {/* Link to the Products page */}
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>{" "}
+                {/* Link to the Login page */}
               </li>
             </ul>
           </div>
         </div>
       </nav>
-      <Outlet />
     </>
   );
 };
-
 export default Navbar;
