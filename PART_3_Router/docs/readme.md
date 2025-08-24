@@ -20,6 +20,24 @@ I'm `Md. Rishat Talukder`, your trusted instructor, and a unemployed software de
 
 Let's do this boi!!!!
 
+- [REACT ROUTING](#react-routing)
+- [React Router](#react-router)
+  - [Installation](#installation)
+  - [Setting up the Application](#setting-up-the-application)
+  - [Error](#error)
+  - [Nested Routes](#nested-routes)
+- [Shared Layouts](#shared-layouts)
+  - [Index Route](#index-route)
+  - [Stylling the Navbar](#stylling-the-navbar)
+- [Code Splitting](#code-splitting)
+- [Dynamic Routing](#dynamic-routing)
+- [UseNavigate Hook](#usenavigate-hook)
+- [Protected Routes](#protected-routes)
+- [Refactoring the Application Structure \& Code](#refactoring-the-application-structure--code)
+- [Some Thoughts](#some-thoughts)
+- [Bye bye](#bye-bye)
+
+
 # React Router
 
 `React Router` is a third-party library that seamlessly integrates with React to provide a powerful routing solution. It allows you to create dynamic routes, nested routes, and even lazy load components for better performance.
@@ -1805,7 +1823,13 @@ There is no one way to learn routing you can figure out your own way of learning
 
 So, now that you what you can do with routing in react, go ahead and try to implement it in your own projects or any project we did in this series.
 
-let's move on to the next topic which is `AXIOS` and a little bit of `API` calls in react.
 
+# Bye bye
 
-# AXIOS
+Their is much more to routing in react than what we have covered in this article. We have covered the basics of routing in react using `react-router`. We have learned how to create routes, nested routes, dynamic routes, and protected routes. We have also learned how to use the `useNavigate` hook to navigate to different routes programmatically.
+
+And finally, we have refactored the whole application structure and code to make it more organized and structured.
+
+I hope you enjoyed this article and learned something new. If you have any questions or suggestions, feel free to leave a comment below.
+
+Happy coding !
