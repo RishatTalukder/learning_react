@@ -49,7 +49,6 @@ We have already seen how to make a `GET` request using `axios` in the previous a
 
 But still here is a simple example of a `GET` request using `axios`.
 
-
 # GET Request Example
 
 Make a new react app and clean it up.
@@ -59,22 +58,23 @@ Than install `axios`.
 I named my app `axios_examples`.
 
 Now, open the `main.jsx` file and clean it up.
+
 ```jsx
 //src/main.jsx
 
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
-  </StrictMode>,
-)
-
+  </StrictMode>
+);
 ```
 
 Now, open the `App.jsx` file and clean it up.
+
 ```jsx
 //src/App.jsx
 function App() {
@@ -153,7 +153,6 @@ function GetRequest() {
   );
 }
 export default GetRequest;
-
 ```
 
 Now, import and use the `GetRequest` component inside the `App.jsx` file.
@@ -175,7 +174,7 @@ function App() {
       <GetRequest />
     </>
   );
-}   
+}
 export default App;
 ```
 
@@ -271,6 +270,7 @@ function PostRequest() {
 }
 export default PostRequest;
 ```
+
 > Just created a form to take input from the user and send a `POST` request to the API when the form is submitted.
 
 As we are using the same `jsonplaceholder` API, it won't actually create a new post in the database, but it will return a response with the data we sent.
@@ -325,7 +325,7 @@ const res = await axios.post(
   {
     headers: {
       "Content-Type": "application/json",
-    }
+    },
   }
 );
 ```
@@ -346,13 +346,11 @@ When I start with `django` we will create these headers to authenticate the requ
 
 Now, let's see how to make a `PUT` request using `axios`.
 
-
 ## PUT Request
 
 `PUT` request is used to update an existing resource in the database.
 
 Absolutely similar to the `POST` request, but instead of `axios.post()`, we use `axios.put()`.
-
 
 And inside the `put()` method, we pass the URL of the resource we want to update and the data we want to update.
 
@@ -363,7 +361,7 @@ Make a new file named `PutRequest.jsx` inside the `src` folder.
 ```jsx
 //src/Request/PutRequest.jsx
 import { useState } from "react";
-import axios from "axios";  
+import axios from "axios";
 
 function PutRequest() {
   const [postId, setPostId] = useState("");
@@ -467,3 +465,123 @@ function App() {
 }
 export default App;
 ```
+
+And that's it for the `PUT` request.
+
+Now, I want you to figure out how to make a `DELETE` request using `axios`.
+
+I think you can do it by yourself.
+
+If you can't just look at the official documentation of `axios` [here](https://axios-http.com/docs/intro).
+
+# Global Configurations & Custom Instances
+
+This is a very useful feature of `axios`.
+
+As you can see in the above examples, we have to write the base URL of the API in every request.
+
+And also it is not uncommon to the same headers in every request.
+
+So, whenever we have to write the same base URL or headers in every request, it can be tedious and error-prone.
+
+SO, what we an do is, we can set global configurations for `axios` that will be applied to every request.
+
+Like let's say the `header` `Content-Type: application/json` is used in every request.
+
+So, what we can do is make a new file named `axiosConfig.js` inside the `src` folder.
+
+```jsx
+//src/axiosConfig.js
+import axios from "axios";
+
+axios.defaults.headers.common["Content-Type"] = "application/json";
+
+export default axios;
+```
+
+This will set the `Content-Type` header to `application/json` for every request made using `axios`.
+
+So, we don't have to set it in every request.
+
+And we can just import it in the `main.jsx` file.
+
+```jsx
+//src/main.jsx
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import "./axiosConfig"; // import the axiosConfig file
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+```
+
+Now, whenever we use axios in our components, the `Content-Type` header will be set to `application/json` by default.
+
+But this has a drawback.
+
+Setting global configurations can lead to unexpected behavior if we want to set different headers for different requests.
+
+Like let's say we have 2 APIs, one's header is `Content-Type: application/json` and the other one's header is `Content-Type: multipart/form-data`.
+
+But as we have set the global configuration to `application/json`, it will be applied to every request, and we won't be able to set the header to `multipart/form-data` for the second API.
+
+Which can lead to errors.
+
+So, to avoid this, we can create custom instances of `axios` with different configurations.
+
+To create a custom instance, we can use the `axios.create()` method.
+
+Let's say we want to create a custom instance for the second API with the header `Content-Type: multipart/form-data`.
+
+Make a new file named `axiosInstance.js` inside the `src` folder.
+
+```jsx
+//src/axiosInstance.js
+import axios from "axios";
+
+const customInstance = axios.create({
+  baseURL: "https://api.example.com", // replace with your API base URL
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});
+
+export default customInstance;
+```
+
+This will create a custom instance of `axios` with the base URL and headers we specified.
+
+And it'll work independently of the global configurations.
+
+And also you can use it exactly like the default `axios`. All the methods like `get()`, `post()`, `put()`, `delete()` etc. will work the same way.
+
+But now you don't need to set the headers in every request.
+
+What's more, you can just specify the endpoint with `/endpoint` instead of the full URL `https://api.example.com/endpoint`. Because we have already set the base URL in the custom instance.
+
+```jsx
+import customInstance from "./axiosInstance";
+const response = await customInstance.post("/upload", formData); // just specify the endpoint
+```
+
+This will send a `POST` request to `https://api.example.com/upload` with the `Content-Type` header set to `multipart/form-data`.
+
+And that's it for this part.
+
+Axios is a very powerful library with many features.
+
+These are jus the features that I found useful and used in my projects.
+
+You can explore more features in the official documentation of `axios` [here](https://axios-http.com/docs/intro).
+
+# Peace
+
+I hope you liked this part of the article series. I just wanted to give you a overview of how we can use `axios` and how easy it makes API interactions. Just like `fetch` API, `axios` is also a promise-based HTTP client, so it works seamlessly with `async/await` syntax.
+
+So, that's it for now. See you in the next part.
+
+Happy Coding!
