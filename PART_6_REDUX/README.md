@@ -83,6 +83,7 @@ How do we do that?
 Let's open the `store.js` file.
 
 ```js {.line-numbers}
+// src/redux/store.js
 import { configureStore } from "@reduxjs/toolkit"; // redux toolkit gives us this function to configure the store
 
 const store = configureStore({
@@ -167,6 +168,152 @@ const cartSlice = createSlice({
   },
 });
 
-export const { actions: cartActions } = cartSlice; // we need to export the actions to use them in our components
-export default cartSlice.reducer; // we need to export the reducer to add it to the store
+console.log(cartSlice);
+
+export default cartSlice
 ```
+
+> Here, in this file I made a `slice`. This is a wierd naming convention but as we can recall we needed a initial state and a way to handle actions.
+
+A slice will do that for us. Think of a slice as a partition for different features and state.
+
+`createSlice` is like a more advanced version of the `useReducer` Hook. The hook gives use a state variable and a dispatch function where we pass the reducer and the reducer function. This slice will do all that for us automatically.
+
+As you can see that I passed a object and inside that object. I can pass various types of properties but for now I passed the name(just to name the slice, we will come back to this later), the initial state which will be handled by the redux, and an empty reducer property where we will add our action handling logic.
+
+For more information about this createSlice() function I've logged it to the console.
+
+than exported it.
+
+Now, we can invoke/call/import this file to see what is shown in the console of the browser.
+
+I'll import this in the `store.js` file because we will connect the slice with the store soon.
+
+```js {.line-numbers}
+// src/redux/store.js
+import { configureStore } from "@reduxjs/toolkit"; // redux toolkit gives us this function
+import './slices/cartSlice' // we need to import the cartSlice we just created
+
+... // rest of the code stays the same
+```
+
+Now, if you open the browser console, you will see something like this.
+
+![alt text](image.png)
+
+As you can see this slice provides us a lot of functions built in like `actions`, `caseReducers`, `getInitialState`, `name`, `reducer`, `selectors` etc.
+
+And for now your eyes should be on the `reducer` property of the slice.
+
+Remember I told you that we will add reducers to the store?
+
+This is the reducer that we will add to the store.
+
+This is not a special function, this is exactly what we wrote ourselves for `useReducer` hook. Now it is automatically created for us. If you look closer it also has those same `parameters` (state, action) that we used in the `useReducer` hook.
+
+So, what do we do now?
+
+Instead of exporting the whole slice, we will export the `reducer` property of the slice.
+
+```js {.line-numbers}
+// src/redux/slices/cartSlice.js
+... // rest of the code stays the same
+export default cartSlice.reducer; // we will export the reducer property of the slice
+```
+
+Now, we can import this reducer in the `store.js` file and add it to the store.
+
+```js {.line-numbers}
+// src/redux/store.js
+import { configureStore } from "@reduxjs/toolkit"; 
+import cartReducer from './slices/cartSlice' // we need to import the cartReducer we just created
+
+const store = configureStore({
+  reducer: {
+    cart: cartReducer, // we will add our cartReducer here
+  },
+});
+
+export default store;
+```
+And boom! We have added our first reducer to the store.
+
+And now, if you open the browser console, you will see that the warning/error is gone.
+
+And now we have the basic setup ready.
+
+I know I know you have this question in your head, "How do I handle actions and update the state?"
+
+Well, you're a curious little fella, aitcha?!
+
+I'll get to that asap.
+
+But first we need to lay the structure of the app.
+
+First, getting the data.
+
+Now, we know that the data needs to be a state variable so that we can update it.
+
+So, let's get the data.
+
+```js {.line-numbers}
+// src/data/cartData.js
+export const cartData = [
+  {
+    id: 1,
+    name: "Product 1",
+    image: "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+    price: 100,
+    quantity: 1,
+  },
+  {
+    id: 2,
+    name: "Product 2",
+    image: "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+    price: 200,
+    quantity: 1,
+  },
+  {
+    id: 3,
+    name: "Product 3",
+    image: "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+    price: 300,
+    quantity: 1,
+  },
+  {
+    id: 4,
+    name: "Product 4",
+    image: "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+    price: 400,
+    quantity: 1,
+  },
+];
+```
+
+> Heres some dummy data for the cart items. This is exactly the data we used in our previous `cart` project(REACT-ADVANCED (PROJECT 12)). I saved this dummy data inside a new file `data/cartData.js`.
+
+Now, we load the data. So, we update the initial state and the data should be available everywhere on the app.
+
+```js {.line-numbers}
+// src/redux/slices/cartSlice.js
+import { cartData } from "../../data/cartData";
+
+const initialState = {
+  items: cartData,
+  totalQuantity: 0,
+  totalAmount: 0,
+};
+
+// rest of the code stays the same
+
+export default cartSlice.reducer;
+```
+
+Now, we can use the initial state in our app.
+
+So, now let's see how we can use this state variable in our app.
+
+Let's make the structure of the app.
+
+First,
+
