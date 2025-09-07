@@ -10871,7 +10871,8 @@ I want to make 3 components for the cart page.
 
 Let's start with the `Navbar` component. Create a new file named `Navbar.jsx` inside the `project_12` folder.
 
-```js {.line-numbers}import React from 'react'
+```js {.line-numbers}
+import React from 'react'
 import { FaCartPlus } from "react-icons/fa";
 const Navbar = () => {
   return (

@@ -313,7 +313,197 @@ Now, we can use the initial state in our app.
 
 So, now let's see how we can use this state variable in our app.
 
-Let's make the structure of the app.
+Let's make the structure of the app first.
 
-First,
+# UseSelector
 
+From the title I think I spoiled it a bit.
+
+But let's make a copy of the previous `Cart` project.
+
+```js {.line-numbers}
+// src/components/CartContainer.jsx
+import React from "react";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+import {cartData as data} from '../data/cartData'
+
+const CartContainer = () => {
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      <ul className="list-group mb-4">
+        {data.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+      </ul>
+
+      <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+      {/* Total */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="mb-0">Total</h5>
+        <h5 className="mb-0 text-primary">0.00</h5>
+      </div>
+
+      {/* Clear cart */}
+      <div className="text-end">
+        <button className="btn btn-outline-danger btn-sm">Clear Cart</button>
+      </div>
+    </div>
+  );
+};
+
+export default CartContainer;
+```
+
+```js {.line-numbers}
+// src/components/CartItem.jsx
+import React from "react";
+import {
+  FaArrowAltCircleUp,
+  FaArrowCircleDown,
+  FaArrowUp,
+  FaUps,
+} from "react-icons/fa";
+
+const CartItem = ({ item }) => {
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {/* Left side: Image + Info */}
+      <div className="d-flex align-items-center">
+        <img
+          src={item.image}
+          alt={item.name}
+          className="me-3"
+          style={{ width: "60px", height: "60px", objectFit: "cover" }}
+        />
+        <div>
+          <h6 className="mb-1">{item.name}</h6>
+          <small className="text-muted">${item.price}</small>
+        </div>
+      </div>
+
+      {/* Right side: Quantity + Amount */}
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-column align-items-center">
+          <button className="text-success btn">
+            <FaArrowAltCircleUp />
+            {/* <FaArrowUp /> */}
+          </button>
+          <span>{item.quantity}</span>
+          <button className="text-danger btn">
+            <FaArrowCircleDown />
+          </button>
+        </div>
+
+        {/* Item total price */}
+        <div className="ms-3 fw-bold">${item.price * item.quantity}</div>
+      </div>
+    </li>
+  );
+};
+
+export default CartItem;
+```
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import { FaCartPlus } from "react-icons/fa";
+const Navbar = () => {
+  return (
+    <div className="d-flex justify-content-between align-items-center mb-4">
+      {/* Left side: Title */}
+      <h3 className="mb-0 text-primary">Shopping Cart</h3>
+
+      {/* Right side: Cart Icon with badge */}
+      <div className="position-relative">
+        <FaCartPlus size={28} className="text-primary" />
+        <span
+          className="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle"
+          style={{
+            fontSize: "0.7rem",
+            width: "1.5rem",
+            height: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "2px solid white",
+          }}
+        >
+          5
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default Navbar;
+```
+
+> This is exactly the same code as the previous `Cart` project. The only difference is that I imported the data directly from the `data/cartData.js` file instead of using the context.
+
+Because now we are going to use the `Redux` store to get the data.
+
+How, do we do that?
+
+We passed the store to the whole app using the `Provider` component from `react-redux`.
+
+Now, to get the state from the store, we use the `useSelector` hook from `react-redux`.
+
+```js {.line-numbers}
+// src/components/CartContainer.jsx
+import { useSelector } from "react-redux"; // we need to import the useSelector hook
+import React from "react";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+
+const CartContainer = () => {
+  const { items:data } = useSelector((state) => state.cart); // we need to use the useSelector hook to get the state from the store
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      <ul className="list-group mb-4">
+        {data.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+      </ul>
+
+      <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+      {/* Total */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="mb-0">Total</h5>
+        <h5 className="mb-0 text-primary">0.00</h5>
+      </div>
+
+      {/* Clear cart */}
+      <div className="text-end">
+        <button className="btn btn-outline-danger btn-sm">Clear Cart</button>
+      </div>
+    </div>
+  );
+};
+export default CartContainer;
+```
+> Here, we are using the `useSelector` hook which will take a function as an argument. This function will receive the whole state of the store as an argument. And we can return whatever part of the state we want from this function.
+
+So, in our case, we want the `items` array from the `cart` slice of the state. So, we as we are returning `state.cart` we can destructure all the state properties of the `cart` slice.
+
+That's why we passed set the `name` property of the slice to `cart` in the `cartSlice.js` file. Which will automatically set the property name of the slice in the store.
+
+Works like magic right?
+
+The heavy lifting is done by a small library called `immer` which is used internally by `Redux Toolkit` to handle immutable state updates in a more convenient way.
