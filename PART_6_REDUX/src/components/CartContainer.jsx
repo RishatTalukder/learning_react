@@ -3,12 +3,14 @@ import CartItem from "./CartItem";
 import { FaCartPlus } from "react-icons/fa";
 import Navbar from "./Navbar";
 // import {cartData as data} from '../data/cartData'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart } from "../redux/slices/cartSlice";
+import { openModal } from "../redux/slices/modalSlice";
 
 const CartContainer = () => {
 
   const { items:data } = useSelector((state) => state.cart);
-  
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -33,7 +35,9 @@ const CartContainer = () => {
 
       {/* Clear cart */}
       <div className="text-end">
-        <button className="btn btn-outline-danger btn-sm">Clear Cart</button>
+        <button className="btn btn-outline-danger btn-sm"
+        onClick={()=> dispatch(openModal())}
+        >Clear Cart</button>
       </div>
     </div>
   );

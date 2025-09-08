@@ -506,4 +506,364 @@ That's why we passed set the `name` property of the slice to `cart` in the `cart
 
 Works like magic right?
 
-The heavy lifting is done by a small library called `immer` which is used internally by `Redux Toolkit` to handle immutable state updates in a more convenient way.
+So, now instead of context API, we are using the `useSelector` hook to get the state from the store.
+
+Also this opens up interesting functionality because we have to pass a function to the `useSelector` hook, we can do some calculations and return the value we want.
+
+Now, Let's see how we can change the state.
+
+# UseDispatch
+
+We know in the `useReducer` hook, we used the `dispatch` function to send actions to the reducer function to update the state.
+
+Then we check what kind of action it is and update the state accordingly.
+
+We can also pass a payload with the action to update the state.
+
+All these things are also possible with `Redux`. But the way we do it is a bit different.
+
+First, we need to make the actions and the logic to handle those actions.
+
+Let's make the actions logic to handle the `clear cart` action.
+
+```js {.line-numbers}
+// src/redux/slices/cartSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+import { cartData } from "../../data/cartData";
+
+const initialState = {
+  items: cartData,
+  totalQuantity: 0,
+  totalAmount: 0,
+};
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    clearCart: (state) => {
+      state.items = []; // we can directly mutate the state here because redux toolkit uses immer library under the hood which allows us to write mutable code but it actually creates a new immutable state
+    },
+  },
+});
+
+console.log(cartSlice);
+
+export const { clearCart } = cartSlice.actions; // we need to export the actions we just created
+export default cartSlice.reducer;
+```
+
+> Here inside the `reducers` property of the slice, we can add our action handling logic. The action will be the key of the object and the value will be a function that will receive the current state as an argument. 
+
+Now, this new property inside the `reducers` object will automatically create an `action creator` function for us with the same name as the key.
+
+Now you might ask what is a `action creator` function?
+
+An action creator is a function that creates and returns an action object. In `Redux`, an action is a plain JavaScript object that has a `type` property and optionally a `payload` property. The `type` property is a string that describes the type of action being performed, and the `payload` property is any additional data that is needed to perform the action.
+
+Well some very fancy words but in short, an action creator is a function that will internally create an action object for us.
+
+For example, the name of the action will automematically be the set to `cart/clearCart` because the name of the slice is `cart` and the name of the action is `clearCart`.
+
+And this action creator function will be available in the `actions` property of the slice.
+
+You can verify this by checking the console log of the slice that we did before.
+
+![alt text](image-1.png)
+
+SO, the whole process of creating an action and checking the type of action in the reducer function is done for us automatically and iternally by the `createSlice` function.
+
+All thanks to the small library called `immer` which is used by the `redux toolkit` under the hood.
+
+So, by just adding a new property to the `reducers` object, we can create a new action and the logic to handle that action.
+
+Now, how do we use this action in our app?
+
+we never made a `dispatch` function like we did in the `useReducer` hook.
+
+We use the `useDispatch` hook from `react-redux` to get the `dispatch` function from the store.
+
+```js {.line-numbers}
+// src/components/CartContainer.jsx
+import React from "react";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+import { useDispatch, useSelector } from "react-redux"; // we need to import the useDispatch hook
+import { clearCart } from "../redux/slices/cartSlice"; // we need to import the clearCart action we just created
+
+const CartContainer = () => {
+
+  const { items:data } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      <ul className="list-group mb-4">
+        {data.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+      </ul>
+
+      <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+      {/* Total */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="mb-0">Total</h5>
+        <h5 className="mb-0 text-primary">0.00</h5>
+      </div>
+
+      {/* Clear cart */}
+      <div className="text-end">
+        <button className="btn btn-outline-danger btn-sm"
+        onClick={()=> dispatch(clearCart())}
+        >Clear Cart</button> {/* we need to use the dispatch function to dispatch the clearCart action when the button is clicked */}
+      </div>
+    </div>
+  );
+};
+
+export default CartContainer;
+```
+
+> Here, we are using the `useDispatch` hook to get the `dispatch` function from the store. And we are using this `dispatch` function to dispatch the `clearCart` action when the `Clear Cart` button is clicked.
+
+This is why I exported the `clearCart` action from the `cartSlice.js` file. So, that we can import it in the component and use it.
+
+So, now when we click the `Clear Cart` button, the `clearCart` action which is a function will be called and it will make the `cartItems` array empty.
+
+And if we go back to the browser and click the `Clear Cart` button, we can see that the cart is cleared.
+
+Also I want to add some bonus info. We should not return anything from the action handling functions. Just mutate the state directly. Because `immer` will take care of creating a new immutable state for us.
+
+If we return something from the action handling function, it will override the previous state completely. Which will lead unexpected results.
+
+So, we should be careful about returning anything from the action handling functions inside the `reducers` object of the slice.
+
+In theory we can return a new state from the action handling functions. But it's not recommended.
+
+I want to do something extra.
+
+I want to show a modal when the cart is cleared button is clicked for confirmation.
+
+So, as this is going to be a new feature, we will make a new slice for this.
+
+# Modal box for confirmation
+
+```js {.line-numbers}
+// src/redux/slices/modalSlice.js
+import { createSlice } from "@reduxjs/toolkit"
+
+const initialState = {
+    isOpen: false,
+}
+
+const modalSlice = createSlice({
+    name: "modal",
+    initialState,
+    reducers: {
+        openModal: (state) => {
+            state.isOpen = true
+        },
+        closeModal: (state) => {
+            state.isOpen = false
+        },
+    }
+})
+
+export const { openModal, closeModal } = modalSlice.actions // exporting the actions
+
+export default modalSlice.reducer
+```
+
+> Here I made a new slice for the modal box. This slice will handle the state of the modal box. Whether it is open or closed. So, I made two actions, one for opening the modal and one for closing the modal.
+
+As we are going to use these actions in the component, I exported them.
+
+Now, we add this reducer to the store.
+
+```js {.line-numbers}
+// src/redux/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./slices/cartSlice";
+import modalReducer from "./slices/modalSlice";
+
+const store = configureStore({
+    reducer: {
+        cart: cartReducer,
+        modal: modalReducer // shorthand property name
+    }
+})
+
+export default store
+```
+
+Now, we can use this modal slice in our app.
+
+So, let's make a new component for the modal box.
+
+```js {.line-numbers}
+// src/components/Modal.jsx
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { closeModal } from "../redux/slices/modalSlice";
+import { clearCart } from "../redux/slices/cartSlice";
+
+const Modal = () => {
+  const isOpen = useSelector((state) => state.modal.isOpen); // getting the isOpen state from the modal slice
+  const dispatch = useDispatch(); // getting the dispatch function
+
+  const handleCancel = () => {
+    dispatch(closeModal()); // dispatching the closeModal action
+  };
+
+  const handleConfirm = () => {
+    dispatch(clearCart());
+    dispatch(closeModal()); // dispatching the clearCart action
+  };
+
+  return (
+    <div
+      className={`modal fade ${isOpen ? "show" : ""}`}
+      style={{ display: isOpen ? "block" : "none" }}
+      tabIndex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden={!isOpen}
+    >
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-body text-center py-4">
+            <h5 className="mb-4">Do you want to clear all the items?</h5>
+            <div className="d-flex justify-content-center gap-3">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleConfirm}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Modal;
+```
+
+> Here, I made a new component for the modal box. This component will use the `isOpen` state from the `modal` slice to determine whether the modal is open or closed. And it will use the `closeModal` action to close the modal when the cancel button is clicked. And it will use the `clearCart` action to clear the cart and close the modal when the confirm button is clicked.
+
+SO, we can make some changes to the `CartContainer` component to open the modal when the `Clear Cart` button is clicked.
+
+```js {.line-numbers}
+// src/components/CartContainer.jsx
+import React from "react";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+// import {cartData as data} from '../data/cartData'
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart } from "../redux/slices/cartSlice";
+import { openModal } from "../redux/slices/modalSlice"; // importing the openModal action
+
+const CartContainer = () => {
+
+  const { items:data } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      <ul className="list-group mb-4">
+        {data.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+      </ul>
+
+      <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+      {/* Total */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="mb-0">Total</h5>
+        <h5 className="mb-0 text-primary">0.00</h5>
+      </div>
+
+      {/* Clear cart */}
+      <div className="text-end">
+        <button className="btn btn-outline-danger btn-sm"
+        onClick={()=> dispatch(openModal())} // dispatching the openModal action when the button is clicked
+        >Clear Cart</button>
+      </div>
+    </div>
+  );
+};
+
+export default CartContainer;
+```
+
+> Here, I imported the `openModal` action from the `modalSlice.js` file and used it to open the modal when the `Clear Cart` button is clicked.
+
+Now, we need to use the `Modal` component in our app.
+
+```js {.line-numbers}
+// src/App.jsx
+import CartContainer from "./components/CartContainer"
+import Modal from "./components/Modal"
+
+function App() {
+
+  return (
+    <>
+    <CartContainer />
+    <Modal />
+    </>
+  )
+}
+
+export default App
+```
+
+> Here, I imported the `Modal` component and used it in the `App` component. So that it is available in the whole app.
+
+Now, if we go back to the browser and click the `Clear Cart` button, we can see that the modal is opened.
+
+And if we click the `Cancel` button, the modal is closed.
+
+And if we click the `Confirm` button, the cart is cleared and the modal is closed.
+
+Now, you might want to see the state changes in the browser.
+
+But the issue is that the `React Developer Tools` extension does not support `Redux Toolkit` out of the box.
+
+So, we need to install another extension called `Redux DevTools` to see the state changes in the browser.
+
+It's an amazing extension for redux based applications.
+
+And if you install it, you can see a new section in the browser devtools called `Redux`.
+
+Click on it and you should see something like this.
+![alt text](image-2.png)
+
+Can be confusing in the beginning but the most useful part is the `State` section.
+
+This monitors all the state changes in the app and also records the actions in a clean animated way.
+
+Play with it and you will get the hang of it.
