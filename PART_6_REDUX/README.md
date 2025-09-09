@@ -447,6 +447,35 @@ const Navbar = () => {
 export default Navbar;
 ```
 
+I use bootstrap for styling. You can use any css framework or write your own css.
+
+You can install bootstrap, bootswatch themes and react-icons by running this command.
+
+```bash
+npm install bootstrap bootswatch react-icons
+```
+
+Then import the bootstrap and bootswatch css in the `main.jsx` file.
+
+```js {.line-numbers}
+//main.jsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.jsx'
+import { Provider } from 'react-redux'
+import store from './redux/store.js'
+import 'bootswatch/dist/minty/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <Provider store={store}>
+    <App />
+    </Provider>
+  </StrictMode>,
+)
+```
+
 > This is exactly the same code as the previous `Cart` project. The only difference is that I imported the data directly from the `data/cartData.js` file instead of using the context.
 
 Because now we are going to use the `Redux` store to get the data.
@@ -867,3 +896,793 @@ Can be confusing in the beginning but the most useful part is the `State` sectio
 This monitors all the state changes in the app and also records the actions in a clean animated way.
 
 Play with it and you will get the hang of it.
+
+Now, let's implement the other functionalities of the cart.
+
+# Implementing other functionalities
+
+First, let's implement the `total quantity` and `total amount` functionalities.
+
+
+```js {.line-numbers}
+// src/redux/slices/cartSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+import { cartData } from "../../data/cartData";
+
+const initialState = {
+  items: cartData,
+  totalQuantity: 0,
+  totalAmount: 0,
+};
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    clearCart: (state) => {
+      state.items = [];
+    },
+    calculateTotals: (state) => {
+      let totalQuantity = 0;
+      let totalAmount = 0;
+      state.items.forEach((item) => {
+        totalQuantity += item.quantity;
+        totalAmount += item.price * item.quantity;
+      });
+      state.totalQuantity = totalQuantity;
+      state.totalAmount = totalAmount;
+    },
+  },
+});
+
+console.log(cartSlice);
+
+export const { clearCart, calculateTotals } = cartSlice.actions;
+
+export default cartSlice.reducer;
+```
+
+> Here, I added a new action called `calculateTotals` which will calculate the total quantity and total amount of the items in the cart. It will iterate through the `items` array and calculate the total quantity and total amount and update the state accordingly.
+
+Now, we need to dispatch this action whenever the `items` array is updated.
+
+```js {.line-numbers}
+// src/components/CartContainer.jsx
+import React, { useEffect } from "react";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+// import {cartData as data} from '../data/cartData'
+import { useDispatch, useSelector } from "react-redux";
+import { calculateTotal, clearCart } from "../redux/slices/cartSlice";
+import { openModal } from "../redux/slices/modalSlice";
+
+const CartContainer = () => {
+  const {
+    items: data,
+    totalAmount,
+    totalQuantity,
+  } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(calculateTotal());
+  }, [data]);
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      <ul className="list-group mb-4">
+        {data.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+      </ul>
+
+      {/* Clear cart */}
+      {totalQuantity > 0 ? (
+        <>
+          <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+          {/* Total */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Total</h5>
+            <h5 className="mb-0 text-primary">${totalAmount.toFixed(2)}</h5>
+          </div>
+          <div className="text-end">
+            <button
+              className="btn btn-outline-danger btn-sm"
+              onClick={() => dispatch(openModal())}
+            >
+              Clear Cart
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="text-center text-muted">No items in the cart</div>
+      )}
+    </div>
+  );
+};
+
+export default CartContainer;
+
+```
+> Here, I used the `useEffect` hook to dispatch the `calculateTotals` action whenever the `data` array is updated. This will ensure that the total quantity and total amount are always up to date.
+
+Now, if we go back to the browser, we can see that the total quantity and total amount are displayed correctly.
+
+Also, let's update the `Navbar` component to display the total quantity of items in the cart.
+
+```js {.line-numbers}
+// src/components/Navbar.jsx
+import { FaCartPlus } from "react-icons/fa";
+import { useSelector } from "react-redux";
+
+const Navbar = () => {
+  const {
+    items: data,
+    totalAmount,
+    totalQuantity,
+  } = useSelector((state) => state.cart);
+  return (
+    <div className="d-flex justify-content-between align-items-center mb-4">
+      {/* Left side: Title */}
+      <h3 className="mb-0 text-primary">Shopping Cart</h3>
+
+      {/* Right side: Cart Icon with badge */}
+      <div className="position-relative">
+        <FaCartPlus size={28} className="text-primary" />
+        <span
+          className="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle"
+          style={{
+            fontSize: "0.7rem",
+            width: "1.5rem",
+            height: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "2px solid white",
+          }}
+        >
+          {totalQuantity}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default Navbar;
+```
+
+> Here, I used the `useSelector` hook to get the `totalQuantity` from the `cart` slice and displayed it in the badge of the cart icon.
+
+Now, if we go back to the browser, we can see that the total quantity is displayed correctly in the badge of the cart icon.
+
+Now, let's implement the `increase` and `decrease` and `remove item` functionalities.
+
+```js {.line-numbers}
+// src/redux/slices/cartSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+import { cartData } from "../../data/cartData";
+
+const initialState = {
+  items: cartData,
+  totalQuantity: 0,
+  totalAmount: 0,
+};
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    clearCart: (state) => {
+      state.items = [];
+    },
+    calculateTotal: (state) => {
+      let totalQuantity = 0;
+      let totalAmount = 0;
+      state.items.forEach((item) => {
+        totalQuantity += item.quantity;
+        totalAmount += item.price * item.quantity;
+      });
+      state.totalQuantity = totalQuantity;
+      state.totalAmount = totalAmount;
+    },
+    increase: (state, action) => {
+      const itemId = action.payload;
+      const item = state.items.find((item) => item.id === itemId);
+      if (item) {
+        item.quantity += 1;
+      }
+    },
+    decrease: (state, action) => {
+      const itemId = action.payload;
+      const item = state.items.find((item) => item.id === itemId);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+      } else if (item && item.quantity === 1) {
+        state.items = state.items.filter((item) => item.id !== itemId);
+      }
+    },
+    removeItem: (state, action) => {
+      const itemId = action.payload;
+      state.items = state.items.filter((item) => item.id !== itemId);
+    },
+  },
+});
+console.log(cartSlice);
+
+export const { clearCart, calculateTotal, increase, decrease, removeItem } = cartSlice.actions;
+
+export default cartSlice.reducer;
+```
+
+Well, here we can see that I added three new actions, `increase`, `decrease` and `removeItem`.
+
+The `increase` action will increase the quantity of the item by 1. The `decrease` action will decrease the quantity of the item by 1. If the quantity is 1, it will remove the item from the cart. The `removeItem` action will remove the item from the cart.
+
+Now, we need to use these actions in the `CartItem` component.
+
+```js {.line-numbers}
+// src/components/CartItem.jsx
+import React from "react";
+import {
+  FaArrowAltCircleUp,
+  FaArrowCircleDown,
+  FaArrowUp,
+  FaTrash,
+} from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { increase, decrease, removeItem } from "../redux/slices/cartSlice";
+
+const CartItem = ({ item }) => {
+  const dispatch = useDispatch();
+  return (
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      {/* Left side: Image + Info */}
+      <div className="d-flex align-items-center">
+        <img
+          src={item.image}
+          alt={item.name}
+          className="me-3"
+          style={{ width: "60px", height: "60px", objectFit: "cover" }}
+        />
+        <div>
+          <h6 className="mb-1">{item.name}</h6>
+          <small className="text-muted">${item.price}</small>
+        </div>
+      </div>
+
+      {/* Right side: Quantity + Amount */}
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-column align-items-center">
+          <button
+            className="text-success btn"
+            onClick={() => dispatch(increase(item.id))}
+          >
+            <FaArrowAltCircleUp />
+            {/* <FaArrowUp /> */}
+          </button>
+          <span>{item.quantity}</span>
+          <button
+            className="text-danger btn"
+            onClick={() => dispatch(decrease(item.id))}
+          >
+            <FaArrowCircleDown />
+          </button>
+        </div>
+
+        {/* Item total price */}
+        <div className="ms-3 fw-bold d-flex align-items-center">
+          ${item.price * item.quantity}
+          <button
+            className="btn text-danger ms-3"
+            onClick={() => dispatch(removeItem(item.id))}
+          >
+            <FaTrash />
+          </button>
+        </div>
+      </div>
+    </li>
+  );
+};
+export default CartItem;
+```
+
+Same old story here.
+
+Export, import, useSelector, useDispatch, dispatch.
+
+Here, I imported the `increase`, `decrease` and `removeItem` actions from the `cartSlice.js` file and used them to increase, decrease and bla bla bla...
+
+And boom! We have implemented all the functionalities of the cart.
+
+Nice and clean right?
+
+That why we use `Redux Toolkit`.
+
+Now, if you compare this code with the previous `Cart` project, you might think that this code is more verbose and longer.
+
+Buuuuut! As the app gets bigger and more complex, The code will be more organized and easier to manage.
+
+Because everything is organised in a modular way and somehow it works like magic even thoguh it seens like nothing is connected.
+
+Reduc toolkit needs some time to get used to but once you get the hang of it, you will love it and you might never go back to the old way of managing state.
+
+Before I end this, I want to show you one more thing.
+
+# Async Thunks
+
+In our previous sections and articles. we saw that we have many ways to manage state in a React app.
+
+But in one case there was no alternatives. 
+
+That is when we need to fetch data from an API.
+
+We always made a new function to fetch the data and then used the `useEffect` hook to call that function when the component is mounted. Than set the data to a state variable.
+
+And we also handled the loading and error states manually in vanilla way.
+
+Redux toolkit has it's own way to handle async operations.
+
+Again the name is funky. It's called `createAsyncThunk`.
+
+Doen't mean anything special. Just a fancy name.
+
+The main purpose of this function is to `create an async action that can be dispatched to the store`.
+
+Now, as confusing as redux toolkit is, this is can be a bit more confusing.
+
+So, listen/read carefully.
+
+The structure of creating a async thunk is like this.
+
+```js {.line-numbers}
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+export const fetchData = createAsyncThunk(
+  "sliceName/fetchData", // this is the name of the action
+  async (arg, thunkAPI) => {
+    // this is the payload creator function
+    // we can make our async calls here
+    // and return the data
+  }
+);
+``` 
+
+Now, what is happening here?
+
+First we are importing the `createAsyncThunk` function from the `@reduxjs/toolkit` package.
+
+Now we will use this function to create an async action.
+
+Now, how will this `thunk` know where to put the data?
+
+That's why we need to pass the name of the slice as the first argument.
+
+Now, you might ask, how will YOU know the name of the slice because we are making the slice in the same file as functions, using them as functions to mutate the state. In traditional `reducer` function, we used to make our own action types and check for them in the reducer function. But in `redux toolkit` we don't need to do that, almost everything is done internally by the `createSlice` function. So, how do we know the name of the slice we are making?
+
+OW OW OW OW hold on there little buttercup.
+
+Remember at the very beginning of this article, when we made the `cartSlice`? and we logged the slice to the console?
+
+So, go to the console and if you still have the log there, click on the object and then click on the `actions` property.
+
+You should see all the actions that are created by the `createSlice` function with all the extra details.
+
+And in one of those properties, you should see the `type` property.
+
+So, whenever you make a new slice, you can check the `type` property of any action to know the name of the slice.
+
+But the issue is when we are making an async thunk, we don't have the reducer functions yet. So, we don't have any actions to check the type property.
+
+What do we do then?
+
+If you look at the `type` property, of the various actions, you can see that the type property is always in the format of `sliceName/actionName`.
+
+So, we can just make the name of the slice whatever we want. As long as we are consistent with it. So, we are trying to make a async operation to fetch cart items. So, we can set the name of the slice to `cart/fetchItems`. 
+
+This way the data fetched from the API will be stored in the `cart` slice of the state and specifically look for the `fetchItems` action.
+
+I hope you understood that.
+
+The second argument is a function that will be called when the action is dispatched. This function will receive two arguments. The first argument is the argument that is passed to the action when it is dispatched. The second argument is an object that contains various properties and methods that can be used to interact with the store.
+
+We will ralk more about these two arguments later.
+
+But let's fetch some data from a `dummy` API i'll setup using `json-server`.
+
+So, let's install `json-server` and axios for making API calls.
+
+```bash
+npm install json-server axios
+```
+
+Now, let's make a new file called `db.json` in the root of the project.
+
+```json {.line-numbers}
+{
+  "cartData": [
+    {
+      "id": 1,
+      "name": "Product 1",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 100,
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 200,
+      "quantity": 1
+    },
+    {
+      "id": 3,
+      "name": "Product 3",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 300,
+      "quantity": 1
+    },
+    {
+      "id": 4,
+      "name": "Product 4",
+      "image": "https://img.freepik.com/free-photo/single-banana-isolated-white-background_839833-17794.jpg?semt=ais_hybrid&w=740&q=80",
+      "price": 400,
+      "quantity": 1
+    }
+  ]
+}
+```
+
+We can start the json server by running this command.
+
+```bash
+npx json-server --watch db.json
+```
+
+After running this command, you should see something like this in the terminal.
+
+```bash
+--watch/-w can be omitted, JSON Server 1+ watches for file changes by default
+JSON Server started on PORT :3000
+Press CTRL-C to stop
+Watching db.json...
+
+♡( ◡‿◡ )
+
+Index:
+http://localhost:3000/
+
+Static files:
+Serving ./public directory if it exists
+
+Endpoints:
+http://localhost:3000/cartData
+```
+
+Click on the `http://localhost:3000/cartData` link to see the data.
+
+Now, let's make the async thunk to fetch this data.
+
+```js {.line-numbers}
+// src/redux/slices/cartSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { cartData } from "../../data/cartData";
+
+export const fetchCartItems = createAsyncThunk(
+  "cart/fetchItems",
+  async (arg, thunkAPI) => {
+    try {
+      const response = await axios.get("http://localhost:3000/cartData");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Something went wrong");
+    }
+  }
+); // this is the async thunk to fetch cart items
+
+const initialState = {
+  items: [],
+  totalQuantity: 0,
+  totalAmount: 0,
+  isLoading: false, // to track the loading state
+  error: null, // to track the error state
+};
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    clearCart: (state) => {
+      state.items = [];
+    },
+    calculateTotal: (state) => {
+      let totalQuantity = 0;
+      let totalAmount = 0;
+      state.items.forEach((item) => {
+        totalQuantity += item.quantity;
+        totalAmount += item.price * item.quantity;
+      });
+      state.totalQuantity = totalQuantity;
+      state.totalAmount = totalAmount;
+    },
+    increase: (state, action) => {
+      const itemId = action.payload;
+      const item = state.items.find((item) => item.id === itemId);
+      if (item) {
+        item.quantity += 1;
+      }
+    },
+    decrease: (state, action) => {
+      const itemId = action.payload;
+      const item = state.items.find((item) => item.id === itemId);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+      } else if (item && item.quantity === 1) {
+        state.items = state.items.filter((item) => item.id !== itemId);
+      }
+    },
+    removeItem: (state, action) => {
+      const itemId = action.payload;
+      state.items = state.items.filter((item) => item.id !== itemId);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCartItems.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      }) // handling the pending state
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload;
+      }) // handling the fulfilled state
+      .addCase(fetchCartItems.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }); // handling the rejected state
+  },
+});
+console.log(cartSlice);
+
+export const { clearCart, calculateTotal, increase, decrease, removeItem } = cartSlice.actions;
+
+export default cartSlice.reducer;
+```
+Now, I know there is lot of things going on here.
+
+But let's break it down.
+
+First let's talk about the async thunk.
+
+```js {.line-numbers}
+export const fetchCartItems = createAsyncThunk(
+  "cart/fetchItems",
+  async (arg, thunkAPI) => {
+    try {
+      const response = await axios.get("http://localhost:3000/cartData");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Something went wrong");
+    }
+  }
+); // this is the async thunk to fetch cart items
+```
+
+> Here, I created an async thunk called `fetchCartItems` using the `createAsyncThunk` function. The first argument is the name of the slice and the action. The second argument is an async function that will make the API call to fetch the cart items. If the API call is successful, it will return the data. If there is an error, it will return a rejected value using the `rejectWithValue` method of the `thunkAPI` object.
+
+> We must return something from the async function. Either the data or a rejected value.
+
+> ALso, the thunk API object we get as the second argument has many many useful methods and properties. One of them is the `rejectWithValue` method which we used to return a rejected value in case of an error. I'll recommend you to check value the `thunkAPI` object in the console to see all the methods and properties it has.
+
+This `rejectWithValue` method is useful because it allows us to return a custom error message instead of the default error message.
+
+Now, from earlier we saw that the `createAsyncThunk` function will look for the action type in the format of `sliceName/actionName`.
+
+We passed the name of the slice as `cart` and the action name as `fetchItems`.
+
+But there is a catch.
+
+When we are fetching data from an API, there are three possible states.
+
+1. `Pending` - when the API call is in progress
+2. `Fulfilled` - when the API call is successful
+3. `Rejected` - when the API call fails
+
+So, when we are giving the name of the action, we need to keep in mind that the `createAsyncThunk` function will automatically append the above three states to the action name.
+
+So, if we directly make a new property in the `reducers` object of the slice to handle these three states, it will not work.
+
+We need a special property called `extraReducers` to handle these three states.
+
+That's why we have this `extraReducers` property in the slice.
+
+```js {.line-numbers}
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCartItems.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      }) // handling the pending state
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload;
+      }) // handling the fulfilled state
+      .addCase(fetchCartItems.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }); // handling the rejected state
+  },
+```
+> In this `extraReducers` property, we are using a builder callback function to add cases for the three states of the async thunk. We are using the `addCase` method of the builder object to add cases for the `pending`, `fulfilled` and `rejected` states of the `fetchCartItems` async thunk.
+
+In hindsight, this is a bit confusing. because all the three states are not actual different actions. They are just different states of the same action.
+
+And we can add much more cases to this `extraReducers` property if we have more async thunks.
+
+So, the builder has a method called `addCase` which we can use to add cases for different actions.
+
+This add case method takes two arguments. The first argument is the action type and the second argument is a function that will be called when the action is dispatched.
+
+So, here, we have to think about the action types. First we get the pending state when the API call is in progress. So, we can use the `fetchCartItems.pending` as the action type and we can just use the `.` notation to access the `pending` property of the `fetchCartItems` async thunk which is automatically created by the `createAsyncThunk` function.
+
+And we can add a callback function as the second argument which will be called when the action is dispatched and we will get the current state as the first argument.
+
+In this function, we can set the `isLoading` property to `true` and the `error` property to `null` to indicate that the API call is in progress.
+
+Now, if the API call is successful, we will get the `fulfilled` state. So, we add another case for the `fulfilled` just by adding another `addCase` method to the builder object.
+
+And so on...
+
+This is called `chaining` in JavaScript.
+
+Although it looks like the addcases are separate, they are actually chained together. 
+
+And internally processed in a single go.
+
+It needs a little bit of practice to get used to it.
+
+Now, we need to dispatch this async thunk when the `CartContainer` component is mounted.
+
+```js {.line-numbers}
+// src/components/CartContainer.jsx
+import React, { useEffect } from "react";
+import CartItem from "./CartItem";
+import { FaCartPlus } from "react-icons/fa";
+import Navbar from "./Navbar";
+// import {cartData as data} from '../data/cartData'
+import { useDispatch, useSelector } from "react-redux";
+import { calculateTotal, clearCart, fetchCartItems } from "../redux/slices/cartSlice";
+import { openModal } from "../redux/slices/modalSlice";
+
+const CartContainer = () => {
+  const {
+    items: data,
+    totalAmount,
+    totalQuantity,
+    isLoading,
+    error,
+  } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCartItems()); // dispatching the fetchCartItems async thunk when the component is mounted
+  }, []);
+
+  useEffect(() => {
+    dispatch(calculateTotal());
+  }, [data]);
+
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="container py-4"
+      style={{ maxWidth: "600px", margin: "auto" }}
+    >
+      {/* Navbar */}
+      <Navbar />
+
+      <ul className="list-group mb-4">
+        {data.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+      </ul>
+
+      {/* Clear cart */}
+      {totalQuantity > 0 ? (
+        <>
+          <hr className="my-4" style={{ borderTop: "2px solid #312121ff" }} />
+          {/* Total */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Total</h5>
+            <h5 className="mb-0 text-primary">${totalAmount.toFixed(2)}</h5>
+          </div>
+          <div className="text-end">
+            <button
+              className="btn btn-outline-danger btn-sm"
+              onClick={() => dispatch(openModal())}
+            >
+              Clear Cart
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="text-center text-muted">No items in the cart</div>
+      )}
+    </div>
+  );
+};
+export default CartContainer;
+``` 
+
+> Here, I imported the `fetchCartItems` async thunk from the `cartSlice.js` file and used it to fetch the cart items when the component is mounted using the `useEffect` hook. I also added two new properties to the state, `isLoading` and `error` to track the loading and error states of the API call. And I added two conditional renderings to show a loading spinner when the API call is in progress and an error message when there is an error.
+
+And we are done.
+
+# Bonus
+
+Thunk API has many many useful methods and properties and it is very powerful.
+
+One of the most useful methods is the `getState` method which we can use to get the current state of the store. Meaning every slice of the state is available to us.
+
+Also we can use the `dispatch` method to dispatch other actions from within the async thunk.
+
+So, this opens up a lot of possibilities and makes our async thunks very powerful and very functional.
+
+```js {.line-numbers}
+export const fetchCartItems = createAsyncThunk(
+  "cart/fetchItems",
+  async (arg, thunkAPI) => {
+    try {
+      const response = await axios.get("http://localhost:3000/cartData");
+      // we can dispatch other actions from here
+      thunkAPI.dispatch(someOtherAction());
+      // we can also get the current state from here
+      const state = thunkAPI.getState();
+      console.log(state);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Something went wrong");
+    }
+  }
+);  
+// this is the async thunk to fetch cart items
+```
+
+And that's it for this article and Finally the end to this `REACT` series.
+
+# LAST WORDS
+
+This was a long one. I'm don't call myself a frontend developer. I'm just a guy who loves to code and loves to learn new things. I never learned `js` properly. I just learned the things I needed to learn to make stuff. So, I'm might be wrong in some places. But I tried my best explaining things in a simple way, the way I understood them.
+
+I'm getting kinda emotional writing this. Because this is the end of a long journey. But start of a new one because the next series is going to be about `django` and `django-rest-framework` and will be connected to this `react` series because there is no way I can make a full stack app without a backend.
+
+SO, I hope you enjoyed this series and learned something new. If you have any questions or suggestions, feel free to reach out to me on twitter or email. I'll be happy to help you.
+
+With that `SIGNING OFF`
+
+Happy coding ya'll!

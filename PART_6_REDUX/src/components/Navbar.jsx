@@ -1,5 +1,12 @@
 import { FaCartPlus } from "react-icons/fa";
+import { useSelector } from "react-redux";
+
 const Navbar = () => {
+  const {
+    items: data,
+    totalAmount,
+    totalQuantity,
+  } = useSelector((state) => state.cart);
   return (
     <div className="d-flex justify-content-between align-items-center mb-4">
       {/* Left side: Title */}
@@ -20,7 +27,7 @@ const Navbar = () => {
             border: "2px solid white",
           }}
         >
-          5
+          {totalQuantity}
         </span>
       </div>
     </div>

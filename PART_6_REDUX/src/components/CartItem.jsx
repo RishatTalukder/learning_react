@@ -3,10 +3,13 @@ import {
   FaArrowAltCircleUp,
   FaArrowCircleDown,
   FaArrowUp,
-  FaUps,
+  FaTrash,
 } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { increase, decrease, removeItem } from "../redux/slices/cartSlice";
 
 const CartItem = ({ item }) => {
+  const dispatch = useDispatch();
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
       {/* Left side: Image + Info */}
@@ -26,21 +29,34 @@ const CartItem = ({ item }) => {
       {/* Right side: Quantity + Amount */}
       <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex flex-column align-items-center">
-          <button className="text-success btn">
+          <button
+            className="text-success btn"
+            onClick={() => dispatch(increase(item.id))}
+          >
             <FaArrowAltCircleUp />
             {/* <FaArrowUp /> */}
           </button>
           <span>{item.quantity}</span>
-          <button className="text-danger btn">
+          <button
+            className="text-danger btn"
+            onClick={() => dispatch(decrease(item.id))}
+          >
             <FaArrowCircleDown />
           </button>
         </div>
 
         {/* Item total price */}
-        <div className="ms-3 fw-bold">${item.price * item.quantity}</div>
+        <div className="ms-3 fw-bold d-flex align-items-center">
+          ${item.price * item.quantity}
+          <button
+            className="btn text-danger ms-3 mb-1"
+            onClick={() => dispatch(removeItem(item.id))}
+          >
+            <FaTrash />
+          </button>
+        </div>
       </div>
     </li>
   );
 };
-
 export default CartItem;
