@@ -13,7 +13,7 @@ const initialState = {
   data: [], // initial cart data
   totalItems: 0, // total items in the cart
   totalPrice: 0, // total price of the items in the cart
-};  
+};
 
 const GlobalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState); // using useReducer to manage the state
